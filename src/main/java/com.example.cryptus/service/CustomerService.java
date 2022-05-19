@@ -1,6 +1,7 @@
 package com.example.cryptus.service;
 
 import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.model.User;
 import com.example.cryptus.repository.CustomerRepository;
 
@@ -51,4 +52,8 @@ public class CustomerService {
         return customerRepository.list();
     }
 
+
+    public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId) {
+        return customerRepository.findCustomerByPortefeuilleId(portefeuilleId);
+    }
 }
