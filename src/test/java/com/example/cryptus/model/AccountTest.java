@@ -1,0 +1,63 @@
+package com.example.cryptus.model;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+class AccountTest {
+
+    @BeforeEach
+    void setUp() {
+        Account testAccount = new Account(1, "Zohar", "wachtwoord");
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void hashSaltNPepper() {
+        Account testAccount = new Account(1, "Zohar", "wachtwoord");
+        String actual = "abracadabra";
+        String expected = "abracadabra";
+        testAccount.hashSaltNPepper(actual);
+        testAccount.hashSaltNPepper(expected);
+        assertThat(actual).isNotNull().isEqualTo(expected);
+    }
+
+    @Test
+    void getAccountId() {
+    }
+
+    @Test
+    void getGebruikersnaam() {
+    }
+
+    @Test
+    void getWachtwoord() {
+    }
+
+    @Test
+    void getSalt() {
+    }
+
+    @Test
+    void setAccountId() {
+    }
+
+    @Test
+    void setGebruikersnaam() {
+    }
+
+    @Test
+    void setWachtwoord() {
+        Account testAccount = new Account(1, "Zohar", "wachtwoord");
+    }
+
+    @Test
+    void setSalt() {
+    }
+}
