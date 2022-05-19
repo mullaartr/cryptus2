@@ -53,11 +53,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     }));
 
 
-
-
-
-
-
     @Override
     public Optional<Portefeuille> findPortefeuilleById(int id) {
         String Sql = "select * from portefeuille p join portefeuille_Regel po on p.portefeuilleID = po.portefeuilleId\n" +
@@ -89,9 +84,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         portefeuille.setPortefeuilleId(newKey);
     }
 
-
-
-    
 
     public Optional<Portefeuille> findPortefeuilleOf(int userId) {
         int portefeuilleId = jdbcTemplate.queryForObject("select " +

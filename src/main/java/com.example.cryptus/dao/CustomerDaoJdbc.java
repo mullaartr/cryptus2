@@ -119,7 +119,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         Portefeuille portefeuille = null;
         PortefeuilleDAOJdbc portefeuilleDAOJdbc = null;
         try{
-            portefeuille = jdbcTemplate.queryForObject(sql,new Object[]{portefeuilleId}, portefeuilleDAOJdbc.rowMapper);
+           // portefeuille = jdbcTemplate.queryForObject(sql,new Object[]{portefeuilleId}, portefeuilleDAOJdbc.rowMapper);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
