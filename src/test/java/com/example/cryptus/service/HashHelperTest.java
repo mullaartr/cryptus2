@@ -1,3 +1,5 @@
+package com.example.cryptus.service;
+
 import com.example.cryptus.dao.MapDatabase;
 
 
