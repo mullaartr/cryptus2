@@ -6,11 +6,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
 import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest
+@ActiveProfiles("test")
 class PortefeuilleDAOJdbcTest {
 
     private PortefeuilleDAOJdbc mockPortefeuilleDaoJDBC;
@@ -19,14 +24,18 @@ class PortefeuilleDAOJdbcTest {
 
     private Asset mockAsset;
 
-
-    @BeforeAll
+    @Autowired
+    public PortefeuilleDAOJdbcTest(PortefeuilleDAOJdbc portefeuilleDAOJdbc){
+        super();
+        mockPortefeuilleDaoJDBC = portefeuilleDAOJdbc;
+    }
+   /* @BeforeAll
     void setUp(){
         mockPortefeuilleDaoJDBC = Mockito.mock(PortefeuilleDAOJdbc.class);
         portefeuille = new Portefeuille(5, 1, null, new ArrayList<Asset>());
         Asset asset = new Asset();
         Mockito.when(mockPortefeuilleDaoJDBC.findPortefeuilleById(1)).thenReturn(Optional.of(portefeuille));
-    }
+    }*/
 
     @Test
     void findPortefeuilleById() {
