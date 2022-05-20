@@ -11,7 +11,7 @@ public interface TransactionDao {
 
     void storeTransaction(Transaction transaction);
     void update(Transaction transaction);
-    void deleteTransaction(int transactieId);
+    void deleteTransaction(int transactionId);
     List <Transaction> findTransactionsByUser(int userId);
     Optional<Transaction> findTransactionById(int transactionId);
 
