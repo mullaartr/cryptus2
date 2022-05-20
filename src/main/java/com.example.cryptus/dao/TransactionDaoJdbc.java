@@ -45,19 +45,21 @@ public class TransactionDaoJdbc implements TransactionDao {
         @Override
         public Transaction mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             int transactieId = resultSet.getInt("transactieid");
-            LocalDateTime timestamp= resultSet.getObject("datumtijd", LocalDateTime.class);
+            LocalDateTime timestamp = resultSet.getObject("datumtijd", LocalDateTime.class);
             double kosten = resultSet.getDouble("kosten");
+            int percentage = resultSet.getInt("percentage");
             String creditIban = resultSet.getString("creditiban");
             String debitIban = resultSet.getString("debitiban");
             double euroammount = resultSet.getDouble("euroammount");
-              int percentage = resultSet.getInt("percentage");
             String debitportefeuilleId = resultSet.getString("debitportefeuilleid");
-            String creditportefeuilleId = resultSet.getString("creditportefeuilleid");
+            String creditportefeuilleId = resultSet.getString(
+                    "creditportefeuilleid1");
             int assetId = resultSet.getInt("assetid");
             double assetammount = resultSet.getDouble("assetammount");
 
-            Transaction transaction = new Transaction(transactieId, null, null,null,assetammount,euroammount,0,timestamp);
-            return transaction;
+            Transaction transaction = new Transaction(transactieId, null, null, null, assetammount, euroammount, 0, timestamp);
+            return transaction; // hoe kom ik nou aan de koper en de
+            // verkoper? En ook aan de asset?
         }
     }
 
@@ -81,7 +83,9 @@ public class TransactionDaoJdbc implements TransactionDao {
 
     @Override
     public List<Transaction> findTransactionsByUser(int userId) {
-        List<Transaction> transactions = jdbcTemplate.queryForList("SELECT * FROM transactie JOIN bankrekening WHERE userId = ?", Transaction.class, userId);
+        List<Transaction> transactions = jdbcTemplate.query("SELECT * " +
+                        "FROM transactie JOIN bankrekening WHERE userId = ?",
+                new TransactionRowMapper(), userId);
         return transactions;
     }
 

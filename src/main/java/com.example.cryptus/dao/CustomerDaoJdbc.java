@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -117,12 +118,19 @@ public class CustomerDaoJdbc implements CustomerDao {
     public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId) {
         String sql ="select * from user JOIN portefeuille p on user.userId = p.userId where p.portefeuilleID = ?";
         Portefeuille portefeuille = null;
-        PortefeuilleDAOJdbc portefeuilleDAOJdbc = null;
+        ResultSetExtractor resultSetExtractor = null;
         try{
+
+            portefeuille = (Portefeuille) jdbcTemplate.query(sql, resultSetExtractor, portefeuilleId);
+
            // portefeuille = jdbcTemplate.queryForObject(sql,new Object[]{portefeuilleId}, portefeuilleDAOJdbc.rowMapper);
+
+
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
         return Optional.ofNullable(portefeuille);
     }
+
+
 }

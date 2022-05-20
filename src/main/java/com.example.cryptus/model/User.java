@@ -12,6 +12,7 @@ public abstract class User {
     private String password;
     private String salt;
     List<Transaction> transactionList;
+    BankAccount bankAccount;
 
     public User(int userId, String firstName, String preposition, String lastName, String userName, String password, String salt) {
         this.userId = userId;
@@ -87,9 +88,14 @@ public abstract class User {
         this.transactionList = transactionList;
     }
 
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
 
-
-   /* public User(int userId, String firstName, String preposition, String lastName) {
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+    /* public User(int userId, String firstName, String preposition, String lastName) {
         this.userId = userId;
         this.firstName = firstName;
         this.preposition = preposition;
