@@ -21,7 +21,7 @@ import java.util.Optional;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortefeuilleDAOJdbcTest {
 
-    private PortefeuilleDAOJdbc mockPortefeuilleDaoJDBC;
+    private PortefeuilleDAOJdbc portefeuilleDaoJDBCUnderTest;
     private Portefeuille portefeuille;
     private Asset asset;
 
@@ -30,7 +30,7 @@ class PortefeuilleDAOJdbcTest {
     @Autowired
     public PortefeuilleDAOJdbcTest(PortefeuilleDAOJdbc portefeuilleDAOJdbc){
         super();
-        mockPortefeuilleDaoJDBC = portefeuilleDAOJdbc;
+        portefeuilleDaoJDBCUnderTest = portefeuilleDAOJdbc;
     }
     @BeforeAll
     void setUp(){
@@ -44,7 +44,7 @@ class PortefeuilleDAOJdbcTest {
 
     @Test
     void findPortefeuilleById() {
-        Optional<Portefeuille> portefeuille1 = mockPortefeuilleDaoJDBC.findPortefeuilleById(1);
+        Optional<Portefeuille> portefeuille1 = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(1);
         Portefeuille actual = portefeuille1.get();
         Portefeuille expected = portefeuille;
         assertThat(actual).isNotNull().isEqualTo(expected);
