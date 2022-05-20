@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 //@Sql({"/schema.sql","/data.sql"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortefeuilleDAOJdbcTest {

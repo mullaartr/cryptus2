@@ -1,6 +1,6 @@
-USE `test_cryptus`;
+USE `cryptus`;
 SET FOREIGN_KEY_CHECKS=0;
-truncate table `user`;
+
 INSERT INTO `user`
 VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '12345', '12345'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345', '12345'),

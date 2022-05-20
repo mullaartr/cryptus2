@@ -1,4 +1,4 @@
--- -----------------------------------------------------
+/*-- -----------------------------------------------------
 -- Schema cryptus
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `cryptus` DEFAULT CHARACTER SET utf8;
@@ -213,3 +213,4 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
 -- Gebruiker definiëren en toegang verlenen
 CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
+*/
