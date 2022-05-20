@@ -32,7 +32,7 @@ public class CustomerController {
 
 
     @GetMapping
-    public List<Customer> list(){
+    public List<Customer> list() {
         return customerService.list();
     }
 
@@ -41,10 +41,13 @@ public class CustomerController {
         return  customerService.findCustomerById(id);
     }
 
+
     @GetMapping("/find")
     @ResponseBody Optional<Customer> findCustomerByName(@PathVariable("customerName")String name){
         return  customerService.findCustomerByName(name);
     }
+
+
 
     @PostMapping("/create")
     @ResponseBody List<Customer> createCustomer(@RequestBody Customer customer){
@@ -52,11 +55,11 @@ public class CustomerController {
         return customerService.list();
     }
 
-    /*@GetMapping
+    @GetMapping
     @ResponseBody
     public List<UserDTO> getUsers(){
         return customerService.list().stream().map(mapper::toDto).collect(Collectors.toList());
-    }*/
+    }
 
 
 }

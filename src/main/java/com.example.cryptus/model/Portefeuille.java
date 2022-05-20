@@ -8,23 +8,21 @@ public class Portefeuille {
 
     int portefeuilleId;
     private List<Asset> assets;
-    private double saldo;
     private Customer owner;
 
 
-    public Portefeuille(int portefeuilleId, double saldo, Customer owner, List<Asset> assets) {
+    public Portefeuille(int portefeuilleId, Customer owner, List<Asset> assets) {
         this.portefeuilleId = portefeuilleId;
-        this.saldo = saldo;
         this.owner = owner;
         this.assets = assets;
     }
 
-    public Portefeuille(double saldo, Customer owner) {
-        this(0, saldo, owner, new ArrayList<Asset>());
+    public Portefeuille(Customer owner) {
+        this(0,  owner, new ArrayList<Asset>());
     }
 
     public Portefeuille() {
-        this(0, null);
+        this(null);
         this.assets = new ArrayList<>();
     }
 
@@ -45,14 +43,6 @@ public class Portefeuille {
         return false;
     }
 
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
 
     public void setOwner(Customer owner) {
         this.owner = owner;
@@ -83,11 +73,20 @@ public class Portefeuille {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Portefeuille that = (Portefeuille) o;
-        return portefeuilleId == that.portefeuilleId && Double.compare(that.saldo, saldo) == 0 && Objects.equals(assets, that.assets);
+        return portefeuilleId == that.portefeuilleId && Objects.equals(assets, that.assets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(portefeuilleId, assets, saldo);
+        return Objects.hash(portefeuilleId, assets);
+    }
+
+    @Override
+    public String toString() {
+        return "Portefeuille{" +
+                "portefeuilleId=" + portefeuilleId +
+                ", assets=" + assets +
+                ", owner=" + owner +
+                '}';
     }
 }

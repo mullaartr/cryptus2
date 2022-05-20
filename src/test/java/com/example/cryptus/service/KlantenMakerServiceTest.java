@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class KlantenMakerServiceTest {
-    LocalDate vroegsteDatum;
-    LocalDate laatsteDatum;
-    KlantenMakerService klantenMakerService;
+    private LocalDate vroegsteDatum;
+    private LocalDate laatsteDatum;
+    private KlantenMakerService klantenMakerService;
     @BeforeEach
     void setup(){
         vroegsteDatum = LocalDate.of(1920, 1, 1);
