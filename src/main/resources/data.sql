@@ -1,5 +1,6 @@
 USE cryptus;
 
+
 INSERT INTO `user`
 VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '12345', '12345'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345', '12345'),
@@ -67,4 +68,14 @@ INSERT INTO `koers`
 VALUES (1, 2, 30000.000000, '2022-05-19 01:14:07.00'),
        (1, 3, 1500.000000, '2022-05-19 01:14:07.00'),
        (1, 4, 250.000000, '2022-05-19 01:14:07.00');
+
+INSERT INTO `user`
+VALUES (0,'John','gg','mekky','username','password','salt');
+INSERT INTO `klant`
+VALUES (LAST_INSERT_ID(),STR_TO_DATE('31-03-2015', '%d-%m-%Y'),'street',10,'1000','Amsterdam','bsn','email','1234567891');
+
+
+
+
+
 
