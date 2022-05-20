@@ -1,5 +1,6 @@
 package com.example.cryptus.dao;
 
+import com.example.cryptus.model.Adres;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.model.User;
@@ -29,7 +30,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0, "", "", "", Date.valueOf(""), "", "",0,"","","",0,"","","");
+        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Adres(0,"","",""),"","","");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -45,21 +46,24 @@ public class CustomerDaoJdbc implements CustomerDao {
         customer.setCity(rs.getString("woonplaats"));
         customer.setBSN(rs.getString("BSN"));
         customer.setEmail(rs.getString("emailadres"));
-        customer.setPhone(rs.getInt("telefoon"));
+        customer.setPhone(rs.getString("telefoon"));
+
 
         return customer;
     };
 
     @Override
     public Optional<Customer> findCustomerById(int id) {
-        String sql ="select * from klant JOIN user u on u.userId = klant.userId where userId = ?";
+        String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
         Customer customer = null;
         try{
-            customer = jdbcTemplate.queryForObject(sql,new Object[]{id},rowMapper);
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,id);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
+
         return Optional.ofNullable(customer);
+
     }
 
 
@@ -107,7 +111,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         String sql ="select * from user JOIN klant k on user.userId = k.userId where achterNaam = ?";
         Customer customer = null;
         try{
-            customer = jdbcTemplate.queryForObject(sql,new Object[]{name},rowMapper);
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,name);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }

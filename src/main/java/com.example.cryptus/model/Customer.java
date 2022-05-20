@@ -12,22 +12,40 @@ public class Customer extends User {
     private int houseNumber;
     private String email;
     private String postcode;
-    private int phone;
+    private String phone;
 
+    private Adres adres;
 
-
-
-    public Customer(int userid, String firstName, String preposition, String lastName, Date birthDate, String BSN,String Street, int houseNumber,String postcode, String city, String email,int phone, String userName, String password, String salt) {
-        super(userid,firstName,preposition,lastName,userName,password,salt);
+    public Customer(int userId, String firstName, String preposition, String lastName,String password, String userName, Date birthDate, String BSN,
+                    Adres adres, String email, String phone, String salt) {
+        super(userId, firstName, preposition, lastName, userName, password, salt);
         this.birthDate = birthDate;
-        this.houseNumber = houseNumber;
         this.BSN = BSN;
-        this.Street=Street;
-        this.city = city ;
-        this.email=email;
-        this.postcode = postcode;
+        this.email = email;
         this.phone = phone;
+        this.adres = adres;
     }
+
+    public Adres getAdres() {
+        return adres;
+    }
+
+    public void setAdres(Adres adres) {
+        this.adres = adres;
+    }
+
+    /* public Customer(int userid, String firstName, String preposition, String lastName, String password , String userName, Date birthDate, String BSN,
+                        String Street, int houseNumber, String postcode, String city, String email, int phone, String salt) {
+            super(userid,firstName,preposition,lastName,userName,password,salt);
+            this.birthDate = birthDate;
+            this.houseNumber = houseNumber;
+            this.BSN = BSN;
+            this.Street=Street;
+            this.city = city ;
+            this.email=email;
+            this.postcode = postcode;
+            this.phone = phone;
+        }*/
     public int getUserId() {
         return super.getUserId();
     }
@@ -116,11 +134,11 @@ public class Customer extends User {
         return email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -162,3 +180,4 @@ public class Customer extends User {
                 '}';
     }
 }
+
