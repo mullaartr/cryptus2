@@ -1,6 +1,6 @@
 CREATE SCHEMA  `cryptus`;
 USE `cryptus`;
-CREATE TABLE `user`
+CREATE TABLE if not exists `user`
 (
     `userId`         INT         NOT NULL AUTO_INCREMENT,
     `voornaam`       VARCHAR(45) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE `user`
     `salt`           VARCHAR(45) NOT NULL,
     PRIMARY KEY (`userId`)
 );
-CREATE TABLE  `klant`
+CREATE TABLE if not exists `klant`
 (
     `userId`        INT         NOT NULL,
     `geboortedatum` DATE        NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE  `klant`
             REFERENCES `user` (`userId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION);
-CREATE TABLE `beheerder`
+CREATE TABLE if not exists `beheerder`
 (
     `userId`           INT NOT NULL,
     `personeelsnummer` INT NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `beheerder`
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
-CREATE TABLE  `bankrekening`
+CREATE TABLE if not exists `bankrekening`
 (
     `iban`   VARCHAR(45)    NOT NULL,
     `saldo`  DECIMAL(16, 2) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE  `bankrekening`
             ON UPDATE NO ACTION
 );
 
-CREATE TABLE  `Asset`
+CREATE TABLE if not exists `Asset`
 (
     `assetId`   INT         NOT NULL AUTO_INCREMENT,
     `naam`      VARCHAR(45) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE  `Asset`
     PRIMARY KEY (`assetId`)
 );
 
-CREATE TABLE `portefeuille`
+CREATE TABLE if not exists `portefeuille`
 (
     `portefeuilleID` INT NOT NULL AUTO_INCREMENT,
     `userId`         INT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `portefeuille`
             ON UPDATE CASCADE
 );
 
-CREATE TABLE `portefeuille_regel`
+CREATE TABLE if not exists `portefeuille_regel`
 (
     `portefeuilleID` INT            NOT NULL,
     `assetId`        INT            NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE `portefeuille_regel`
             ON UPDATE NO ACTION
 );
 
-CREATE TABLE `transactie`
+CREATE TABLE if not exists `transactie`
 (
     `transactieId`          INT            NOT NULL AUTO_INCREMENT,
     `datumtijd`             TIMESTAMP(2)   NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE `transactie`
             ON UPDATE NO ACTION
 );
 
-CREATE TABLE  `koers`
+CREATE TABLE if not exists `koers`
 (
     `asseta`      INT            NOT NULL,
     `assetb`      INT            NOT NULL,

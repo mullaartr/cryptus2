@@ -49,6 +49,5 @@ class PortefeuilleDAOJdbcTest {
         Portefeuille actual = portefeuille1.get();
         Portefeuille expected = portefeuille;
         assertThat(actual).isNotNull().isEqualTo(expected);
-
     }
 }
