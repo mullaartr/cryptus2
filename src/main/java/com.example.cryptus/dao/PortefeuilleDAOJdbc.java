@@ -1,28 +1,29 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     private JdbcTemplate jdbcTemplate;
 
     private Logger logger =  LogManager.getLogger(PortefeuilleDAOJdbc.class);
+
 
 
 
@@ -33,20 +34,33 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         logger.info("new PortefeuilleDAOJdbc");
     }
 
-    RowMapper<Portefeuille> rowMapper = ((rs, rowNum) -> {
+
+    ResultSetExtractor<Portefeuille> resultSetExtractor = ((rs ->  {
         Portefeuille portefeuille = new Portefeuille();
-        portefeuille.setPortefeuilleId(rs.getInt("PortefeuilleId"));
-        portefeuille.setSaldo(rs.getDouble("saldo"));
+        portefeuille.setPortefeuilleId(rs.getInt("portefeuilleId"));
         portefeuille.setOwner(null);
+        List<Asset> assets = new ArrayList<>();
+        while(rs.next()){
+            Asset asset = new Asset();
+            asset.setAssetId(rs.getInt("assetId"));
+            asset.setAssetNaam(rs.getString("naam"));
+            asset.setAssetAfkorting(rs.getString("afkorting"));
+            asset.setSaldo(rs.getInt("saldo"));
+            assets.add(asset);
+        }
+        portefeuille.setAssets(assets);
         return portefeuille;
-    });
+    }));
+
 
     @Override
     public Optional<Portefeuille> findPortefeuilleById(int id) {
-        String Sql = "select * from portefeuille where Id = ?";
+        String Sql = "select * from portefeuille p join portefeuille_Regel po on p.portefeuilleID = po.portefeuilleId\n" +
+                "join asset a on a.assetId = po.assetId join" +
+                "koers k on a.assetId = k.assetId where po.portefeuilleId = ?";
         Portefeuille portefeuille = null;
         try{
-            portefeuille = jdbcTemplate.queryForObject(Sql,new Object[]{id},rowMapper);
+            portefeuille = jdbcTemplate.query(Sql, resultSetExtractor, id);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
@@ -56,7 +70,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     private PreparedStatement insertPortefeuilleStatement(Portefeuille portefeuille, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(
-                "insert into Cryptus.portefeuille (saldo, userId) values (?, ?)",
+                "insert into Cryptus.portefeuille (saldo, klantId) values (?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
         ps.setDouble(1, portefeuille.getSaldo());
         ps.setInt(2, portefeuille.getOwner().getUserId());
@@ -69,6 +83,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         int newKey = keyHolder.getKey().intValue();
         portefeuille.setPortefeuilleId(newKey);
     }
+
 
     public Optional<Portefeuille> findPortefeuilleOf(int userId) {
         int portefeuilleId = jdbcTemplate.queryForObject("select " +
