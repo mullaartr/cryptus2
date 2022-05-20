@@ -110,7 +110,7 @@ public class AssetDaoJdbc implements AssetDao {
             String assetNaam = resultSet.getString("cryptus.naam");
             String assetAfkorting = resultSet.getString("cryptus.afkorting");
             double koersEuro = resultSet.getDouble("cryptus.koers.wisselkoers");
-            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, null);//moet portefeuille wel null zijn?
+            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, null, 0.0);//moet portefeuille wel null zijn?
             return asset;
         }
     }

@@ -70,9 +70,9 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`beheerder`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`bankrekening`
 (
-    `iban`   VARCHAR(45) NOT NULL,
-    `saldo`  DECIMAL(2)  NOT NULL,
-    `userId` INT         NOT NULL,
+    `iban`   VARCHAR(45)    NOT NULL,
+    `saldo`  DECIMAL(16, 2) NOT NULL,
+    `userId` INT            NOT NULL,
     INDEX `verzinzelf2_idx` (`userId` ASC) VISIBLE,
     PRIMARY KEY (`iban`),
     CONSTRAINT `verzinzelf2`
@@ -121,9 +121,9 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
 (
-    `portefeuilleID` INT        NOT NULL,
-    `assetId`        INT        NOT NULL,
-    `saldo`          DECIMAL(6) NOT NULL,
+    `portefeuilleID` INT            NOT NULL,
+    `assetId`        INT            NOT NULL,
+    `saldo`          DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`portefeuilleID`, `assetId`),
     INDEX `verzinzelf5_idx` (`assetId` ASC) VISIBLE,
     CONSTRAINT `verzinzelf4`
@@ -145,17 +145,17 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
 (
-    `transactieId`          INT          NOT NULL AUTO_INCREMENT,
-    `datumtijd`             TIMESTAMP(2) NOT NULL,
-    `kosten`                DECIMAL(2)   NOT NULL,
-    `percentage`            INT          NOT NULL,
-    `creditiban`            VARCHAR(45)  NOT NULL,
-    `debitiban`             VARCHAR(45)  NOT NULL,
-    `euroammount`           DECIMAL(2)   NOT NULL,
-    `debitportefeuilleID`   INT          NOT NULL,
-    `creditportefeuilleID1` INT          NOT NULL,
-    `AssetId`               INT          NOT NULL,
-    `assetammount`          DECIMAL(6)   NOT NULL,
+    `transactieId`          INT            NOT NULL AUTO_INCREMENT,
+    `datumtijd`             TIMESTAMP(2)   NOT NULL,
+    `kosten`                DECIMAL(16, 2) NOT NULL,
+    `percentage`            INT            NOT NULL,
+    `creditiban`            VARCHAR(45)    NOT NULL,
+    `debitiban`             VARCHAR(45)    NOT NULL,
+    `euroammount`           DECIMAL(16, 2) NOT NULL,
+    `debitportefeuilleID`   INT            NOT NULL,
+    `creditportefeuilleID1` INT            NOT NULL,
+    `AssetId`               INT            NOT NULL,
+    `assetammount`          DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`transactieId`),
     INDEX `verzinzelf3_idx` (`debitportefeuilleID` ASC, `AssetId` ASC) VISIBLE,
     INDEX `verzinzelf7_idx` (`creditportefeuilleID1` ASC) VISIBLE,
@@ -190,10 +190,10 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
 (
-    `asseta`      INT          NOT NULL,
-    `assetb`      INT          NOT NULL,
-    `wisselkoers` DECIMAL(6)   NOT NULL,
-    `timestamp`   TIMESTAMP(2) NOT NULL,
+    `asseta`      INT            NOT NULL,
+    `assetb`      INT            NOT NULL,
+    `wisselkoers` DECIMAL(16, 6) NOT NULL,
+    `timestamp`   TIMESTAMP(2)   NOT NULL,
     PRIMARY KEY (`asseta`, `assetb`, `timestamp`),
     INDEX `verzinzelf6_idx` (`asseta` ASC) VISIBLE,
     INDEX `verzinzelf8_idx` (`assetb` ASC) VISIBLE,

@@ -2,11 +2,12 @@ package com.example.cryptus.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Portefeuille {
 
     int portefeuilleId;
-    private List<Asset> Assets;
+    private List<Asset> assets;
     private double saldo;
     private Customer owner;
 
@@ -15,7 +16,7 @@ public class Portefeuille {
         this.portefeuilleId = portefeuilleId;
         this.saldo = saldo;
         this.owner = owner;
-        this.Assets = new ArrayList<>();
+        this.assets = assets;
     }
 
     public Portefeuille(double saldo, Customer owner) {
@@ -24,7 +25,7 @@ public class Portefeuille {
 
     public Portefeuille() {
         this(0, null);
-        this.Assets = new ArrayList<>();
+        this.assets = new ArrayList<>();
     }
 
     public double berekenWaarde(){
@@ -44,10 +45,6 @@ public class Portefeuille {
         return false;
     }
 
-
-    public List<Asset> getAssets() {
-        return Assets;
-    }
 
     public double getSaldo() {
         return saldo;
@@ -71,5 +68,26 @@ public class Portefeuille {
 
     public int getPortefeuilleId() {
         return portefeuilleId;
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Portefeuille that = (Portefeuille) o;
+        return portefeuilleId == that.portefeuilleId && Double.compare(that.saldo, saldo) == 0 && Objects.equals(assets, that.assets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(portefeuilleId, assets, saldo);
     }
 }
