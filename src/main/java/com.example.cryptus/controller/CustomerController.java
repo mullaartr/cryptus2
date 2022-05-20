@@ -55,11 +55,11 @@ public class CustomerController {
         return customerService.list();
     }
 
-    @GetMapping
+  /*  @GetMapping
     @ResponseBody
     public List<UserDTO> getUsers(){
         return customerService.list().stream().map(mapper::toDto).collect(Collectors.toList());
-    }
+    }*/
 
 
 }
