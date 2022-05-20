@@ -37,10 +37,10 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     ResultSetExtractor<Portefeuille> resultSetExtractor = ((rs ->  {
         Portefeuille portefeuille = new Portefeuille();
-        portefeuille.setPortefeuilleId(rs.getInt("portefeuilleId"));
         portefeuille.setOwner(null);
         List<Asset> assets = new ArrayList<>();
         while(rs.next()){
+            portefeuille.setPortefeuilleId(rs.getInt("portefeuilleId"));
             Asset asset = new Asset();
             asset.setAssetId(rs.getInt("assetId"));
             asset.setAssetNaam(rs.getString("naam"));
@@ -55,14 +55,14 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     @Override
     public Optional<Portefeuille> findPortefeuilleById(int id) {
-        String Sql = "select * from portefeuille p join portefeuille_Regel po on p.portefeuilleID = po.portefeuilleId\n" +
-                "join asset a on a.assetId = po.assetId join" +
-                "koers k on a.assetId = k.assetId where po.portefeuilleId = ?";
+        String Sql = "select * from portefeuille p join portefeuille_Regel po on p.portefeuilleID = po.portefeuilleId" +
+                "                join asset a on a.assetId = po.assetId /*join" +
+                "                koers k on a.assetId = k.asseta*/ where p.portefeuilleId = ?";
         Portefeuille portefeuille = null;
         try{
             portefeuille = jdbcTemplate.query(Sql, resultSetExtractor, id);
         }catch (DataAccessException exception){
-            logger.info("Customer was not found");
+            logger.info("portefeuille was not found");
         }
         return Optional.ofNullable(portefeuille);
     }
@@ -70,10 +70,9 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     private PreparedStatement insertPortefeuilleStatement(Portefeuille portefeuille, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(
-                "insert into Cryptus.portefeuille (saldo, klantId) values (?, ?)",
+                "insert into Cryptus.portefeuille (saldo, klantId) values (?)",
                 Statement.RETURN_GENERATED_KEYS);
-        ps.setDouble(1, portefeuille.getSaldo());
-        ps.setInt(2, portefeuille.getOwner().getUserId());
+        ps.setInt(1, portefeuille.getOwner().getUserId());
         return ps;
     }
     @Override
@@ -93,8 +92,8 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     @Override
     public void update(Portefeuille portefeuille) {
-        String sql = "Update Cryptus.portefeuille SET saldo = ?, userId = ? where portefeuilleId ";
-        int update = jdbcTemplate.update(sql, portefeuille.getSaldo(), portefeuille.getOwner().getUserId());
+        String sql = "Update Cryptus.portefeuille SET userId = ? where portefeuilleId ";
+        int update = jdbcTemplate.update(sql,  portefeuille.getOwner().getUserId());
         if (update == 1) {
             logger.info("portefeuille updated" + portefeuille.getPortefeuilleId());
         }

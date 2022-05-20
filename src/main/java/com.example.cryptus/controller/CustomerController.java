@@ -20,7 +20,7 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/klant")
+/*    @GetMapping("/klant")
     public List<Customer> getCustomers(){
         return customerDao.list();
     }
@@ -33,7 +33,7 @@ public class CustomerController {
     @GetMapping("/klant")
     Optional<Customer> findCustomerByName(String name){
         return  customerDao.findCustomerByName(name);
-    }
+    }*/
 
 
 }

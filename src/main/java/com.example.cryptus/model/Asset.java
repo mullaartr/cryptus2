@@ -1,5 +1,7 @@
 package com.example.cryptus.model;
 
+import java.util.Objects;
+
 public class Asset {
     int assetId;
     String assetNaam;
@@ -75,6 +77,19 @@ public class Asset {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asset asset = (Asset) o;
+        return assetId == asset.assetId && Double.compare(asset.koersEuro, koersEuro) == 0 && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(assetId, assetNaam, assetAfkorting, koersEuro, saldo);
+    }
+
+    @Override
     public String toString() {
         return "Asset{" +
                 "assetId=" + assetId +
@@ -82,6 +97,7 @@ public class Asset {
                 ", assetAfkorting='" + assetAfkorting + '\'' +
                 ", koersEuro=" + koersEuro +
                 ", portefeuille=" + portefeuille +
+                ", saldo=" + saldo +
                 '}';
     }
 }
