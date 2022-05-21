@@ -168,6 +168,19 @@ public class CustomerRepository  {
 
     }
 
+    public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
+        Optional<Customer> customerOptional = customerDao.findCustomerByUsernamePassword(username, password);
+        if(customerOptional.isEmpty()){
+            return Optional.empty();
+
+        }else{
+            return customerDao.findCustomerByUsernamePassword(username, password);
+
+        }
+
+
+    }
+
     public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId){
         Optional<Portefeuille> portefeuilleOptional = customerDao.findCustomerByPortefeuilleId(portefeuilleId);
         if(portefeuilleOptional.isEmpty()){

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,9 +41,16 @@ public class CustomerController {
         return  customerService.findCustomerById(id);
     }
 
-    @GetMapping("/find")
+    @GetMapping("/findByLastname")
     @ResponseBody Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
         return  customerService.findCustomerByName(name);
+    }
+
+
+
+    @GetMapping("/findByUsernamePassword")
+    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username, @RequestParam("password") String password){
+        return  customerService.findCustomerByUsernamePassword(username,password);
     }
 
     @PostMapping
