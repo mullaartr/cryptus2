@@ -1,6 +1,6 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Address;
+import com.example.cryptus.model.Adres;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.model.User;
@@ -30,7 +30,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Address(0,"","",""),"","","");
+        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Adres(0,"","",""),"","","");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -48,6 +48,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         customer.setEmail(rs.getString("emailadres"));
         customer.setPhone(rs.getString("telefoon"));
 
+
         return customer;
     };
 
@@ -60,7 +61,9 @@ public class CustomerDaoJdbc implements CustomerDao {
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
+
         return Optional.ofNullable(customer);
+
     }
 
 
@@ -136,7 +139,12 @@ public class CustomerDaoJdbc implements CustomerDao {
         Portefeuille portefeuille = null;
         ResultSetExtractor resultSetExtractor = null;
         try{
+
             portefeuille = (Portefeuille) jdbcTemplate.query(sql, resultSetExtractor, portefeuilleId);
+
+           // portefeuille = jdbcTemplate.queryForObject(sql,new Object[]{portefeuilleId}, portefeuilleDAOJdbc.rowMapper);
+
+
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }

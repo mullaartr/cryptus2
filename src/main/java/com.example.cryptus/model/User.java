@@ -14,6 +14,8 @@ public abstract class User {
     List<Transaction> transactionList;
     BankAccount bankAccount;
 
+    Portefeuille portefeuille;
+
     public User(int userId, String firstName, String preposition, String lastName, String userName, String password, String salt) {
         this.userId = userId;
         this.firstName = firstName;

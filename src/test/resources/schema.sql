@@ -1,13 +1,6 @@
-/*-- -----------------------------------------------------
--- Schema cryptus
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `cryptus` DEFAULT CHARACTER SET utf8;
+CREATE SCHEMA  `cryptus`;
 USE `cryptus`;
-
--- -----------------------------------------------------
--- Table `cryptus`.`user`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`user`
+CREATE TABLE if not exists `user`
 (
     `userId`         INT         NOT NULL AUTO_INCREMENT,
     `voornaam`       VARCHAR(45) NOT NULL,
@@ -17,14 +10,8 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`user`
     `wachtwoord`     VARCHAR(45) NOT NULL,
     `salt`           VARCHAR(45) NOT NULL,
     PRIMARY KEY (`userId`)
-)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cryptus`.`klant`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`klant`
+);
+CREATE TABLE if not exists `klant`
 (
     `userId`        INT         NOT NULL,
     `geboortedatum` DATE        NOT NULL,
@@ -36,114 +23,74 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`klant`
     `emailadres`    VARCHAR(45) NOT NULL,
     `telefoon`      VARCHAR(10) NOT NULL,
     PRIMARY KEY (`userId`),
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
     CONSTRAINT `verzinzelf`
         FOREIGN KEY (`userId`)
-            REFERENCES `cryptus`.`user` (`userId`)
+            REFERENCES `user` (`userId`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cryptus`.`beheerder`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`beheerder`
+            ON UPDATE NO ACTION);
+CREATE TABLE if not exists `beheerder`
 (
     `userId`           INT NOT NULL,
     `personeelsnummer` INT NOT NULL,
     PRIMARY KEY (`userId`),
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
-    UNIQUE INDEX `personeelsnummer_UNIQUE` (`personeelsnummer` ASC) VISIBLE,
     CONSTRAINT `verzinzelf1`
         FOREIGN KEY (`userId`)
-            REFERENCES `cryptus`.`user` (`userId`)
+            REFERENCES `user` (`userId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `cryptus`.`bankrekening`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`bankrekening`
+);
+CREATE TABLE if not exists `bankrekening`
 (
     `iban`   VARCHAR(45)    NOT NULL,
     `saldo`  DECIMAL(16, 2) NOT NULL,
     `userId` INT            NOT NULL,
-    INDEX `verzinzelf2_idx` (`userId` ASC) VISIBLE,
     PRIMARY KEY (`iban`),
     CONSTRAINT `verzinzelf2`
         FOREIGN KEY (`userId`)
-            REFERENCES `cryptus`.`user` (`userId`)
+            REFERENCES `user` (`userId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
+);
 
-
--- -----------------------------------------------------
--- Table `cryptus`.`Asset`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`Asset`
+CREATE TABLE if not exists `Asset`
 (
     `assetId`   INT         NOT NULL AUTO_INCREMENT,
     `naam`      VARCHAR(45) NOT NULL,
     `afkorting` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`assetId`)
-)
-    ENGINE = InnoDB;
+);
 
-
--- -----------------------------------------------------
--- Table `cryptus`.`portefeuille`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille`
+CREATE TABLE if not exists `portefeuille`
 (
     `portefeuilleID` INT NOT NULL AUTO_INCREMENT,
     `userId`         INT NOT NULL,
     PRIMARY KEY (`portefeuilleID`),
-    INDEX `user_portefeuille_idx` (`userId` ASC) VISIBLE,
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
     CONSTRAINT `user_portefeuille`
         FOREIGN KEY (`userId`)
-            REFERENCES `cryptus`.`user` (`userId`)
+            REFERENCES `user` (`userId`)
             ON DELETE CASCADE
             ON UPDATE CASCADE
-)
-    ENGINE = InnoDB;
+);
 
-
--- -----------------------------------------------------
--- Table `cryptus`.`portefeuille_regel`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
+CREATE TABLE if not exists `portefeuille_regel`
 (
     `portefeuilleID` INT            NOT NULL,
     `assetId`        INT            NOT NULL,
     `saldo`          DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`portefeuilleID`, `assetId`),
-    INDEX `verzinzelf5_idx` (`assetId` ASC) VISIBLE,
     CONSTRAINT `verzinzelf4`
         FOREIGN KEY (`portefeuilleID`)
-            REFERENCES `cryptus`.`portefeuille` (`portefeuilleID`)
+            REFERENCES `portefeuille` (`portefeuilleID`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `verzinzelf5`
         FOREIGN KEY (`assetId`)
-            REFERENCES `cryptus`.`Asset` (`assetId`)
+            REFERENCES `Asset` (`assetId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
+);
 
-
--- -----------------------------------------------------
--- Table `cryptus`.`transactie`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
+CREATE TABLE if not exists `transactie`
 (
     `transactieId`          INT            NOT NULL AUTO_INCREMENT,
     `datumtijd`             TIMESTAMP(2)   NOT NULL,
@@ -157,60 +104,46 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
     `AssetId`               INT            NOT NULL,
     `assetammount`          DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`transactieId`),
-    INDEX `verzinzelf3_idx` (`debitportefeuilleID` ASC, `AssetId` ASC) VISIBLE,
-    INDEX `verzinzelf7_idx` (`creditportefeuilleID1` ASC) VISIBLE,
-    INDEX `verzinzelf9_idx` (`creditiban` ASC) VISIBLE,
-    INDEX `verzinzelf10_idx` (`debitiban` ASC) VISIBLE,
     CONSTRAINT `verzinzelf3`
         FOREIGN KEY (`debitportefeuilleID`, `AssetId`)
-            REFERENCES `cryptus`.`portefeuille_regel` (`portefeuilleID`, `assetId`)
+            REFERENCES `portefeuille_regel` (`portefeuilleID`, `assetId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `verzinzelf7`
         FOREIGN KEY (`creditportefeuilleID1`)
-            REFERENCES `cryptus`.`portefeuille_regel` (`portefeuilleID`)
+            REFERENCES `portefeuille_regel` (`portefeuilleID`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `verzinzelf9`
         FOREIGN KEY (`creditiban`)
-            REFERENCES `cryptus`.`bankrekening` (`iban`)
+            REFERENCES `bankrekening` (`iban`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `verzinzelf10`
         FOREIGN KEY (`debitiban`)
-            REFERENCES `cryptus`.`bankrekening` (`iban`)
+            REFERENCES `bankrekening` (`iban`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
+);
 
-
--- -----------------------------------------------------
--- Table `cryptus`.`koers`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
+CREATE TABLE if not exists `koers`
 (
     `asseta`      INT            NOT NULL,
     `assetb`      INT            NOT NULL,
     `wisselkoers` DECIMAL(16, 6) NOT NULL,
     `timestamp`   TIMESTAMP(2)   NOT NULL,
     PRIMARY KEY (`asseta`, `assetb`, `timestamp`),
-    INDEX `verzinzelf6_idx` (`asseta` ASC) VISIBLE,
-    INDEX `verzinzelf8_idx` (`assetb` ASC) VISIBLE,
     CONSTRAINT `verzinzelf6`
         FOREIGN KEY (`asseta`)
-            REFERENCES `cryptus`.`Asset` (`assetId`)
+            REFERENCES `Asset` (`assetId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `verzinzelf8`
         FOREIGN KEY (`assetb`)
-            REFERENCES `cryptus`.`Asset` (`assetId`)
+            REFERENCES `Asset` (`assetId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
+);
 
--- Gebruiker definiëren en toegang verlenen
-CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
-GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
-*/
+-- CREATE USER 'usertestCryptus'@'localhost' IDENTIFIED BY '12345';
+-- GRANT ALL PRIVILEGES ON test_cryptus.* TO 'usertestCryptus'@'localhost';

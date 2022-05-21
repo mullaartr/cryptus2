@@ -1,7 +1,6 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Address;
-
+import com.example.cryptus.model.Adres;
 import com.example.cryptus.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,12 +23,12 @@ class CustomerDaoTest {
     void findCustomerById() {
         Optional <Customer> customerOptional = daoUnderTest.findCustomerById(1);
         Customer actual = customerOptional.orElse(null);
-        Customer expected = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+        Customer expected = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Adres(0,"","",""),"","","");
     }
 
     @Test
     void storeCustomer() {
-        Customer customerTest = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+        Customer customerTest = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Adres(0,"","",""),"","","");
 
     }
 

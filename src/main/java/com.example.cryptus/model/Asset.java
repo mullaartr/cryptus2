@@ -1,5 +1,7 @@
 package com.example.cryptus.model;
 
+import java.util.Objects;
+
 public class Asset {
     int assetId;
     String assetNaam;
@@ -7,16 +9,23 @@ public class Asset {
     double koersEuro; //voorlopig alleen koers waarde crypto in euro; later eventueel koers is dollar toevoegen
     Portefeuille portefeuille;
 
-    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro, Portefeuille portefeuille) {
+    private double saldo;
+
+    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro, Portefeuille portefeuille, Double saldo) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
         this.koersEuro = koersEuro;
         this.portefeuille = portefeuille;
+        this.saldo = saldo;
     }
 
-    public Asset(String assetNaam, String assetAfkorting, double koersEuro, Portefeuille portefeuille) {
-        this(0, assetNaam, assetAfkorting, koersEuro, portefeuille);
+    public Asset(String assetNaam, String assetAfkorting, double koersEuro, Portefeuille portefeuille, double saldo) {
+        this(0, assetNaam, assetAfkorting, koersEuro, portefeuille, saldo);
+    }
+
+    public Asset() {
+        this(null, null, 0, null, 0);
     }
 
     public int getAssetId() {
@@ -59,6 +68,27 @@ public class Asset {
         this.portefeuille = portefeuille;
     }
 
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asset asset = (Asset) o;
+        return assetId == asset.assetId && Double.compare(asset.koersEuro, koersEuro) == 0 && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(assetId, assetNaam, assetAfkorting, koersEuro, saldo);
+    }
+
     @Override
     public String toString() {
         return "Asset{" +
@@ -67,6 +97,7 @@ public class Asset {
                 ", assetAfkorting='" + assetAfkorting + '\'' +
                 ", koersEuro=" + koersEuro +
                 ", portefeuille=" + portefeuille +
+                ", saldo=" + saldo +
                 '}';
     }
 }
