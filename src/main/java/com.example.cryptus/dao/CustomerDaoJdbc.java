@@ -1,9 +1,8 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Adres;
+import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
-import com.example.cryptus.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -30,7 +29,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Adres(0,"","",""),"","","");
+        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Address(0,"","",""),"","","");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));

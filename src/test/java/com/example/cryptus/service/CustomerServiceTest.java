@@ -1,13 +1,11 @@
 package com.example.cryptus.service;
 
-import com.example.cryptus.model.Adres;
+import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.User;
 import com.example.cryptus.repository.CustomerRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -15,8 +13,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CustomerServiceTest {
@@ -31,7 +27,7 @@ class CustomerServiceTest {
        // customer = new Customer(2,"John","gg","mekky", Date.valueOf("2015-03-31"), "", "",0,"","","",0,"","","");
         serviceUnderTest = new CustomerService(mockRepository);
 
-        customer = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Adres(0,"","",""),"","","");
+        customer = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
 
 
     }
@@ -40,7 +36,7 @@ class CustomerServiceTest {
     @Test
     void storeCustomer() {
         //Customer testCustomer = new Customer(3,"Huub","gg","mekky", Date.valueOf("2015-03-31"), "", "",0,"","","",0,"","","");
-        Customer testCustomer = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Adres(0,"","",""),"","","");
+        Customer testCustomer = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
         serviceUnderTest.storeCustomer(testCustomer);
         Mockito.when(mockRepository.findCustomerById(3)).thenReturn(Optional.of(testCustomer));
         Optional<Customer> actual = serviceUnderTest.findCustomerById(3);

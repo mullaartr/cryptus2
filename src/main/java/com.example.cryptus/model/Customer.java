@@ -14,24 +14,24 @@ public class Customer extends User {
     private String postcode;
     private String phone;
 
-    private Adres adres;
+    private Address address;
 
-    public Customer(int userId, String firstName, String preposition, String lastName,String password, String userName, Date birthDate, String BSN,
-                    Adres adres, String email, String phone, String salt) {
+    public Customer(int userId, String firstName, String preposition, String lastName, String password, String userName, Date birthDate, String BSN,
+                    Address address, String email, String phone, String salt) {
         super(userId, firstName, preposition, lastName, userName, password, salt);
         this.birthDate = birthDate;
         this.BSN = BSN;
         this.email = email;
         this.phone = phone;
-        this.adres = adres;
+        this.address = address;
     }
 
-    public Adres getAdres() {
-        return adres;
+    public Address getAdres() {
+        return address;
     }
 
-    public void setAdres(Adres adres) {
-        this.adres = adres;
+    public void setAdres(Address address) {
+        this.address = address;
     }
 
     /* public Customer(int userid, String firstName, String preposition, String lastName, String password , String userName, Date birthDate, String BSN,
