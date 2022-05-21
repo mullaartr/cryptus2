@@ -68,6 +68,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
 
+
     public void storeCustomer(Customer customer) {
         String sql2 = "INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord, salt) values (?,?,?,?,?,?)";
         String sql = "INSERT into klant( geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon, geboorteDatum, BSN) values (?,?,?,?,?,?,?,?,?,?)";
@@ -108,7 +109,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Optional<Customer> findCustomerByName(String name) {
-        String sql ="select * from user JOIN klant k on user.userId = k.userId where achterNaam = ?";
+        String sql ="select * from user JOIN klant k on user.userId = k.userId where user.achternaam = ?";
         Customer customer = null;
         try{
             customer = jdbcTemplate.queryForObject(sql,rowMapper,name);
@@ -117,6 +118,20 @@ public class CustomerDaoJdbc implements CustomerDao {
         }
         return Optional.ofNullable(customer);
     }
+
+    @Override
+    public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
+        String sql ="select * from user where gebruikersnaam = ? AND wachtwoord = ? ";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,username,password);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+        return Optional.ofNullable(customer);
+    }
+
+    //SELECT * FROM cryptus.user WHERE gebruikersnaam = 'username' AND wachtwoord = 'password'"
 
     @Override
     public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId) {
