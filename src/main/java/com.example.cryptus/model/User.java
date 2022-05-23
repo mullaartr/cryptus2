@@ -82,6 +82,14 @@ public abstract class User {
         this.salt = salt;
     }
 
+    public Portefeuille getPortefeuille() {
+        return portefeuille;
+    }
+
+    public void setPortefeuille(Portefeuille portefeuille) {
+        this.portefeuille = portefeuille;
+    }
+
     public List<Transaction> getTransactionList() {
         return transactionList;
     }

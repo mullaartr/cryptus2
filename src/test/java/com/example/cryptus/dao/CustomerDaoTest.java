@@ -22,7 +22,7 @@ class CustomerDaoTest {
     void findCustomerById() {
         Optional <Customer> customerOptional = daoUnderTest.findCustomerById(1);
         Customer actual = customerOptional.orElse(null);
-        Customer expected = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+        Customer expected = new Customer(5,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
     }
 
     @Test

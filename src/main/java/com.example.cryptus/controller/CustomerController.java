@@ -31,7 +31,7 @@ public class CustomerController {
     }
 
 
-    @GetMapping
+    @GetMapping(value = "/KlantLijst")
     public List<Customer> list(){
         return customerService.list();
     }
@@ -53,7 +53,9 @@ public class CustomerController {
         return  customerService.findCustomerByUsernamePassword(username,password);
     }
 
-    @PostMapping
+
+
+    @PostMapping(value = "/create")
     @ResponseBody List<Customer> createCustomer(@RequestBody Customer customer){
         customerService.storeCustomer(customer);
         return customerService.list();
