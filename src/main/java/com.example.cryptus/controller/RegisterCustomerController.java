@@ -21,17 +21,14 @@ public class RegisterCustomerController {
         this.registerCustomerService = registerCustomerService;
     }
 
-//    @PostMapping
-//    public String registration(@RequestBody CustomerDTO mpCustomerDTO){
-//        if (mpCustomer instanceof Customer){
-//            registerCustomerService.getListOfCustomers().add(mpCustomer);
-//            return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
-//        }
-//        else return "Your registration was incomplete, please try again. Thank you!";
-//    }
+    @PostMapping
+    public String registration(@RequestBody Customer mpCustomer){
 
-//        @PostMapping
-//    public Birthday birthdayRegister(@RequestBody CustomerDTO mpCustomerDTO){
-//        Birthday adamsbirthday = new Birthday((mpCustomerDTO.getBirthDate()));
-//    }
+        if (mpCustomer instanceof Customer){
+            registerCustomerService.getListOfCustomers().add(mpCustomer);
+            return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
+        }
+        else return "Your registration was incomplete, please try again. Thank you!";
+    }
+
 }
