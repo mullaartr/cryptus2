@@ -1,11 +1,9 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Adres;
-import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.Portefeuille;
-import com.example.cryptus.model.User;
+import com.example.cryptus.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -23,6 +21,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     private JdbcTemplate jdbcTemplate;
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
+    @Autowired
     public CustomerDaoJdbc(JdbcTemplate jdbcTemplate) {
         super();
         this.jdbcTemplate = jdbcTemplate;
@@ -30,7 +29,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Adres(0,"","",""),"","","");
+        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Address(0,"","",""),"","","");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -52,6 +51,18 @@ public class CustomerDaoJdbc implements CustomerDao {
         return customer;
     };
 
+    RowMapper<Customer> userRowMapper = ((rs, rowNum) -> {
+        Customer user = new Customer(0, "", "", "", "", "", "");
+        user.setUserId(rs.getInt("userId"));
+        user.setFirstName(rs.getString("voornaam"));
+        user.setPreposition(rs.getString("tussenvoegsel"));
+        user.setLastName(rs.getString("achternaam"));
+        user.setUserName(rs.getString("gebruikersnaam"));
+        user.setPassword(rs.getString("wachtwoord"));
+        user.setSalt(rs.getString("salt"));
+        return user;
+    });
+
     @Override
     public Optional<Customer> findCustomerById(int id) {
         String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
@@ -72,7 +83,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     public void storeCustomer(Customer customer) {
         String sql2 = "INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord, salt) values (?,?,?,?,?,?)";
         String sql = "INSERT into klant( geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon, geboorteDatum, BSN) values (?,?,?,?,?,?,?,?,?,?)";
-        int insert2 = jdbcTemplate.update(sql2,customer.getUserName(),customer.getPreposition(),customer.getLastName(),customer.getPassword(),customer.getSalt());
+        int insert2 = jdbcTemplate.update(sql2,customer.getFirstName(),customer.getPreposition(),customer.getLastName(),customer.getUserName(), customer.getPassword(),customer.getSalt());
         int insert = jdbcTemplate.update(sql,customer.getBirthDate(),customer.getStreet(),customer.getHouseNumber(), customer.getPostcode(),customer.getCity(),customer.getBSN(),customer.getEmail(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
         if(insert == 1 && insert2 == 1){
             logger.info("New customer created" + customer.getLastName());
@@ -121,10 +132,10 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
-        String sql ="select * from user where gebruikersnaam = ? AND wachtwoord = ? ";
+        String sql ="select * from user where gebruikersnaam = ? and wachtwoord = ? ";
         Customer customer = null;
         try{
-            customer = jdbcTemplate.queryForObject(sql,rowMapper,username,password);
+            customer = jdbcTemplate.queryForObject(sql,userRowMapper,username,password);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }

@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`user`
     `gebruikersnaam` VARCHAR(45) NOT NULL,
     `wachtwoord`     VARCHAR(45) NOT NULL,
     `salt`           VARCHAR(45) NOT NULL,
+    `token`          varchar(45) null,
     PRIMARY KEY (`userId`)
 )
     ENGINE = InnoDB;
