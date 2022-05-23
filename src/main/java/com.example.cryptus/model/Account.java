@@ -4,14 +4,16 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class Account {
 
-    private int accountId;
     private String gebruikersnaam;
     private String wachtwoord;
     private final String PEPPER = "iliaWavWavaZisSublisZarRvi";
 
-    public Account(int accountId, String gebruikersnaam, String wachtwoord) {
-        this.accountId = accountId;
+    public Account(String gebruikersnaam, String wachtwoord) {
         this.gebruikersnaam = gebruikersnaam;
+        this.wachtwoord = wachtwoord;
+    }
+
+    public Account(String wachtwoord) {
         this.wachtwoord = wachtwoord;
     }
 
@@ -19,8 +21,8 @@ public class Account {
         return BCrypt.hashpw(wachtwoord, BCrypt.gensalt(16) + PEPPER);
     }
 
-    public int getAccountId() {
-        return accountId;
+    public void checkStringForHashed(String string, String hashed) {
+        BCrypt.checkpw(string, hashed);
     }
 
     public String getGebruikersnaam() {
@@ -29,10 +31,6 @@ public class Account {
 
     public String getWachtwoord() {
         return wachtwoord;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
     }
 
     public void setGebruikersnaam(String gebruikersnaam) {
