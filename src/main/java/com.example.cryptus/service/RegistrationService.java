@@ -32,8 +32,10 @@ public class RegistrationService {
         HashService hashService = new HashService(customerDaoJdbc);
         customerRepository = new CustomerRepository(customerDaoJdbc);
         SaltMaker saltMaker = new SaltMaker();
-        String nieuweHash = hashService.Hash(customer.getPassword(), customer.getUserName(), saltMaker.generateSalt(saltLength));
+        String salt = saltMaker.generateSalt(saltLength);
+        String nieuweHash = hashService.Hash(customer.getPassword(), customer.getUserName(), salt);
         customer.setPassword(nieuweHash);
+        customer.setSalt(salt);
         customerDaoJdbc.storeCustomer(customer);
     }
 
