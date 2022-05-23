@@ -5,13 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
 
     @BeforeEach
     void setUp() {
-        Account testAccount = new Account(1, "Zohar", "wachtwoord");
+        Account testAccount = new Account("Zohar", "wachtwoord");
     }
 
     @AfterEach
@@ -20,7 +19,7 @@ class AccountTest {
 
     @Test
     void hashSaltNPepper() {
-        Account testAccount = new Account(1, "Zohar", "wachtwoord");
+        Account testAccount = new Account("Zohar", "wachtwoord");
         String actual = "abracadabra";
         String expected = "abracadabra";
         testAccount.hashSaltNPepper(actual);
@@ -54,7 +53,7 @@ class AccountTest {
 
     @Test
     void setWachtwoord() {
-        Account testAccount = new Account(1, "Zohar", "wachtwoord");
+        Account testAccount = new Account("Zohar", "wachtwoord");
     }
 
     @Test
