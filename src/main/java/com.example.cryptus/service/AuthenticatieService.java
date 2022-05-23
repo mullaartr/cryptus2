@@ -11,27 +11,29 @@ import java.security.NoSuchAlgorithmException;
 public class AuthenticatieService {
 
     private CustomerRepository customerRepository;
+
+    private  CustomerDaoJdbc customerDaoJdbc;
+    private CustomerService customerService;
     private HashService hashService;
     private MapDatabase tokendatabase;
 
-    private CustomerDaoJdbc customerDaoJdbc;
 
-
-
-
-    public AuthenticatieService(MapDatabase tokendatabase, CustomerDaoJdbc customerDaoJdbc) {
-        this.tokendatabase = tokendatabase;
+    public AuthenticatieService( CustomerDaoJdbc customerDaoJdbc,  MapDatabase tokendatabase) {
         this.customerDaoJdbc = customerDaoJdbc;
-
+        this.customerRepository = new CustomerRepository(customerDaoJdbc);
+        this.customerService = new CustomerService(customerRepository);
+        this.tokendatabase = tokendatabase;
     }
 
     public boolean authenticate(String username, String password) throws NoSuchAlgorithmException {
-        //CustomerDaoJdbc customerDaoJdbc = new CustomerDaoJdbc(new JdbcTemplate());
-        customerRepository = new CustomerRepository(customerDaoJdbc);
-        hashService = new HashService();
-        Customer customer = customerRepository.findCustomerByUsernamePassword(username, hashService.Hash(password)).orElse(null);
-        if(customerRepository.findCustomerByUsernamePassword(username, hashService.Hash(password)).isPresent()){
-            return true;
+        hashService = new HashService(customerDaoJdbc);
+        if(customerService.findCustomerByUsernamePassword(username).isPresent()){
+            Customer customer = customerService.findCustomerByUsernamePassword(username).orElse(null);
+            if(hashService.Hash(username, password).equals(customer.getPassword())){
+                return true;
+            }else {
+                return false;
+            }
         } else {
             return false;
         }

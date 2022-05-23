@@ -17,16 +17,19 @@ public class RegistrationService {
     private CustomerDaoJdbc customerDaoJdbc;
 
 
+    private final int saltLength = 8;
+
+
     public RegistrationService(CustomerDaoJdbc customerDaoJdbc) {
         this.customerDaoJdbc = customerDaoJdbc;
     }
 
-    public void register(String username, String password, Customer customer) throws NoSuchAlgorithmException {
-        HashService hashService = new HashService();
-        String nieuweHash = hashService.Hash(password);
-        //customerDaoJdbc = new CustomerDaoJdbc(new JdbcTemplate());
+    public void register(Customer customer) throws NoSuchAlgorithmException {
+        HashService hashService = new HashService(customerDaoJdbc);
         customerRepository = new CustomerRepository(customerDaoJdbc);
-        customer.setUserName(username);
+        SaltMaker saltMaker = new SaltMaker();
+        customer.setSalt(saltMaker.generateSalt(saltLength));
+        String nieuweHash = hashService.Hash(customer.getPassword(), customer.getUserName());
         customer.setPassword(nieuweHash);
         customerDaoJdbc.storeCustomer(customer);
     }

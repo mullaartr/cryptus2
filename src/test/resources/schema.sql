@@ -145,5 +145,5 @@ CREATE TABLE if not exists `koers`
             ON UPDATE NO ACTION
 );
 
--- CREATE USER 'usertestCryptus'@'localhost' IDENTIFIED BY '12345';
--- GRANT ALL PRIVILEGES ON test_cryptus.* TO 'usertestCryptus'@'localhost';
+-- CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
+-- GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';

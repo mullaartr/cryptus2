@@ -9,6 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.sql.DataSourceDefinition;
+import javax.annotation.sql.DataSourceDefinitions;
 
 @SpringBootApplication
 public class CryptusApplication implements CommandLineRunner {
@@ -16,9 +20,12 @@ public class CryptusApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CryptusApplication.class, args);
+
 	}
 	@Override
 	public void run(String... args) throws Exception {
+
+
 		for (int i = 0; i < 1; i++) { // iets dergelijks
 			System.out.println();
 		}

@@ -160,11 +160,11 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
-    public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
-        String sql ="select * from user where gebruikersnaam = ? and wachtwoord = ? ";
+    public Optional<Customer> findCustomerByUsernamePassword(String username) {
+        String sql ="select * from user where gebruikersnaam = ?";
         Customer customer = null;
         try{
-            customer = jdbcTemplate.queryForObject(sql,userRowMapper,username,password);
+            customer = jdbcTemplate.queryForObject(sql,userRowMapper,username);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
