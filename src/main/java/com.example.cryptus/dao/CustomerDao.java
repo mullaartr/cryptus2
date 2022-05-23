@@ -16,7 +16,7 @@ public interface CustomerDao {
     void update(Customer customer);
     void delete(int id);
     Optional<Customer> findCustomerByName(String name);
-    Optional<Customer> findCustomerByUsernamePassword(String username, String password);
+    Optional<Customer> findCustomerByUsernamePassword(String username);
 
     Optional<Portefeuille>findCustomerByPortefeuilleId(int portefeuilleId);
 

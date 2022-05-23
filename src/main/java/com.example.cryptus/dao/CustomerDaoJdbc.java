@@ -1,10 +1,12 @@
 package com.example.cryptus.dao;
 
+import com.example.cryptus.model.*;
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -26,6 +28,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     private JdbcTemplate jdbcTemplate;
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
+    @Autowired
     public CustomerDaoJdbc(JdbcTemplate jdbcTemplate) {
         super();
         this.jdbcTemplate = jdbcTemplate;
@@ -54,6 +57,20 @@ public class CustomerDaoJdbc implements CustomerDao {
 
         return customer;
     };
+
+    RowMapper<Customer> userRowMapper = ((rs, rowNum) -> {
+        Customer user = new Customer(0, "", "", "", "", "", "");
+        user.setUserId(rs.getInt("userId"));
+        user.setFirstName(rs.getString("voornaam"));
+        user.setPreposition(rs.getString("tussenvoegsel"));
+        user.setLastName(rs.getString("achternaam"));
+        user.setUserName(rs.getString("gebruikersnaam"));
+        user.setPassword(rs.getString("wachtwoord"));
+        user.setSalt(rs.getString("salt"));
+        return user;
+    });
+
+
     @Override
     public Optional<Customer> findCustomerById(int id) {
         String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
@@ -82,6 +99,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
 
+
     public void storeCustomer(Customer customer){
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> insertUserStatement(customer, connection), keyHolder);
@@ -95,7 +113,6 @@ public class CustomerDaoJdbc implements CustomerDao {
                 logger.info("New customer created" + customer.getLastName());
 
             }
-
 
 
     }
@@ -145,11 +162,11 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
     @Override
-    public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
-        String sql ="select * from user where gebruikersnaam = ? AND wachtwoord = ? ";
+    public Optional<Customer> findCustomerByUsernamePassword(String username) {
+        String sql ="select * from user where gebruikersnaam = ?";
         Customer customer = null;
         try{
-            customer = jdbcTemplate.queryForObject(sql,rowMapper,username,password);
+            customer = jdbcTemplate.queryForObject(sql,userRowMapper,username);
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }

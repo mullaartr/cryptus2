@@ -59,8 +59,8 @@ class CustomerServiceTest {
     @Test
     void findCustomerByUsernamePassword(){
         customer = new Customer(3,"John","gg","mekky","password","username",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
-        Mockito.when(mockRepository.findCustomerByUsernamePassword("username","password")).thenReturn(Optional.of(customer));
-        Optional<Customer> actual = serviceUnderTest.findCustomerByUsernamePassword("username","password");
+        Mockito.when(mockRepository.findCustomerByUsernamePassword("username")).thenReturn(Optional.of(customer));
+        Optional<Customer> actual = serviceUnderTest.findCustomerByUsernamePassword("username");
         Optional<Customer> expected = Optional.of(customer);
         assertThat(actual).isNotNull().isEqualTo(expected);
     }

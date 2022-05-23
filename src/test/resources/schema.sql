@@ -7,7 +7,7 @@ CREATE TABLE if not exists `user`
     `tussenvoegsel`  VARCHAR(10) NULL,
     `achternaam`     VARCHAR(45) NOT NULL,
     `gebruikersnaam` VARCHAR(45) NOT NULL,
-    `wachtwoord`     VARCHAR(45) NOT NULL,
+    `wachtwoord`     VARCHAR(100) NOT NULL,
     `salt`           VARCHAR(45) NOT NULL,
     PRIMARY KEY (`userId`)
 );
@@ -109,11 +109,11 @@ CREATE TABLE if not exists `transactie`
             REFERENCES `portefeuille_regel` (`portefeuilleID`, `assetId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
-    CONSTRAINT `verzinzelf7`
+ /*   CONSTRAINT `verzinzelf7`
         FOREIGN KEY (`creditportefeuilleID1`)
             REFERENCES `portefeuille_regel` (`portefeuilleID`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON UPDATE NO ACTION,*/
     CONSTRAINT `verzinzelf9`
         FOREIGN KEY (`creditiban`)
             REFERENCES `bankrekening` (`iban`)
@@ -145,5 +145,5 @@ CREATE TABLE if not exists `koers`
             ON UPDATE NO ACTION
 );
 
--- CREATE USER 'usertestCryptus'@'localhost' IDENTIFIED BY '12345';
--- GRANT ALL PRIVILEGES ON test_cryptus.* TO 'usertestCryptus'@'localhost';
+-- CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
+-- GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
