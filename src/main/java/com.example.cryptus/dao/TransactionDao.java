@@ -1,6 +1,5 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.model.User;
 
