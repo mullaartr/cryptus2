@@ -1,8 +1,12 @@
 package com.example.cryptus.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public abstract class User {
+
 
     private int userId;
     private String firstName;
@@ -16,6 +20,7 @@ public abstract class User {
 
     Portefeuille portefeuille;
 
+
     public User(int userId, String firstName, String preposition, String lastName, String userName, String password, String salt) {
         this.userId = userId;
         this.firstName = firstName;
@@ -24,6 +29,10 @@ public abstract class User {
         this.userName = userName;
         this.password = password;
         this.salt = salt;
+    }
+
+    public User(int userId) {
+        this.userId = userId;
     }
 
     public int getUserId() {

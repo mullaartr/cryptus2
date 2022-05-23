@@ -68,6 +68,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 
+
     private PreparedStatement insertUserStatement(Customer customer, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord, salt) values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, customer.getFirstName());
@@ -141,6 +142,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         }
         return Optional.ofNullable(customer);
     }
+
 
     @Override
     public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
