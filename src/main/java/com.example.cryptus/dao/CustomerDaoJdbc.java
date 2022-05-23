@@ -54,7 +54,6 @@ public class CustomerDaoJdbc implements CustomerDao {
 
         return customer;
     };
-
     @Override
     public Optional<Customer> findCustomerById(int id) {
         String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
