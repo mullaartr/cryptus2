@@ -23,26 +23,9 @@ public class Customer extends User {
         this.address = address;
     }
 
-    public Address getAddress() {
-        return address;
-    }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
-    /* public Customer(int userid, String firstName, String preposition, String lastName, String password , String userName, Date birthDate, String BSN,
-                        String Street, int houseNumber, String postcode, String city, String email, int phone, String salt) {
-            super(userid,firstName,preposition,lastName,userName,password,salt);
-            this.birthDate = birthDate;
-            this.houseNumber = houseNumber;
-            this.BSN = BSN;
-            this.Street=Street;
-            this.city = city ;
-            this.email=email;
-            this.postcode = postcode;
-            this.phone = phone;
-        }*/
+
     public int getUserId() {
         return super.getUserId();
     }
