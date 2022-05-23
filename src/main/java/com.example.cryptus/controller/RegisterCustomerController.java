@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
 
+import static org.mindrot.jbcrypt.BCrypt.gensalt;
+import static org.mindrot.jbcrypt.BCrypt.hashpw;
+
 @RestController
 @RequestMapping(path = "registration")
 public class RegisterCustomerController {
@@ -39,18 +42,13 @@ public class RegisterCustomerController {
     public String registration(@RequestBody Customer mpCustomer) throws NoSuchAlgorithmException {
         if (mpCustomer instanceof Customer)
         {
-            registrationService.register(mpCustomer);
-//            mpCustomer.setPassword(forUser.hashSaltNPepper(mpCustomer.getPassword()));
-//            customerService.storeCustomer(mpCustomer);
-//            System.out.println((mpCustomer.getPassword()).length());
-//            customerDaoJdbc.storeCustomer(mpCustomer);
+            System.out.println(mpCustomer.getFirstName());
+            mpCustomer.setSalt(gensalt(12));
+            mpCustomer.setPassword(hashpw(mpCustomer.getPassword(), mpCustomer.getSalt() + forUser.getPEPPER()));
+            customerService.storeCustomer(mpCustomer);
+            System.out.println((mpCustomer.getPassword()).length());
             return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
         }
-//        {
-//            RegistrationService registrationService = new RegistrationService((new CustomerDaoJdbc(new JdbcTemplate())));
-//            registrationService.register(mpCustomer);
-//            return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
-//        }
         else return "Your registration was incomplete, please try again. Thank you!";
     }
 

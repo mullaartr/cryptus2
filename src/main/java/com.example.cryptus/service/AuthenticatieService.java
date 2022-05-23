@@ -5,9 +5,11 @@ import com.example.cryptus.dao.MapDatabase;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.repository.CustomerRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 
+@Service
 public class AuthenticatieService {
 
     private CustomerRepository customerRepository;

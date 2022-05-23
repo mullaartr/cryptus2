@@ -5,10 +5,12 @@ import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.dao.MapDatabase;
 import com.example.cryptus.repository.CustomerRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+@Service
 public class LoginService {
 
     private MapDatabase tokenDatabase;
