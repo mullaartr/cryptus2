@@ -5,20 +5,25 @@ import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
 import com.example.cryptus.service.AuthenticatieService;
+import com.example.cryptus.service.CustomerDTO;
+import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.LoginCustomerService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "login")
 public class LoginController {
     private final LoginCustomerService loginCustomerService;
     private AuthenticatieService authenticatieService;
+    private CustomerService customerService;
 
     Account forUser = new Account("password");
 
@@ -68,4 +73,18 @@ public class LoginController {
         else return "The email and/or password you entered did not match our records. Please double check and try " +
                 "again.";
     }
+
+    //Daan: I'm working on this method
+    //Need a constructor in CustomerDTO, based
+//    @PostMapping
+//    public ResponseEntity<CustomerDTO> loginHandler(@RequestBody Account account) {
+//        boolean checkCustomer = authenticatieService.authenticate(account.getGebruikersnaam(), account.getWachtwoord());
+//        Optional<Customer> customer = null;
+//        if (checkCustomer) {
+//            customer = customerService.findCustomerByUsernamePassword(
+//                    account.getGebruikersnaam());//.orElse(null);
+//        }
+//        return ResponseEntity.ok().body(new CustomerDTO(customer));
+//    }
+
 }

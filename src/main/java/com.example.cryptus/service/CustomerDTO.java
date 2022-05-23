@@ -47,6 +47,7 @@ public class CustomerDTO {
     public CustomerDTO() {
     }
 
+
     public String getBirthDate() {
         return birthDate;
     }
