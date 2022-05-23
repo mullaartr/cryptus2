@@ -23,10 +23,6 @@ public class Customer extends User {
         this.address = address;
     }
 
-    public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password, String salt) {
-        super(userId, firstName, preposition, lastName, userName, password, salt);
-    }
-
 
 
     /* public Customer(int userid, String firstName, String preposition, String lastName, String password , String userName, Date birthDate, String BSN,

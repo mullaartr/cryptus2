@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`user`
     `tussenvoegsel`  VARCHAR(10) NULL,
     `achternaam`     VARCHAR(45) NOT NULL,
     `gebruikersnaam` VARCHAR(45) NOT NULL,
-    `wachtwoord`     VARCHAR(100) NOT NULL,
+    `wachtwoord`     VARCHAR(128) NOT NULL,
     `salt`           VARCHAR(45) NOT NULL,
     `token`          varchar(45) null,
     PRIMARY KEY (`userId`)
@@ -212,10 +212,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
     ENGINE = InnoDB;
 
 -- Gebruiker definiëren en toegang verlenen
-CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
-GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
-<<<<<<< HEAD
+CREATE USER 'cryptus'@'localhost' IDENTIFIED BY '12345';
+GRANT ALL PRIVILEGES ON cryptus.* TO 'Cryptus'@'localhost';
 /*
 */
-=======
->>>>>>> 831931f8f6ca55d7006fad9635772891d1121523

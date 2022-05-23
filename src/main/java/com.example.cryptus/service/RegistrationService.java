@@ -6,11 +6,13 @@ import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
 import com.example.cryptus.repository.CustomerRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Service
 public class RegistrationService {
 
     private CustomerRepository customerRepository;
