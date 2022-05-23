@@ -25,7 +25,7 @@ public class RegistrationService {
 
     public RegistrationService(CustomerDaoJdbc customerDaoJdbc) {
         this.customerDaoJdbc = customerDaoJdbc;
-
+        logger.info("new registrationservice created");
     }
 
     public void register(Customer customer) throws NoSuchAlgorithmException {
