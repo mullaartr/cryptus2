@@ -2,11 +2,13 @@ package com.example.cryptus.dao;
 
 import com.example.cryptus.service.HashService;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class MapDatabase {
         // Heel simpele opslag van gebruikersnaam en wachtwoord
         private Map<String, String> db;
@@ -17,8 +19,6 @@ public class MapDatabase {
         public MapDatabase() throws NoSuchAlgorithmException {
             db = new ConcurrentHashMap<>();
             hashService = new HashService(new CustomerDaoJdbc(new JdbcTemplate()));
-
-
         }
 
 
