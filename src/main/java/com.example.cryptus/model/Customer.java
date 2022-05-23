@@ -12,9 +12,9 @@ public class Customer extends User {
     private Address address;
 
 
-    public Customer(int userId, String firstName, String preposition, String lastName, String password,
-                    String userName, Date birthDate, String BSN,
-                    Address address, String email, String phone, String salt) {
+        public Customer(int userId, String firstName, String preposition, String lastName, String password,
+                        String userName, Date birthDate, String BSN,
+                        Address address, String email, String phone, String salt) {
         super(userId, firstName, preposition, lastName, userName, password, salt);
         this.birthDate = birthDate;
         this.BSN = BSN;
@@ -22,9 +22,6 @@ public class Customer extends User {
         this.phone = phone;
         this.address = address;
     }
-
-
-
 
     public int getUserId() {
         return super.getUserId();
@@ -160,4 +157,3 @@ public class Customer extends User {
                 '}';
     }
 }
-

@@ -6,6 +6,7 @@ import com.example.cryptus.model.User;
 import com.example.cryptus.repository.CustomerRepository;
 
 
+import com.example.cryptus.service.Exceptions.RegistrationFailedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
