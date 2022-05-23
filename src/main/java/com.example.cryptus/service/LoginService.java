@@ -1,23 +1,33 @@
 package com.example.cryptus.service;
 
+import com.example.cryptus.dao.CustomerDao;
+import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.dao.MapDatabase;
+import com.example.cryptus.repository.CustomerRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class LoginService {
 
-    private MapDatabase mapDatabase;
     private MapDatabase tokenDatabase;
     private AuthenticatieService authenticatieService;
+    private CustomerDaoJdbc customerDaoJdbc;
 
-    public LoginService(MapDatabase mapDatabase) {
-        this.mapDatabase = mapDatabase;
+    private CustomerService customerService;
+    private CustomerRepository customerRepository;
+
+
+    public LoginService(MapDatabase mapDatabase, CustomerDaoJdbc customerDaoJdbc) {
+        this.tokenDatabase = mapDatabase;
+        this.customerDaoJdbc = customerDaoJdbc;
+        this.customerRepository = new CustomerRepository(customerDaoJdbc);
+        this.customerService = new CustomerService(customerRepository);
     }
 
-    public String login(String username, String password, MapDatabase mapDatabase) throws NoSuchAlgorithmException {
-        tokenDatabase = new MapDatabase();
-        authenticatieService = new AuthenticatieService(mapDatabase);
+    public String login(String username, String password) throws NoSuchAlgorithmException {
+        authenticatieService = new AuthenticatieService(customerDaoJdbc, tokenDatabase);
         if(authenticatieService.authenticate(username, password)){
             tokenDatabase.insertUsernameWithHash(username, UUID.randomUUID().toString());
             return tokenDatabase.findHashByUsername(username);

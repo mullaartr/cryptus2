@@ -55,23 +55,9 @@ public class LoginController {
     );
 
     @Autowired
-    LoginController(LoginCustomerService loginCustomerService){
+    LoginController(LoginCustomerService loginCustomerService) {
         this.loginCustomerService = loginCustomerService;
     }
-
-//    @GetMapping
-//    public Customer loginSalutation() {
-//        return loginCustomerService.loginSalutation();
-//    }
-
-//    @PostMapping
-//    public Customer checkUsernameAndPassword(@RequestBody Account mpAccount){
-//        if (mpAccount.getGebruikersnaam().equals(adam.getUserName())
-//                && BCrypt.checkpw(mpAccount.getWachtwoord(), adam.getPassword())){
-//            return adam;
-//        }
-//        else return devil;
-//    }
 
     @PostMapping
     public String login(@RequestBody Account mpAccount){
@@ -82,5 +68,4 @@ public class LoginController {
         else return "The email and/or password you entered did not match our records. Please double check and try " +
                 "again.";
     }
-
 }

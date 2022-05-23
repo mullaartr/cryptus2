@@ -6,6 +6,7 @@ import com.example.cryptus.model.User;
 import com.example.cryptus.repository.CustomerRepository;
 
 
+import com.example.cryptus.service.Exceptions.RegistrationFailedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,8 @@ public class CustomerService {
         return customerRepository.findCustomerByName(name);
 
     }
-    public Optional<Customer> findCustomerByUsernamePassword(String username, String password){
-        return customerRepository.findCustomerByUsernamePassword(username, password);
+    public Optional<Customer> findCustomerByUsernamePassword(String username){
+        return customerRepository.findCustomerByUsernamePassword(username);
     }
 
     public Optional <Customer> findCustomerById (int id){

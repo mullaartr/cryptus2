@@ -1,8 +1,8 @@
 USE `cryptus`;
-SET FOREIGN_KEY_CHECKS=0;
+/*SET FOREIGN_KEY_CHECKS=0;*/
 
 INSERT INTO `user`
-VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '12345', '12345'),
+VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476', '12345'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345', '12345'),
        (3, 'Jan', 'van', 'Zevenaar', 'zeven', '12345', '12345'),
        (4, 'Gerard', NULL, 'Klaasen', 'klaas', '12345', '12345'),
@@ -14,11 +14,11 @@ VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '12345', '12345'),
        (10, 'Joris', NULL, 'Pietersen', 'piet', '12345', '12345'),
        (11, 'Rogier', NULL, 'Mullaart', 'admin', 'admin', '12345');
 
-truncate table `beheerder`;
+
 INSERT INTO `beheerder`
 VALUES (11, 123456789);
 
-truncate table `klant`;
+
 INSERT INTO `klant`
 VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
         '163647861', 'rogier.mullaart@gmail.com', '0647185165'),
@@ -41,12 +41,12 @@ VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
        (10, '1954-08-13', 'Kleine houtstraat', 7, '2010AP', 'Den Haag',
         '234232444', 'harry.kreeft@lumc.nl', '0647186543');
 
-truncate table `bankrekening`;
+
 INSERT INTO `bankrekening`
 VALUES ('1234567891', 250.50, 1),
        ('9876543211', 350.00, 2);
 
-truncate table `asset`;
+
 INSERT INTO `asset`
 VALUES (1, 'Bitcoin', 'BTC'),
        (2, 'Etherium', 'ETH'),
@@ -54,31 +54,31 @@ VALUES (1, 'Bitcoin', 'BTC'),
        (4, 'Euro', 'EUR');
 
 
-truncate table `portefeuille`;
+
 INSERT INTO `portefeuille`
 VALUES (1, 1),
        (2, 2);
 
-truncate table `portefeuille_regel`;
+
 INSERT INTO `portefeuille_regel`
 VALUES (1, 1, 25.000000),
        (2, 2, 25.000000);
 
 
-truncate table `transactie`;
+
 INSERT INTO `transactie`
 VALUES (1, '2022-05-19 01:14:07.00', 5.00, 15, '1234567891', '9876543211',
         100.00, 1, 2, 1, 10.000000),
        (2, '2022-05-19 01:14:07.00', 6.00, 15, '9876543211', '1234567891',
         120.00, 2, 1, 2, 20.000000);
 
-truncate table `koers`;
+
 INSERT INTO `koers`
 VALUES (1, 2, 30000.000000, '2022-05-19 01:14:07.00'),
        (1, 3, 1500.000000, '2022-05-19 01:14:07.00'),
        (1, 4, 250.000000, '2022-05-19 01:14:07.00');
 
-SET FOREIGN_KEY_CHECKS=1;
+/*SET FOREIGN_KEY_CHECKS=1;*/
 
 
 

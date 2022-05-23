@@ -5,6 +5,7 @@ import com.example.cryptus.service.CustomerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +43,9 @@ public class CustomerController {
 
 
 
-    @GetMapping("/findByUsernamePassword")
-    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username,
-                                                                    @RequestParam("password") String password){
-        return  customerService.findCustomerByUsernamePassword(username,password);
+    @GetMapping(value="/findByUsernamePassword")
+    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username, @RequestParam("password") String password) {
+        return customerService.findCustomerByUsernamePassword(username);
     }
 
 

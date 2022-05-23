@@ -1,6 +1,7 @@
 package com.example.cryptus.dao;
 
 import com.example.cryptus.service.HashService;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -12,9 +13,10 @@ public class MapDatabase {
         private HashService hashService;
 
 
+
         public MapDatabase() throws NoSuchAlgorithmException {
             db = new ConcurrentHashMap<>();
-            hashService = new HashService();
+            hashService = new HashService(new CustomerDaoJdbc(new JdbcTemplate()));
 
 
         }

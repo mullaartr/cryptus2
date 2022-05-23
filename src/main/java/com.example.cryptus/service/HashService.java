@@ -1,20 +1,28 @@
 package com.example.cryptus.service;
 
+import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.repository.CustomerRepository;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashService {
 
+    private CustomerRepository customerRepository;
+    private CustomerDaoJdbc customerDaoJdbc;
+    private CustomerService customerService;
     private PepperService pepperService = new PepperService();
 
-    private SaltMaker saltMaker = new SaltMaker();
-    private final int saltLength = 8;
     private final int rounds = 10;
 
+    public HashService(CustomerDaoJdbc customerDaoJdbc) {
+        this.customerRepository = new CustomerRepository(customerDaoJdbc);
+        this.customerService = new CustomerService(customerRepository);
+    }
 
-    public String Hash(String password) throws NoSuchAlgorithmException {
-        String gepeperdWW = password + pepperService.getPepper();
+    public String Hash(String password, String username) throws NoSuchAlgorithmException {
+        String gepeperdWW = password + pepperService.getPepper() + customerService.findCustomerByUsernamePassword(username).orElse(null).getSalt();
         MessageDigest messageDigest = MessageDigest.getInstance(HashService.AlgoritmeType.SHA256.algoritme);
         messageDigest.update(gepeperdWW.getBytes(StandardCharsets.UTF_8));
         for (int i = 0; i < rounds; i++) {

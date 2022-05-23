@@ -24,7 +24,7 @@ public class KlantenMakerService {
 
     private ArrayList<Customer> klantenlijst = new ArrayList<>();
     private List<String> BSNNummers;
-    private HashService hashService = new HashService();
+    private HashService hashService = new HashService(new CustomerDaoJdbc(new JdbcTemplate()));
     private final LocalDate vroegsteDatum = LocalDate.of(1920, 1, 1);
     private final LocalDate laatsteDatum = LocalDate.of(2002, 1, 1);
 
@@ -130,8 +130,8 @@ public class KlantenMakerService {
             LocalDate vroegsteDatum = LocalDate.of(1920, 1, 1);
             LocalDate laatsteDatum = LocalDate.now();
             String randomWW = randomWachtwoord(8);
-            String hash = hashService.Hash(randomWW);
             String userName = maakUsername(voornaam, achternaam);
+            String hash = hashService.Hash(randomWW, userName);
             bsnGenerator();
             String BSN = BSNNummers.get(teller);
             String plaatsnaam = kiesRandomplaats();
