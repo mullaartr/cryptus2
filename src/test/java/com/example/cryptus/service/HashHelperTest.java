@@ -50,10 +50,8 @@ class HashHelperTest {
     private CustomerDaoJdbc mockDaoJDBC;
     private CustomerService mockService;
     private Customer mekky;
-
-    void hashHelperTest(){
-
-    }
+    private SaltMaker saltMaker;
+    private String salt;
 
 
     @BeforeEach
@@ -64,18 +62,18 @@ class HashHelperTest {
         ww3 = "nepWachtwoord";
         user = "mullaart";
         user2 = "nepUser";
+        salt = "8&h)Q:SL";
         mockDaoJDBC = Mockito.mock(CustomerDaoJdbc.class);
         mockService = Mockito.mock(CustomerService.class);
-        mullaart = new Customer(1,"Rogier",null,"Mullaart","29e21080035b30aa55655e3cf31004956a5807d83bdb814262e355213225abab",
-                "mullaart", Date.valueOf("1969-08-13"),"163647861",new Address(6,"Justine de Gouwerhof","2011GP","Haarlem"),"rogier.mullaart@gmail.com","0647185165","1");
+        mullaart = new Customer(1,"Rogier",null,"Mullaart","bebd9a6da228332014ea95569edca64a3b27ef4dd8d79fb490ea58f9e4a4041f",
+                "mullaart", Date.valueOf("1969-08-13"),"163647861",new Address(6,"Justine de Gouwerhof","2011GP","Haarlem"),"rogier.mullaart@gmail.com","0647185165",salt);
         mekky = new Customer(3,"John","gg","mekky","foutiefWW","nepUser",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
         Mockito.when(mockDaoJDBC.findCustomerByUsernamePassword(user)).thenReturn(Optional.of(mullaart));
         Mockito.when(mockDaoJDBC.findCustomerByUsernamePassword(user2)).thenReturn(Optional.of(mekky));
-        Mockito.when(mockService.findCustomerByUsernamePassword(user)).thenReturn(Optional.of(mullaart));
         hashService = new HashService(mockDaoJDBC);
         tokenDatabase = new MapDatabase();
         loginService = new LoginService(tokenDatabase, mockDaoJDBC);
-        tokenDatabase.insertUsernameWithHash(user, hashService.Hash(ww1, user));
+        tokenDatabase.insertUsernameWithHash(user, hashService.Hash(ww1, user, salt));
         authenticatieService = new AuthenticatieService(mockDaoJDBC, tokenDatabase);
         registrationService = new RegistrationService(mockDaoJDBC);
 
@@ -84,16 +82,16 @@ class HashHelperTest {
 
     @Test
     void hashTest() throws NoSuchAlgorithmException {
-        String expected = "29e21080035b30aa55655e3cf31004956a5807d83bdb814262e355213225abab";
-        String actual = hashService.Hash(ww1, user);
+        String expected = "bebd9a6da228332014ea95569edca64a3b27ef4dd8d79fb490ea58f9e4a4041f";
+        String actual = hashService.Hash(ww1, user, salt);
         assertThat(actual).isNotNull().isEqualTo(expected);
 
     }
 
     @Test
     void hashTest2() throws NoSuchAlgorithmException {
-        String expected = "05c8de4b3056144674d11cf13c47d24191dcd4091d81526ad0d582d4a5856a64";
-        String actual = hashService.Hash(ww2, user2);
+        String expected = "d0fbd5e9a6e8907e38030ad5fd6ea245be79466f9fac94237be4e5811428aac0";
+        String actual = hashService.Hash(ww2, user2, salt);
         assertThat(actual).isNotNull().isEqualTo(expected);
 
     }
@@ -102,7 +100,7 @@ class HashHelperTest {
     void registerTest() throws NoSuchAlgorithmException {
         registrationService.register(mullaart);
         String actual = tokenDatabase.findHashByUsername(user);
-        String expected = "29e21080035b30aa55655e3cf31004956a5807d83bdb814262e355213225abab";
+        String expected = "bebd9a6da228332014ea95569edca64a3b27ef4dd8d79fb490ea58f9e4a4041f";
         assertThat(actual).isNotNull().isEqualTo(expected);
     }
 

@@ -131,7 +131,8 @@ public class KlantenMakerService {
             LocalDate laatsteDatum = LocalDate.now();
             String randomWW = randomWachtwoord(8);
             String userName = maakUsername(voornaam, achternaam);
-            String hash = hashService.Hash(randomWW, userName);
+            SaltMaker saltMaker = new SaltMaker();
+            String hash = hashService.Hash(randomWW, userName, saltMaker.generateSalt(8));
             bsnGenerator();
             String BSN = BSNNummers.get(teller);
             String plaatsnaam = kiesRandomplaats();

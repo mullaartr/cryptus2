@@ -33,8 +33,8 @@ public class HashService {
         this.customerService = customerService;
     }
 
-    public String Hash(String password, String username) throws NoSuchAlgorithmException {
-        String gepeperdWW = password + pepperService.getPepper() + customerService.findCustomerByUsernamePassword(username).orElse(null).getSalt();
+    public String Hash(String password, String username, String salt) throws NoSuchAlgorithmException {
+        String gepeperdWW = password + pepperService.getPepper() + salt;
         MessageDigest messageDigest = MessageDigest.getInstance(HashService.AlgoritmeType.SHA256.algoritme);
         messageDigest.update(gepeperdWW.getBytes(StandardCharsets.UTF_8));
         for (int i = 0; i < rounds; i++) {
