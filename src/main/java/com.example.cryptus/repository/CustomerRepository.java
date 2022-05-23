@@ -168,13 +168,13 @@ public class CustomerRepository  {
 
     }
 
-    public Optional<Customer> findCustomerByUsernamePassword(String username, String password) {
-        Optional<Customer> customerOptional = customerDao.findCustomerByUsernamePassword(username, password);
+    public Optional<Customer> findCustomerByUsernamePassword(String username) {
+        Optional<Customer> customerOptional = customerDao.findCustomerByUsernamePassword(username);
         if(customerOptional.isEmpty()){
             return Optional.empty();
 
         }else{
-            return customerDao.findCustomerByUsernamePassword(username, password);
+            return customerDao.findCustomerByUsernamePassword(username);
 
         }
 
@@ -202,7 +202,6 @@ public class CustomerRepository  {
     public String nextFirstName() {
         return firstNames[randomizer.nextInt(firstNames.length)];
     }
-
 
 
 

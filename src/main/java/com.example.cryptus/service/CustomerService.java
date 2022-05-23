@@ -43,8 +43,8 @@ public class CustomerService {
         return customerRepository.findCustomerByName(name);
 
     }
-    public Optional<Customer> findCustomerByUsernamePassword(String username, String password){
-        return customerRepository.findCustomerByUsernamePassword(username, password);
+    public Optional<Customer> findCustomerByUsernamePassword(String username){
+        return customerRepository.findCustomerByUsernamePassword(username);
     }
 
     public Optional <Customer> findCustomerById (int id){
@@ -54,6 +54,7 @@ public class CustomerService {
     public List<Customer> list(){
         return customerRepository.list();
     }
+
 
 
     public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId) {
