@@ -2,15 +2,21 @@ package com.example.cryptus.service;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.repository.CustomerRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Service
 public class HashService {
 
     private CustomerRepository customerRepository;
+
     private CustomerDaoJdbc customerDaoJdbc;
+    private final Logger logger =  LogManager.getLogger(HashService.class);
     private CustomerService customerService;
     private PepperService pepperService = new PepperService();
 
@@ -19,6 +25,7 @@ public class HashService {
     public HashService(CustomerDaoJdbc customerDaoJdbc) {
         this.customerRepository = new CustomerRepository(customerDaoJdbc);
         this.customerService = new CustomerService(customerRepository);
+        logger.info("HashService created");
     }
 
     public String Hash(String password, String username) throws NoSuchAlgorithmException {
