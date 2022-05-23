@@ -45,7 +45,7 @@ class CustomerControllerTest {
             MvcResult result =
                     response.andDo(MockMvcResultHandlers.print())
                             .andExpect(MockMvcResultMatchers.status().isOk())
-                            .andExpect(MockMvcResultMatchers.content().json(""))
+                            //.andExpect(MockMvcResultMatchers.content().json(""))
                             .andReturn();
 
             assertThat(result.getResponse().getContentType()).contains("json");

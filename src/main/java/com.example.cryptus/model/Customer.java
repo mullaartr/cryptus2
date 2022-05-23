@@ -7,37 +7,26 @@ public class Customer extends User {
 
     private Date birthDate;
     private String BSN;
-    private String city;
-    private String Street;
-    private int houseNumber;
     private String email;
-    private String postcode;
     private String phone;
-
     private Address address;
 
-    public Customer(int userId, String firstName, String preposition, String lastName,String password, String userName, Date birthDate, String BSN,
-                    Address addres, String email, String phone, String salt) {
+
+    public Customer(int userId, String firstName, String preposition, String lastName, String password, String userName, Date birthDate, String BSN,
+                    Address address, String email, String phone, String salt) {
         super(userId, firstName, preposition, lastName, userName, password, salt);
         this.birthDate = birthDate;
         this.BSN = BSN;
         this.email = email;
         this.phone = phone;
-        this.address = addres;
+        this.address = address;
     }
 
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password, String salt) {
         super(userId, firstName, preposition, lastName, userName, password, salt);
-
     }
 
-    public Address getAddress() {
-        return address;
-    }
 
-    public void setAdres(Address address) {
-        this.address = address;
-    }
 
     /* public Customer(int userid, String firstName, String preposition, String lastName, String password , String userName, Date birthDate, String BSN,
                         String Street, int houseNumber, String postcode, String city, String email, int phone, String salt) {
@@ -112,27 +101,27 @@ public class Customer extends User {
     }
 
     public String getStreet() {
-        return Street;
+        return address.getStreet();
     }
 
     public void setStreet(String street) {
-        Street = street;
+        address.setStreet(street);
     }
 
     public int getHouseNumber() {
-        return houseNumber;
+        return address.getHouseNumber();
     }
 
     public String getPostcode() {
-        return postcode;
+        return address.getPostcode();
     }
 
     public void setPostcode(String postcode) {
-        this.postcode = postcode;
+        address.setPostcode(postcode);
     }
 
     public void setHouseNumber(int houseNumber) {
-        this.houseNumber = houseNumber;
+        address.setHouseNumber(houseNumber);
     }
 
     public String getEmail() {
@@ -164,11 +153,11 @@ public class Customer extends User {
     }
 
     public String getCity() {
-        return city;
+        return address.getCity();
     }
 
     public void setCity(String city) {
-        this.city = city;
+        address.setCity(city);
     }
 
     @Override
@@ -176,11 +165,11 @@ public class Customer extends User {
         return     super.toString()+
                 " birthDate=" + birthDate +
                 ", BSN='" + BSN + '\'' +
-                ", city='" + city + '\'' +
-                ", Street='" + Street + '\'' +
-                ", houseNumber=" + houseNumber +
+                ", city='" + address.getCity() + '\'' +
+                ", Street='" + address.getStreet() + '\'' +
+                ", houseNumber=" + address.getHouseNumber() +
                 ", email='" + email + '\'' +
-                ", postcode='" + postcode + '\'' +
+                ", postcode='" + address.getPostcode() + '\'' +
                 ", phone=" + phone +
                 '}';
     }

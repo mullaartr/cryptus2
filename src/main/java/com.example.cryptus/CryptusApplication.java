@@ -19,8 +19,8 @@ public class CryptusApplication implements CommandLineRunner {
 	}
 	@Override
 	public void run(String... args) throws Exception {
-		for (int i = 0; i < 10; i++) { // iets dergelijks
-			System.out.println("Piet Pietersen");
+		for (int i = 0; i < 1; i++) { // iets dergelijks
+			System.out.println();
 		}
 	}
 

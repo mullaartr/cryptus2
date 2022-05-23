@@ -1,6 +1,9 @@
 package com.example.cryptus.dao;
 
 import com.example.cryptus.model.*;
+import com.example.cryptus.model.Address;
+import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +11,15 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
+
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 
 @Component
@@ -63,6 +70,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         return user;
     });
 
+
     @Override
     public Optional<Customer> findCustomerById(int id) {
         String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
@@ -77,18 +85,34 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 
+    private PreparedStatement insertUserStatement(Customer customer, Connection connection) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord, salt) values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, customer.getFirstName());
+        ps.setString(2, customer.getPreposition());
+        ps.setString(3, customer.getLastName());
+        ps.setString(4, customer.getUserName());
+        ps.setString(5, customer.getPassword());
+        ps.setString(6, customer.getSalt());
+       return ps;
+    }
 
 
 
-    public void storeCustomer(Customer customer) {
-        String sql2 = "INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord, salt) values (?,?,?,?,?,?)";
-        String sql = "INSERT into klant( geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon, geboorteDatum, BSN) values (?,?,?,?,?,?,?,?,?,?)";
-        int insert2 = jdbcTemplate.update(sql2,customer.getFirstName(),customer.getPreposition(),customer.getLastName(),customer.getUserName(), customer.getPassword(),customer.getSalt());
-        int insert = jdbcTemplate.update(sql,customer.getBirthDate(),customer.getStreet(),customer.getHouseNumber(), customer.getPostcode(),customer.getCity(),customer.getBSN(),customer.getEmail(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
-        if(insert == 1 && insert2 == 1){
-            logger.info("New customer created" + customer.getLastName());
 
-        }
+    public void storeCustomer(Customer customer){
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> insertUserStatement(customer, connection), keyHolder);
+            int newKey = keyHolder.getKey().intValue();
+            String sql = "INSERT into klant(userId, geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon) " +
+                    "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            int insert = jdbcTemplate.update(sql,newKey, customer.getBirthDate(), customer.getStreet(), customer.getHouseNumber(), customer.getPostcode(),
+                    customer.getCity(), customer.getBSN(), customer.getEmail(), customer.getPhone());
+
+            if (insert == 1) {
+                logger.info("New customer created" + customer.getLastName());
+
+            }
+
 
     }
 
@@ -101,10 +125,15 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public void update(Customer customer) {
-        String sql = "UPDATE user SET voornaam = ?, tussenvoegsel = ?, achternaam = ?, gebruikersnaam = ?, wachtwoord = ?, salt = ?  WHERE userId = ?" ;
-        int update2 = jdbcTemplate.update(sql,customer.getFirstName(), customer.getPreposition(), customer.getLastName(), customer.getUserName(), customer.getPassword(),customer.getSalt());
-        String sql1 =  "UPDATE klant SET geboortedatum = ?, straat = ?, huisnummer = ?, postcode = ?, woonplaats = ?, bsn = ?, emailadres = ?, telefoon = ?, geboorteDatum = ?, BSN =?  WHERE userId = ?" ;
-        int update = jdbcTemplate.update(sql1,customer.getBirthDate(),customer.getStreet(),customer.getHouseNumber(), customer.getPostcode(),customer.getCity(),customer.getBSN(),customer.getEmail(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
+        String sql = "UPDATE user " +
+                "SET voornaam = ?, tussenvoegsel = ?, achternaam = ?, gebruikersnaam = ?, wachtwoord = ?, salt = ?  WHERE userId = ?" ;
+        int update2 = jdbcTemplate.update(sql,customer.getFirstName(), customer.getPreposition(), customer.getLastName(), customer.getUserName(),
+                customer.getPassword(),customer.getSalt());
+        String sql1 =  "UPDATE klant " +
+                "SET geboortedatum = ?, straat = ?, huisnummer = ?, postcode = ?, woonplaats = ?, bsn = ?, emailadres = ?," +
+                " telefoon = ?, geboorteDatum = ?, BSN =?  WHERE userId = ?" ;
+        int update = jdbcTemplate.update(sql1,customer.getBirthDate(),customer.getStreet(),customer.getHouseNumber(), customer.getPostcode(),customer.getCity(),
+                customer.getBSN(),customer.getEmail(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
         if(update ==1 && update2 == 1){
             logger.info("Customer updated" + customer.getUserId());
 
