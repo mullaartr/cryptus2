@@ -36,7 +36,9 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0,"","","","","",new Date(0),"",new Address(0,"","",""),"","","");
+        Customer customer = new Customer(0,"","","","","",new Date(0),
+                "",new Address(0,"","",""),"","","");
+        System.out.println("hello");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -55,7 +57,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         customer.setPhone(rs.getString("telefoon"));
 
 
-        return customer;
+            return customer;
     };
 
     RowMapper<Customer> userRowMapper = ((rs, rowNum) -> {
@@ -161,12 +163,16 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
 
+
+
     @Override
     public Optional<Customer> findCustomerByUsernamePassword(String username) {
         String sql ="select * from user where gebruikersnaam = ?";
         Customer customer = null;
         try{
+
             customer = jdbcTemplate.queryForObject(sql,userRowMapper,username);
+
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
@@ -192,6 +198,8 @@ public class CustomerDaoJdbc implements CustomerDao {
         }
         return Optional.ofNullable(portefeuille);
     }
+
+
 
 
 }

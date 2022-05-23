@@ -25,7 +25,7 @@ public class RegistrationService {
 
     public RegistrationService(CustomerDaoJdbc customerDaoJdbc) {
         this.customerDaoJdbc = customerDaoJdbc;
-        logger.info("registrationservice created");
+
     }
 
     public void register(Customer customer) throws NoSuchAlgorithmException {
@@ -38,6 +38,7 @@ public class RegistrationService {
         customer.setPassword(nieuweHash);
         customerDaoJdbc.storeCustomer(customer);
     }
+
 
 
 }

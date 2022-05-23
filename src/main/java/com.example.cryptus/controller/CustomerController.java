@@ -5,6 +5,7 @@ import com.example.cryptus.service.CustomerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -35,15 +36,15 @@ public class CustomerController {
         return  customerService.findCustomerById(id);
     }
 
-    @GetMapping(value = "/findByLastname")
-    @ResponseBody Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
+    @GetMapping("/findByLastname")
+    @ResponseBody
+    Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
         return  customerService.findCustomerByName(name);
     }
 
 
-
     @GetMapping("/findByUsernamePassword")
-    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username, @RequestParam("password") String password){
+    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username){
         return  customerService.findCustomerByUsernamePassword(username);
     }
 
