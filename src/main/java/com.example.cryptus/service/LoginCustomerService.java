@@ -1,6 +1,7 @@
 package com.example.cryptus.service;
 
 import com.example.cryptus.model.Account;
+import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -13,20 +14,18 @@ public class LoginCustomerService {
 
     Account forUser = new Account("password");
 
-    Customer adam = new Customer(0,
+    Customer adam = new Customer(
+            1,
             "Adam",
             "von",
             "Hilversum",
+            forUser.hashSaltNPepper("password"),
+            "alsomail@email.com",
             Date.valueOf("1982-12-12"),
             "12345678",
-            "In the middle of Nowhere",
-            42,
-            "0908IO",
-            "Babylon",
+            new Address(11, "Suchlaan", "1234BC", "Hilversum"),
             "adam@hilversum.von",
-            908070606,
-            "alsomail@email.com",
-            forUser.hashSaltNPepper("password"),
+            "067373837463",
             "**********");
 
     public Customer loginSalutation() {

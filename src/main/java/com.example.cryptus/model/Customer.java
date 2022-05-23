@@ -12,7 +12,8 @@ public class Customer extends User {
     private Address address;
 
 
-    public Customer(int userId, String firstName, String preposition, String lastName, String password, String userName, Date birthDate, String BSN,
+    public Customer(int userId, String firstName, String preposition, String lastName, String password,
+                    String userName, Date birthDate, String BSN,
                     Address address, String email, String phone, String salt) {
         super(userId, firstName, preposition, lastName, userName, password, salt);
         this.birthDate = birthDate;
