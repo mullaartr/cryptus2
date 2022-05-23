@@ -24,9 +24,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     private Logger logger =  LogManager.getLogger(PortefeuilleDAOJdbc.class);
 
-
-
-
     @Autowired
     public PortefeuilleDAOJdbc(JdbcTemplate jdbcTemplate) {
         super();
@@ -70,9 +67,19 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     private PreparedStatement insertPortefeuilleStatement(Portefeuille portefeuille, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(
-                "insert into Cryptus.portefeuille (saldo, klantId) values (?)",
+                "insert into portefeuille (UserId) values (?)",
                 Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, portefeuille.getOwner().getUserId());
+        return ps;
+    }
+
+    private PreparedStatement insertPortefeuilleRegelStatement(Portefeuille portefeuille, Asset asset, Connection connection)throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("" +
+                "INSERT INTO portefeuille_regel(portefeuilleID, SALDO, ASSETId) VALUES (?,?,?)"
+                );
+        ps.setInt(1, portefeuille.getPortefeuilleId());
+        ps.setDouble(2, asset.getSaldo());
+        ps.setInt(3, asset.getAssetId());
         return ps;
     }
     @Override
@@ -81,6 +88,10 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         jdbcTemplate.update(connection -> insertPortefeuilleStatement(portefeuille, connection), keyHolder);
         int newKey = keyHolder.getKey().intValue();
         portefeuille.setPortefeuilleId(newKey);
+    }
+
+    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
+        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con));
     }
 
 

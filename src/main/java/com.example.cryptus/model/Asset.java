@@ -28,6 +28,8 @@ public class Asset {
         this(null, null, 0, null, 0);
     }
 
+
+
     public int getAssetId() {
         return assetId;
     }

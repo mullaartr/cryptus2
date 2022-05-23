@@ -9,8 +9,10 @@ public class TestControllerLasha {
         String pepper = "iliaWavWavaZisSublisZarRvi";
 
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt(16) + pepper);
+        String hashed2 = BCrypt.hashpw(candidate, BCrypt.gensalt(16) + pepper);
 
         System.out.println(hashed);
+        System.out.println(hashed2);
 
 //        String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
