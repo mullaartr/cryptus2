@@ -66,11 +66,12 @@ class HashHelperTest {
         user2 = "nepUser";
         mockDaoJDBC = Mockito.mock(CustomerDaoJdbc.class);
         mockService = Mockito.mock(CustomerService.class);
-        mullaart = new Customer(1,"Rogier",null,"Mullaart","3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476",
+        mullaart = new Customer(1,"Rogier",null,"Mullaart","29e21080035b30aa55655e3cf31004956a5807d83bdb814262e355213225abab",
                 "mullaart", Date.valueOf("1969-08-13"),"163647861",new Address(6,"Justine de Gouwerhof","2011GP","Haarlem"),"rogier.mullaart@gmail.com","0647185165","1");
         mekky = new Customer(3,"John","gg","mekky","foutiefWW","nepUser",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
-        Mockito.when(mockDaoJDBC.findCustomerByUsernamePassword(user)).thenReturn(Optional.ofNullable(mullaart));
-        Mockito.when(mockDaoJDBC.findCustomerByUsernamePassword(user2)).thenReturn(Optional.ofNullable(mekky));
+        Mockito.when(mockDaoJDBC.findCustomerByUsernamePassword(user)).thenReturn(Optional.of(mullaart));
+        Mockito.when(mockDaoJDBC.findCustomerByUsernamePassword(user2)).thenReturn(Optional.of(mekky));
+        Mockito.when(mockService.findCustomerByUsernamePassword(user)).thenReturn(Optional.of(mullaart));
         hashService = new HashService(mockDaoJDBC);
         tokenDatabase = new MapDatabase();
         loginService = new LoginService(tokenDatabase, mockDaoJDBC);
@@ -105,7 +106,7 @@ class HashHelperTest {
         assertThat(actual).isNotNull().isEqualTo(expected);
     }
 
-/*
+
     @Test
     void authenticatieTest() throws NoSuchAlgorithmException {
         assertTrue(authenticatieService.authenticate(user, ww1));
@@ -116,7 +117,7 @@ class HashHelperTest {
         String token = loginService.login(user, ww1);
         assertTrue(authenticatieService.authenticate(token));
     }
-*/
+
 
 
 

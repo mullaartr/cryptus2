@@ -35,7 +35,7 @@ public class AuthenticatieService {
         hashService = new HashService(customerDaoJdbc);
         if(customerService.findCustomerByUsernamePassword(username).isPresent()){
             Customer customer = customerService.findCustomerByUsernamePassword(username).orElse(null);
-            if(hashService.Hash(username, password).equals(customer.getPassword())){
+            if(hashService.Hash(password, username).equals(customer.getPassword())){
                 return true;
             }else {
                 return false;

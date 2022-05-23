@@ -22,10 +22,15 @@ public class HashService {
 
     private final int rounds = 10;
 
+
     public HashService(CustomerDaoJdbc customerDaoJdbc) {
         this.customerRepository = new CustomerRepository(customerDaoJdbc);
         this.customerService = new CustomerService(customerRepository);
         logger.info("HashService created");
+    }
+
+    public HashService(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     public String Hash(String password, String username) throws NoSuchAlgorithmException {
