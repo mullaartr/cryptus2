@@ -61,7 +61,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     };
 
     RowMapper<Customer> userRowMapper = ((rs, rowNum) -> {
-        Customer user = new Customer(0, "", "", "", "", "", "");
+        Customer user = new Customer(0, "", "", "", "", "",new Date(0),"",new Address(0,"","",""),"","", "");
         user.setUserId(rs.getInt("userId"));
         user.setFirstName(rs.getString("voornaam"));
         user.setPreposition(rs.getString("tussenvoegsel"));

@@ -3,6 +3,7 @@ package com.example.cryptus.dao;
 import com.example.cryptus.service.HashService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
