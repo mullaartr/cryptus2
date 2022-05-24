@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "registration")
 public class RegisterCustomerController {
 
-    private final RegisterCustomerService registerCustomerService;
+    private RegisterCustomerService registerCustomerService;
 
     @Autowired
     public RegisterCustomerController(RegisterCustomerService registerCustomerService) {
@@ -30,5 +30,4 @@ public class RegisterCustomerController {
         }
         else return "Your registration was incomplete, please try again. Thank you!";
     }
-
 }
