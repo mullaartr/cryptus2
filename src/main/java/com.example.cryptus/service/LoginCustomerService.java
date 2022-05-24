@@ -25,8 +25,7 @@ public class LoginCustomerService {
             "12345678",
             new Address(11, "Suchlaan", "1234BC", "Hilversum"),
             "adam@hilversum.von",
-            "067373837463",
-            "**********");
+            "067373837463");
 
     public Customer loginSalutation() {
         return adam;

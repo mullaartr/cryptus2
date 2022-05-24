@@ -4,7 +4,6 @@ import com.example.cryptus.model.Account;
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
-import com.example.cryptus.service.AuthenticatieService;
 import com.example.cryptus.service.CustomerDTO;
 import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.LoginCustomerService;
@@ -22,7 +21,6 @@ import java.util.Optional;
 @RequestMapping(path = "login")
 public class LoginController {
     private final LoginCustomerService loginCustomerService;
-    private AuthenticatieService authenticatieService;
     private CustomerService customerService;
 
     Account forUser = new Account("password");
@@ -40,8 +38,7 @@ public class LoginController {
             "12345678",
            new Address(11, "Suchlaan", "1234BC", "Hilversum"),
             "adam@hilversum.von",
-            "067373837463",
-            "**********"
+            "067373837463"
     );
 
     Customer devil = new Customer(
@@ -55,8 +52,7 @@ public class LoginController {
             "12345678",
             new Address(11, "Suchlaan", "1234BC", "Hilversum"),
             "adam@hilversum.von",
-            "067373837463",
-            "**********"
+            "067373837463"
     );
 
     @Autowired

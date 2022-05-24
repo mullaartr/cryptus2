@@ -4,8 +4,8 @@ public class Admin extends User{
 
     private int personalNumber;
 
-    public Admin(int userid, String firstName, String preposition, String lastName,int personalNumber, String userName, String password, String salt) {
-        super(userid, firstName, preposition, lastName,userName,password,salt);
+    public Admin(int userid, String firstName, String preposition, String lastName,int personalNumber, String userName, String password) {
+        super(userid, firstName, preposition, lastName,userName,password);
         this.personalNumber =  personalNumber;
     }
     public int getUserId() {
@@ -54,14 +54,6 @@ public class Admin extends User{
 
     public void setPassword(String password) {
         super.setPassword(password);
-    }
-
-    public String getSalt() {
-        return super.getSalt();
-    }
-
-    public void setSalt(String salt) {
-        super.setSalt(salt);
     }
 
 

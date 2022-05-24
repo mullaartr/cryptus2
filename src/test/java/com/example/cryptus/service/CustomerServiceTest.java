@@ -27,7 +27,7 @@ class CustomerServiceTest {
        // customer = new Customer(2,"John","gg","mekky", Date.valueOf("2015-03-31"), "", "",0,"","","",0,"","","");
         serviceUnderTest = new CustomerService(mockRepository);
 
-        customer = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+        customer = new Customer(3,"John","gg","mekky","'","",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
 
 
     }
@@ -37,7 +37,7 @@ class CustomerServiceTest {
     void storeCustomer() {
         //Customer testCustomer = new Customer(3,"Huub","gg","mekky", Date.valueOf("2015-03-31"), "", "",0,"","","",0,"","","");
         Customer testCustomer = new Customer(3,"John","gg","mekky","'","",
-                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
         serviceUnderTest.storeCustomer(testCustomer);
         Mockito.when(mockRepository.findCustomerById(3)).thenReturn(Optional.of(testCustomer));
         Optional<Customer> actual = serviceUnderTest.findCustomerById(3);
@@ -49,7 +49,7 @@ class CustomerServiceTest {
     @Test
     void update() {
         Customer testCustomer = new Customer(3,"John","gg","mekky","'","",
-                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
         testCustomer.setFirstName("James");
 
 
@@ -58,7 +58,7 @@ class CustomerServiceTest {
     @DisplayName("Testing find customer by username and password")
     @Test
     void findCustomerByUsernamePassword(){
-        customer = new Customer(3,"John","gg","mekky","password","username",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","","");
+        customer = new Customer(3,"John","gg","mekky","password","username",Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
         Mockito.when(mockRepository.findCustomerByUsernamePassword("username")).thenReturn(Optional.of(customer));
         Optional<Customer> actual = serviceUnderTest.findCustomerByUsernamePassword("username");
         Optional<Customer> expected = Optional.of(customer);
