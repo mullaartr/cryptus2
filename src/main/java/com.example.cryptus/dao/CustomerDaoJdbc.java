@@ -59,6 +59,7 @@ public class CustomerDaoJdbc implements CustomerDao {
             return customer;
     };
 
+
     RowMapper<Customer> userRowMapper = (rs, rowNum) -> {
         Customer user = new Customer(0, "", "", "", "", "");
         user.setUserId(rs.getInt("userId"));
@@ -142,7 +143,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM user WHERE userId= ?");
+        jdbcTemplate.update("DELETE FROM user WHERE userId= ?",id);
 
 
     }

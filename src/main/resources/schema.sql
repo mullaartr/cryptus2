@@ -8,6 +8,7 @@ CREATE TABLE if not exists `user`
     `achternaam`     VARCHAR(45) NOT NULL,
     `gebruikersnaam` VARCHAR(45) NOT NULL,
     `wachtwoord`     VARCHAR(100) NOT NULL,
+
     PRIMARY KEY (`userId`)
     );
 CREATE TABLE if not exists `klant`
@@ -144,5 +145,7 @@ CREATE TABLE if not exists `koers`
     ON UPDATE cascade
     );
 
+
 --CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
  --GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
+

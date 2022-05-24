@@ -41,11 +41,22 @@ public class CustomerController {
     Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
         return  customerService.findCustomerByName(name);
     }
+    @DeleteMapping(value = "/delete")
+    @ResponseBody public void deleteCustomer(@RequestParam("id")int id){
+        customerService.delete(id);
+    }
+
+
+
+
+
 
 
     @GetMapping("/findByUsernamePassword")
-    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username){
-        return  customerService.findCustomerByUsernamePassword(username);
+    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username) {
+        return customerService.findCustomerByUsernamePassword(username);
+
+
     }
 
 
