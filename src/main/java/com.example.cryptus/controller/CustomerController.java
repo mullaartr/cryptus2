@@ -51,10 +51,10 @@ public class CustomerController {
 
 
 
-    @GetMapping("/findByUsernamePassword")
-    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username){
-        return  customerService.findCustomerByUsernamePassword(username);
 
+    @GetMapping("/findByUsernamePassword")
+    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username) {
+        return customerService.findCustomerByUsernamePassword(username);
 
 
     }

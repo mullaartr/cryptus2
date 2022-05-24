@@ -1,6 +1,8 @@
 package com.example.cryptus.dao;
 
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Transaction;
+import com.example.cryptus.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,23 @@ public class TransactionDaoJdbc implements TransactionDao {
     }
 
     private PreparedStatement insertTransactionStatement(Transaction transaction, Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO transactie (datumtijd, kosten, creditiban, debitiban, euroammount, debitPortefeuilleID, creditportefeuilleID1, AssetId, assetammount) VALUES (?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
+
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
+                        "transactie (datumtijd, kosten, percentage, creditiban, " +
+                        "debitiban,euroammount, debitPortefeuilleID, " +
+                        "creditportefeuilleID1, " +
+                        "AssetId, assetammount) VALUES (?,?,?,?,?,?,?,?,?,?) ",
+                Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, transaction.getTimestamp().toString());
         ps.setDouble(2, transaction.calcCommission());
-        // ps.setInt(3,transaction.getVerkoper().);hier komt de getter getCreditIban.
-        //ps.setInt(4,transaction.getKoper().);  hier komt de getter getDebitIban.
+        ps.setInt(3, transaction.getCommisionPercentage());
+        ps.setString(3, transaction.getVerkoper().getBankAccount().getIban());
+        ps.setString(4, transaction.getKoper().getBankAccount().getIban());
         ps.setDouble(5, transaction.getEuroammount());
-        //ps.setInt(6, transaction.getKoper()); hier komt de getter getDebitPortefeuilleID.
-        //ps.setInt(7, transaction.getVerkoper()); hier komt de getter getCreditPortefeuilleID.
+        ps.setInt(6,
+                transaction.getKoper().getPortefeuille().getPortefeuilleId());
+        ps.setInt(7,
+                transaction.getVerkoper().getPortefeuille().getPortefeuilleId());
         ps.setInt(8, transaction.getAsset().getAssetId());
         ps.setDouble(9, transaction.getAssetammount());
         return ps;
@@ -44,6 +55,9 @@ public class TransactionDaoJdbc implements TransactionDao {
     private static class TransactionRowMapper implements RowMapper<Transaction> {
         @Override
         public Transaction mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+
+            //uit de transactiedb
+
             int transactieId = resultSet.getInt("transactieid");
             LocalDateTime timestamp = resultSet.getObject("datumtijd", LocalDateTime.class);
             double kosten = resultSet.getDouble("kosten");
@@ -52,14 +66,24 @@ public class TransactionDaoJdbc implements TransactionDao {
             String debitIban = resultSet.getString("debitiban");
             double euroammount = resultSet.getDouble("euroammount");
             String debitportefeuilleId = resultSet.getString("debitportefeuilleid");
-            String creditportefeuilleId = resultSet.getString(
-                    "creditportefeuilleid1");
+            String creditportefeuilleId = resultSet.getString("creditportefeuilleid1");
             int assetId = resultSet.getInt("assetid");
             double assetammount = resultSet.getDouble("assetammount");
 
-            Transaction transaction = new Transaction(transactieId, null, null, null, assetammount, euroammount, 0, timestamp);
-            return transaction; // hoe kom ik nou aan de koper en de
-            // verkoper? En ook aan de asset?
+            int useridkoper = resultSet.getInt("userid");// dit moet de user id
+            // worden van de koper
+            int useridverkoper = resultSet.getInt("userid");// dit moet de
+            // user id
+            // worden van de verkoper
+
+            String asset = resultSet.getString("assetid");// dit moet id
+            // van de asset worden die gekocht c.q. verkocht
+
+//            return new Transaction(transactieId, new User(useridkoper),
+//                    new User (useridverkoper), new Asset(), assetammount,
+//                    euroammount,
+//                    percentage, timestamp);
+            return null;
         }
     }
 
@@ -83,8 +107,9 @@ public class TransactionDaoJdbc implements TransactionDao {
 
     @Override
     public List<Transaction> findTransactionsByUser(int userId) {
-        List<Transaction> transactions = jdbcTemplate.query("SELECT * " +
-                        "FROM transactie JOIN bankrekening WHERE userId = ?",
+        List<Transaction> transactions = jdbcTemplate.query("SELECT * FROM " +
+                        "transactie JOIN bankrekening on " +
+                        "bankrekening.iban = transactie.debitiban WHERE userId = ?",
                 new TransactionRowMapper(), userId);
         return transactions;
     }
@@ -92,7 +117,8 @@ public class TransactionDaoJdbc implements TransactionDao {
     @Override
     public Optional<Transaction> findTransactionById(int transactionId) {
         List<Transaction> transactions =
-                jdbcTemplate.query("select * from transactie where transactieId = ?",new TransactionRowMapper(),
+                jdbcTemplate.query ("select * from transactie where " +
+                                "transactieId = ?",new TransactionRowMapper(),
                         transactionId);
         if (transactions.size() != 1) {
             return Optional.empty();

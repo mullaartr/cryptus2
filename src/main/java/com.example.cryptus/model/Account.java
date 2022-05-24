@@ -41,4 +41,7 @@ public class Account {
         this.wachtwoord = hashSaltNPepper(wachtwoord);
     }
 
+    public String getPEPPER() {
+        return PEPPER;
+    }
 }

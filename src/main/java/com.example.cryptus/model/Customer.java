@@ -27,9 +27,6 @@ public class Customer extends User {
 
 
 
-
-
-
     public int getUserId() {
         return super.getUserId();
     }

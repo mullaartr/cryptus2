@@ -2,27 +2,40 @@ package com.example.cryptus.service;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.repository.CustomerRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Service
 public class HashService {
 
     private CustomerRepository customerRepository;
+
     private CustomerDaoJdbc customerDaoJdbc;
+    private final Logger logger =  LogManager.getLogger(HashService.class);
     private CustomerService customerService;
     private PepperService pepperService = new PepperService();
 
     private final int rounds = 10;
 
+    @Autowired
     public HashService(CustomerDaoJdbc customerDaoJdbc) {
         this.customerRepository = new CustomerRepository(customerDaoJdbc);
         this.customerService = new CustomerService(customerRepository);
+        logger.info("HashService created");
     }
 
-    public String Hash(String password, String username) throws NoSuchAlgorithmException {
-        String gepeperdWW = password + pepperService.getPepper() + customerService.findCustomerByUsernamePassword(username).orElse(null).getSalt();
+    public HashService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    public String Hash(String password, String username, String salt) throws NoSuchAlgorithmException {
+        String gepeperdWW = password + pepperService.getPepper() + salt;
         MessageDigest messageDigest = MessageDigest.getInstance(HashService.AlgoritmeType.SHA256.algoritme);
         messageDigest.update(gepeperdWW.getBytes(StandardCharsets.UTF_8));
         for (int i = 0; i < rounds; i++) {
