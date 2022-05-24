@@ -1,4 +1,4 @@
-/*USE cryptus;
+USE cryptus;
 
 
 INSERT INTO `user`
@@ -79,4 +79,3 @@ VALUES (LAST_INSERT_ID(),STR_TO_DATE('31-03-2015', '%d-%m-%Y'),'street',10,'1000
 
 
 
-*/

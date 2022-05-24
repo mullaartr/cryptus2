@@ -51,5 +51,4 @@ public class RegisterCustomerController {
         }
         else return "Your registration was incomplete, please try again. Thank you!";
     }
-
 }
