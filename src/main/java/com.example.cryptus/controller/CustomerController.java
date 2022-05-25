@@ -1,5 +1,6 @@
 package com.example.cryptus.controller;
 import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.dto.CustomerDTO;
 import com.example.cryptus.model.Account;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
@@ -33,6 +34,7 @@ public class CustomerController {
 
     private CustomerService customerService;
     CustomerRepository customerRepository;
+    CustomerDTO customerDTO;
     private CustomerDaoJdbc customerDaoJdbc;
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
@@ -91,6 +93,11 @@ public class CustomerController {
             return "Hello " + dbCustomer.getFirstName() + ", login successful!";
         }
         else return "Wrong username password combination";
+    }
+
+    @PostMapping("/save")
+    public CustomerDTO save(@RequestBody CustomerDTO customerDTO){
+        return null;
     }
 
 

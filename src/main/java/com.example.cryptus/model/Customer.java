@@ -16,7 +16,7 @@ public class Customer extends User {
 
 
 
-        @Autowired
+
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
                         String userName, Date birthDate, String BSN,
                         Address address, String email, String phone) {
@@ -28,7 +28,7 @@ public class Customer extends User {
         this.address = address;
     }
 
-
+    @Autowired
     public Customer() {
             super();
     }
