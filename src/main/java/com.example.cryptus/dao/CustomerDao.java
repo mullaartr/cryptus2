@@ -18,7 +18,7 @@ public interface CustomerDao {
     Optional<Customer> findCustomerByName(String name);
     Optional<Customer> findCustomerByUsernamePassword(String username);
 
-    Optional<Portefeuille>findCustomerByPortefeuilleId(int portefeuilleId);
+    Optional<Customer>findCustomerByPortefeuilleId(int portefeuilleId);
 
     Optional<Customer> findCustomerByEmail(String email);
 
