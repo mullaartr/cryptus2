@@ -71,7 +71,7 @@ CREATE TABLE if not exists `portefeuille`
     FOREIGN KEY (`userId`)
     REFERENCES `user` (`userId`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE
+    ON UPDATE cascade
     );
 
 CREATE TABLE if not exists `portefeuille_regel`
@@ -83,12 +83,12 @@ CREATE TABLE if not exists `portefeuille_regel`
     CONSTRAINT `verzinzelf4`
     FOREIGN KEY (`portefeuilleID`)
     REFERENCES `portefeuille` (`portefeuilleID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE cascade
+    ON UPDATE cascade,
     CONSTRAINT `verzinzelf5`
     FOREIGN KEY (`assetId`)
     REFERENCES `Asset` (`assetId`)
-    ON DELETE restrict
+    ON DELETE no action
     ON UPDATE cascade
     );
 

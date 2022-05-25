@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @ActiveProfiles("test")
-//@Sql({"/schema.sql","/data.sql"})
+//@Sql({"/schema.sql","/Mekky'sData.sql"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortefeuilleDAOJdbcTest {
 
@@ -72,9 +72,6 @@ class PortefeuilleDAOJdbcTest {
     @Test
     void storePortefeuille(){
         portefeuilleDaoJDBCUnderTest.store(portefeuille1);
-        for (int i = 0; i < assetList1.size(); i++) {
-            portefeuilleDaoJDBCUnderTest.storePortefeuilleRegel(portefeuille1, portefeuille1.getAssets().get(i));
-        }
         Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(3).orElse(null);
         //portefeuille1.setOwner(customerDaoJdbc.findCustomerByPortefeuilleId(portefeuille1.getPortefeuilleId()).orElse(null));
         Portefeuille expected = portefeuille1;
@@ -83,16 +80,14 @@ class PortefeuilleDAOJdbcTest {
 
     @Test
     void updatePortefeuille() {
-        /*portefeuilleDaoJDBCUnderTest.store(portefeuille1);
-        for (int i = 0; i < assetList1.size(); i++) {
-            portefeuilleDaoJDBCUnderTest.storePortefeuilleRegel(portefeuille1, portefeuille1.getAssets().get(i));
-        }*/
+        portefeuille1.setPortefeuilleId(4);
+        portefeuilleDaoJDBCUnderTest.store(portefeuille1);
         Asset asset = portefeuille1.getAssets().
                 stream().filter(asset1 -> asset1.getAssetNaam() == "Bitcoin").
                 findAny().orElse(null);
         asset.setSaldo(10);
-        portefeuilleDaoJDBCUnderTest.update(portefeuille1, asset);
-        Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(3).orElse(null);
+        portefeuilleDaoJDBCUnderTest.update(portefeuille1, "Bitcoin");
+        Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4).orElse(null);
         assertThat(actual).isNotNull().isEqualTo(portefeuille1);
     }
 

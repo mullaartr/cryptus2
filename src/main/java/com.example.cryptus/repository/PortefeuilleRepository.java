@@ -2,6 +2,7 @@ package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.CustomerDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,6 @@ import java.util.Optional;
 public class PortefeuilleRepository {
 
     private final PortefeuilleDAO portefeuilleDAO;
-
     private final CustomerDao customerDao;
     private final Logger logger = LogManager.getLogger();
 
@@ -41,14 +41,22 @@ public class PortefeuilleRepository {
 
         Portefeuille portefeuille = portefeuilleOptional.get();
 
-        /*//Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(id);
+        Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(id);
         if (customerOptional.isEmpty()) {
             return Optional.empty();
         }
         Customer customer = customerOptional.get();
         portefeuille.setOwner(customer);
-        customer.setPortefeuille(portefeuille);*/
+        customer.setPortefeuille(portefeuille);
 
         return Optional.of(portefeuille);
+    }
+
+    public void updatePortefeuille(Portefeuille portefeuille, String asset){
+        portefeuilleDAO.update(portefeuille, asset);
+    }
+
+    public void deletePortefeuille(Portefeuille portefeuille){
+        portefeuilleDAO.delete(portefeuille.getPortefeuilleId());
     }
 }

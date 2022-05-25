@@ -12,7 +12,7 @@ public interface PortefeuilleDAO {
     void store(Portefeuille portefeuille);
 
 
-    void update(Portefeuille portefeuille, Asset asset);
+    void update(Portefeuille portefeuille, String asset);
 
     void delete(int id);
 }
