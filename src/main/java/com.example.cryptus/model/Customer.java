@@ -1,11 +1,16 @@
 package com.example.cryptus.model;
 
+import com.example.cryptus.dao.transfer.RegisterDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 
 public class Customer extends User {
 
+    //Daan: I made a logger
+    private final Logger logger = LoggerFactory.getLogger(Customer.class);
 
     private Date birthDate;
     private String BSN;
@@ -13,7 +18,14 @@ public class Customer extends User {
     private String phone;
     private Address address;
 
+
+
+
+
+
+
         @Autowired
+
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
                         String userName, Date birthDate, String BSN,
                         Address address, String email, String phone) {
@@ -26,11 +38,36 @@ public class Customer extends User {
     }
 
 
+
+    public Customer() {
+            super();
+    }
+
+
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
         super(userId, firstName, preposition, lastName, userName, password);
     }
 
+    //Daan: I made this no-args constructor
+    public Customer(RegisterDto registerDto) {
+        super();
+        //logger.info("Customer created with no-arg constructor");
+    }
 
+    //Daan: I made this constructor for registration
+    public Customer(String firstName, String preposition, String lastName, java.util.Date birthDate, String bsn,
+                    Address address, String phone, String email, String password) {
+        super();
+    }
+
+    //Daan: I made getter and setter for Address
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public int getUserId() {
         return super.getUserId();
@@ -147,14 +184,13 @@ public class Customer extends User {
     @Override
     public String toString() {
         return     super.toString()+
-                " birthDate=" + birthDate +
-                ", BSN='" + BSN + '\'' +
-                ", city='" + address.getCity() + '\'' +
-                ", Street='" + address.getStreet() + '\'' +
-                ", houseNumber=" + address.getHouseNumber() +
-                ", email='" + email + '\'' +
-                ", postcode='" + address.getPostcode() + '\'' +
-                ", phone=" + phone +
-                '}';
+                " BirthDate= " + birthDate +'\n' +
+                " BSN= " + BSN + '\n' +
+                " City= " + address.getCity() + '\n' +
+                " Street= " + address.getStreet() + '\n' +
+                " HouseNumber=" + address.getHouseNumber() +'\n' +
+                " email= " + email + '\n' +
+                " Postcode= " + address.getPostcode() + '\n' +
+                " Phone= " + phone ;
     }
 }

@@ -60,8 +60,15 @@ public class CustomerDaoJdbc implements CustomerDao {
     };
 
 
+
+
+
+
+
+
     RowMapper<Customer> userRowMapper = (rs, rowNum) -> {
         Customer user = new Customer(0, "", "", "", "", "");
+
         user.setUserId(rs.getInt("userId"));
         user.setFirstName(rs.getString("voornaam"));
         user.setPreposition(rs.getString("tussenvoegsel"));
@@ -180,13 +187,13 @@ public class CustomerDaoJdbc implements CustomerDao {
     //SELECT * FROM cryptus.user WHERE gebruikersnaam = 'username' AND wachtwoord = 'password'"
 
     @Override
-    public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId) {
+    public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId) {
         String sql ="select * from user JOIN portefeuille p on user.userId = p.userId where p.portefeuilleID = ?";
-        Portefeuille portefeuille = null;
-        ResultSetExtractor resultSetExtractor = null;
+        Customer customer = null;
+
         try{
 
-            portefeuille = (Portefeuille) jdbcTemplate.query(sql, resultSetExtractor, portefeuilleId);
+            customer =  jdbcTemplate.queryForObject(sql, rowMapper, portefeuilleId);
 
            // portefeuille = jdbcTemplate.queryForObject(sql,new Object[]{portefeuilleId}, portefeuilleDAOJdbc.rowMapper);
 
@@ -194,10 +201,23 @@ public class CustomerDaoJdbc implements CustomerDao {
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
-        return Optional.ofNullable(portefeuille);
+        return Optional.ofNullable(customer);
     }
 
+    @Override
+    public Optional<Customer> findCustomerByEmail(String email) {
+        String sql ="select * from klant where emailadres = ?";
+        Customer customer = null;
+        try{
 
+            customer = jdbcTemplate.queryForObject(sql,userRowMapper,email);
+
+        }catch (DataAccessException exception){
+            logger.info("A new customer");
+        }
+        return Optional.ofNullable(customer);
+
+    }
 
 
 }

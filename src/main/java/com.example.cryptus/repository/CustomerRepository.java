@@ -181,13 +181,26 @@ public class CustomerRepository  {
 
     }
 
-    public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId){
-        Optional<Portefeuille> portefeuilleOptional = customerDao.findCustomerByPortefeuilleId(portefeuilleId);
-        if(portefeuilleOptional.isEmpty()){
+    public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId){
+
+        Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(portefeuilleId);
+        if(customerOptional.isEmpty()){
             return Optional.empty();
 
         }else{
             return customerDao.findCustomerByPortefeuilleId(portefeuilleId);
+
+        }
+
+    }
+
+    public Optional<Customer> findCustomerByEmail(String email) {
+        Optional<Customer> customerOptional =customerDao.findCustomerByEmail(email);
+        if(customerOptional.isEmpty()){
+            return Optional.empty();
+
+        }else{
+            return customerDao.findCustomerByEmail(email);
 
         }
 
