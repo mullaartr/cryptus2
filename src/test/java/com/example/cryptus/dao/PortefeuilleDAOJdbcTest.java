@@ -43,7 +43,7 @@ class PortefeuilleDAOJdbcTest {
         Asset asset = new Asset(1, "Bitcoin", "BTC", 0.0, null, 25.0);
         assetList.add(asset);
         portefeuille = new Portefeuille(1, null, assetList);
-        mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",new Address(6,"Justine de Gouwerhof","2011GP","Haarlem"),"rogier.mullaart@gmail.com","0647185165","");
+        mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",new Address(6,"Justine de Gouwerhof","2011GP","Haarlem"),"rogier.mullaart@gmail.com","0647185165");
         portefeuille1 = new Portefeuille(3, mullaart, new ArrayList<>());
         Asset asset1 = new Asset(1, "Bitcoin", "BTC", 0.0, null , 4.0);
         Asset asset2 = new Asset(2, "Etherium", "ETH", 0.0, null, 8.0);

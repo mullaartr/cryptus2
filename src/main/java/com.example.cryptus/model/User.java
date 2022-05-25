@@ -13,7 +13,6 @@ public abstract class User {
     private String lastName;
     private String userName;
     private String password;
-    private String salt;
     List<Transaction> transactionList;
     BankAccount bankAccount;
 
@@ -21,14 +20,14 @@ public abstract class User {
 
 
     @Autowired
-    public User(int userId, String firstName, String preposition, String lastName, String userName, String password, String salt) {
+    public User(int userId, String firstName, String preposition, String lastName, String userName, String password) {
+
         this.userId = userId;
         this.firstName = firstName;
         this.preposition = preposition;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
-        this.salt = salt;
     }
 
     public User(String firstName, String preposition, String lastName, String userName, String password) {
@@ -91,14 +90,6 @@ public abstract class User {
         this.password = password;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
     public Portefeuille getPortefeuille() {
         return portefeuille;
     }
@@ -126,11 +117,13 @@ public abstract class User {
 
     @Override
     public String toString() {
+
         return
                 "firstName= " + firstName + '\n' +
-                " preposition= " + preposition + '\n' +
-                " lastName= " + lastName + '\n' +
-                " userName= " + userName + '\n' ;
+                        " preposition= " + preposition + '\n' +
+                        " lastName= " + lastName + '\n' +
+                        " userName= " + userName + '\n';
+
 
     }
 }

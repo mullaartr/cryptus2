@@ -19,13 +19,18 @@ public class Customer extends User {
         @Autowired
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
                         String userName, Date birthDate, String BSN,
-                        Address address, String email, String phone, String salt) {
-        super(userId, firstName, preposition, lastName, userName, password, salt);
+                        Address address, String email, String phone) {
+        super(userId, firstName, preposition, lastName, userName, password);
         this.birthDate = birthDate;
         this.BSN = BSN;
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+
+
+    public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
+        super(userId, firstName, preposition, lastName, userName, password);
     }
 
 
@@ -76,14 +81,6 @@ public class Customer extends User {
 
     public void setPassword(String password) {
         super.setPassword(password);
-    }
-
-    public String getSalt() {
-        return super.getSalt();
-    }
-
-    public void setSalt(String salt) {
-        super.setSalt(salt);
     }
 
     public Date getBirthDate() {
