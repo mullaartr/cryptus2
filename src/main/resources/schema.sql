@@ -212,13 +212,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
     ENGINE = InnoDB;
 
 -- Gebruiker definiëren en toegang verlenen
-<<<<<<< HEAD
+
 CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
 */
-=======
-CREATE USER 'cryptus'@'localhost' IDENTIFIED BY '12345';
-GRANT ALL PRIVILEGES ON cryptus.* TO 'Cryptus'@'localhost';
-/*
-*/
->>>>>>> registration

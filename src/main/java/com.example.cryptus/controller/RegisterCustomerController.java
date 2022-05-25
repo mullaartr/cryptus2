@@ -40,6 +40,7 @@ public class RegisterCustomerController {
 
     @PostMapping
     public String registration(@RequestBody Customer mpCustomer) throws NoSuchAlgorithmException {
+//        ResponseEntity<?>
         if (mpCustomer instanceof Customer)
         {
             System.out.println(mpCustomer.getFirstName());
