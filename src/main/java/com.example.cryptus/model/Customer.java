@@ -1,11 +1,16 @@
 package com.example.cryptus.model;
 
+import com.example.cryptus.dao.transfer.RegisterDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 
 public class Customer extends User {
 
+    //Daan: I made a logger
+    private final Logger logger = LoggerFactory.getLogger(Customer.class);
 
     private Date birthDate;
     private String BSN;
@@ -16,6 +21,10 @@ public class Customer extends User {
 
 
 
+
+
+
+        @Autowired
 
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
                         String userName, Date birthDate, String BSN,
@@ -28,16 +37,30 @@ public class Customer extends User {
         this.address = address;
     }
 
-    @Autowired
+
+
     public Customer() {
             super();
     }
+
 
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
         super(userId, firstName, preposition, lastName, userName, password);
     }
 
+    //Daan: I made this no-args constructor
+    public Customer(RegisterDto registerDto) {
+        super();
+        //logger.info("Customer created with no-arg constructor");
+    }
 
+    //Daan: I made this constructor for registration
+    public Customer(String firstName, String preposition, String lastName, java.util.Date birthDate, String bsn,
+                    Address address, String phone, String email, String password) {
+        super();
+    }
+
+    //Daan: I made getter and setter for Address
     public Address getAddress() {
         return address;
     }
