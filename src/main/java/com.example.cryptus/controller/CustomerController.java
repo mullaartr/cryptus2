@@ -72,16 +72,16 @@ public class CustomerController {
 
     }
 
-    @PostMapping(value = "/create")
-    @ResponseBody String createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException{
-        if (customer instanceof Customer) {
-            customer.setSalt(gensalt(12));
-            customer.setPassword(hashpw(customer.getPassword(),customer.getSalt()+ customerAccount.getPEPPER()));
-            customerService.storeCustomer(customer);
-        }
-        return "Hello " + customer.getFirstName() + " Here is a summary of your information: \n "  + customer.toString();
-
-    }
+//    @PostMapping(value = "/create")
+//    @ResponseBody String createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException{
+//        if (customer instanceof Customer) {
+//            customer.setSalt(gensalt(12));
+//            customer.setPassword(hashpw(customer.getPassword(),customer.getSalt()+ customerAccount.getPEPPER()));
+//            customerService.storeCustomer(customer);
+//        }
+//        return "Hello " + customer.getFirstName() + " Here is a summary of your information: \n "  + customer.toString();
+//
+//    }
 
     @PostMapping(value = "/login")
     @ResponseBody String login(@RequestBody Account account) throws NoSuchAlgorithmException {
