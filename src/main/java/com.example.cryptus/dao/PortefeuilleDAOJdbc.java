@@ -61,7 +61,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         }catch (DataAccessException exception){
             logger.info("portefeuille was not found");
         }
-        return Optional.ofNullable(portefeuille);
+        return Optional.of(portefeuille);
     }
 
 
@@ -102,9 +102,9 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     }
 
     @Override
-    public void update(Portefeuille portefeuille) {
-        String sql = "Update Cryptus.portefeuille SET userId = ? where portefeuilleId ";
-        int update = jdbcTemplate.update(sql,  portefeuille.getOwner().getUserId());
+    public void update(Portefeuille portefeuille, Asset asset) {
+        String sql = "Update portefeuille_regel  SET  saldo = ? where portefeuilleId = ? and assetId = ?";
+        int update = jdbcTemplate.update(sql,  asset.getSaldo(), portefeuille.getPortefeuilleId(), asset.getAssetId());
         if (update == 1) {
             logger.info("portefeuille updated" + portefeuille.getPortefeuilleId());
         }
@@ -112,8 +112,9 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
 
         @Override
-        public void delete ( int id){
-            jdbcTemplate.update("DELETE FROM portefeuille WHERE portefeuilleId = ?, id");
+        public void delete (int id){
+        String sql = "DELETE FROM portefeuille WHERE portefeuilleId = ?";
+            jdbcTemplate.update( sql, id);
         }
     }
 

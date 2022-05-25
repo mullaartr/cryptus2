@@ -1,5 +1,6 @@
 package com.example.cryptus.dao;
 
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Portefeuille;
 
 import java.util.Optional;
@@ -10,7 +11,8 @@ public interface PortefeuilleDAO {
 
     void store(Portefeuille portefeuille);
 
-    void update(Portefeuille portefeuille);
+
+    void update(Portefeuille portefeuille, Asset asset);
 
     void delete(int id);
 }

@@ -31,6 +31,9 @@ class PortefeuilleDAOJdbcTest {
     private List<Asset> assetList1;
     private Customer mullaart;
     private CustomerDaoJdbc customerDaoJdbc;
+    private Asset asset1;
+    private Asset asset2;
+    private Asset asset3;
 
     @Autowired
     public PortefeuilleDAOJdbcTest(PortefeuilleDAOJdbc portefeuilleDAOJdbc){
@@ -45,9 +48,9 @@ class PortefeuilleDAOJdbcTest {
         portefeuille = new Portefeuille(1, null, assetList);
         mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",new Address(6,"Justine de Gouwerhof","2011GP","Haarlem"),"rogier.mullaart@gmail.com","0647185165");
         portefeuille1 = new Portefeuille(3, mullaart, new ArrayList<>());
-        Asset asset1 = new Asset(1, "Bitcoin", "BTC", 0.0, null , 4.0);
-        Asset asset2 = new Asset(2, "Etherium", "ETH", 0.0, null, 8.0);
-        Asset asset3 = new Asset(3, "Dodgecoin", "DGC", 0.0, null, 8.0);
+        asset1 = new Asset(1, "Bitcoin", "BTC", 0.0, null , 4.0);
+        asset2 = new Asset(2, "Etherium", "ETH", 0.0, null, 8.0);
+        asset3 = new Asset(3, "Dodgecoin", "DGC", 0.0, null, 8.0);
         assetList1 = new ArrayList<>();
         assetList1.add(asset1);
         assetList1.add(asset2);
@@ -76,7 +79,26 @@ class PortefeuilleDAOJdbcTest {
         //portefeuille1.setOwner(customerDaoJdbc.findCustomerByPortefeuilleId(portefeuille1.getPortefeuilleId()).orElse(null));
         Portefeuille expected = portefeuille1;
         assertThat(actual).isNotNull().isEqualTo(expected);
+    }
 
+    @Test
+    void updatePortefeuille() {
+        /*portefeuilleDaoJDBCUnderTest.store(portefeuille1);
+        for (int i = 0; i < assetList1.size(); i++) {
+            portefeuilleDaoJDBCUnderTest.storePortefeuilleRegel(portefeuille1, portefeuille1.getAssets().get(i));
+        }*/
+        Asset asset = portefeuille1.getAssets().
+                stream().filter(asset1 -> asset1.getAssetNaam() == "Bitcoin").
+                findAny().orElse(null);
+        asset.setSaldo(10);
+        portefeuilleDaoJDBCUnderTest.update(portefeuille1, asset);
+        Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(3).orElse(null);
+        assertThat(actual).isNotNull().isEqualTo(portefeuille1);
+    }
 
+    @Test
+    void deletePortefeuille(){
+        portefeuilleDaoJDBCUnderTest.delete(portefeuille1.getPortefeuilleId());
+        assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(3).orElse(null)).isEqualTo(new Portefeuille());
     }
 }
