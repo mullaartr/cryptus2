@@ -93,6 +93,22 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 
+    @Override
+    public Optional<Customer> findCustomerByIban(String iban) {
+        String sql ="select * from klant JOIN user JOIN bankrekening on " +
+                "user.userId = klant.userId AND " +
+                "user.userid = bankrekening.userId where " +
+                "bankrekening.iban = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,iban);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+
+    }
 
     private PreparedStatement insertUserStatement(Customer customer, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);

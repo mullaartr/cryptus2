@@ -1,8 +1,7 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.Asset;
-import com.example.cryptus.model.Transaction;
-import com.example.cryptus.model.User;
+import com.example.cryptus.dto.TransactionDTO;
+import com.example.cryptus.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-@Repository
-public class TransactionDaoJdbc implements TransactionDao {
+
+@Component
+public class TransactionDaoJdbc {
 
     private final Logger logger = LoggerFactory.getLogger(TransactionDaoJdbc.class);
     private JdbcTemplate jdbcTemplate;
@@ -52,11 +53,19 @@ public class TransactionDaoJdbc implements TransactionDao {
         return ps;
     }
 
-    private static class TransactionRowMapper implements RowMapper<Transaction> {
-        @Override
-        public Transaction mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    private static class TransactionDTORowMapper implements RowMapper<TransactionDTO> {
 
-            //uit de transactiedb
+        private Customer user;
+
+        public TransactionDTORowMapper() {
+        }
+
+        public TransactionDTORowMapper(Customer user) {
+            this.user = user;
+        }
+
+        @Override
+        public TransactionDTO mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 
             int transactieId = resultSet.getInt("transactieid");
             LocalDateTime timestamp = resultSet.getObject("datumtijd", LocalDateTime.class);
@@ -70,60 +79,60 @@ public class TransactionDaoJdbc implements TransactionDao {
             int assetId = resultSet.getInt("assetid");
             double assetammount = resultSet.getDouble("assetammount");
 
-            int useridkoper = resultSet.getInt("userid");// dit moet de user id
-            // worden van de koper
-            int useridverkoper = resultSet.getInt("userid");// dit moet de
-            // user id
-            // worden van de verkoper
-
-            String asset = resultSet.getString("assetid");// dit moet id
-            // van de asset worden die gekocht c.q. verkocht
-
-//            return new Transaction(transactieId, new User(useridkoper),
-//                    new User (useridverkoper), new Asset(), assetammount,
-//                    euroammount,
-//                    percentage, timestamp);
-            return null;
+            return new TransactionDTO(transactieId, creditIban,
+                    debitIban, assetId, assetammount, euroammount, percentage,
+                    timestamp);
         }
     }
 
-    @Override
-    public void storeTransaction(Transaction transaction) {
+//    @Override
+    public void createTransaction(Transaction transaction) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertTransactionStatement(transaction, connection), keyHolder);
         int newKey = keyHolder.getKey().intValue();
         transaction.setTransactionId(newKey);
     }
 
-    @Override
+//    @Override
     public void update(Transaction transaction) {
 
     }
 
-    @Override
+//    @Override
     public void deleteTransaction(int transactionId) {
         jdbcTemplate.update("DELETE FROM transactie WHERE transactieId = ?", transactionId);
     }
 
-    @Override
-    public List<Transaction> findTransactionsByUser(int userId) {
-        List<Transaction> transactions = jdbcTemplate.query("SELECT * FROM " +
+//    @Override
+//    public List<TransactionDTO> findTransactionsByUser(int userId) {
+//        List<TransactionDTO> transactions = jdbcTemplate.query("SELECT * FROM " +
+//                        "transactie JOIN bankrekening on " +
+//                        "bankrekening.iban = transactie.debitiban WHERE userId = ?",
+//                new TransactionDTORowMapper(), userId);
+//        return transactions;
+//    }
+
+//    @Override
+    public List<TransactionDTO> findTransactionsByUser(Customer user) {
+        List<TransactionDTO> transactions = jdbcTemplate.query("SELECT * FROM " +
                         "transactie JOIN bankrekening on " +
-                        "bankrekening.iban = transactie.debitiban WHERE userId = ?",
-                new TransactionRowMapper(), userId);
+                        "bankrekening.iban = transactie.debitiban OR " +
+                        "bankrekening.iban = transactie.creditiban WHERE" +
+                        " userId = ?",
+                new TransactionDTORowMapper(user), user.getUserId());
         return transactions;
     }
 
-    @Override
-    public Optional<Transaction> findTransactionById(int transactionId) {
-        List<Transaction> transactions =
-                jdbcTemplate.query ("select * from transactie where " +
-                                "transactieId = ?",new TransactionRowMapper(),
-                        transactionId);
-        if (transactions.size() != 1) {
-            return Optional.empty();
-        } else {
-            return Optional.of(transactions.get(0));
-        }
-    }
+//    @Override
+//    public Optional<Transaction> findTransactionById(int transactionId) {
+//        List<Transaction> transactions =
+//                jdbcTemplate.query ("select * from transactie where " +
+//                                "transactieId = ?",new TransactionDTORowMapper(),
+//                        transactionId);
+//        if (transactions.size() != 1) {
+//            return Optional.empty();
+//        } else {
+//            return Optional.of(transactions.get(0));
+//        }
+//    }
 }

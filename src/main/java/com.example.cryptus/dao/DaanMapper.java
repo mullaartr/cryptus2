@@ -1,3 +1,4 @@
+/*
 package com.example.cryptus.dao;
 
 import com.example.cryptus.dao.transfer.RegisterDto;
@@ -30,3 +31,4 @@ public class DaanMapper {
     }
 
 }
+*/
