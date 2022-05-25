@@ -43,7 +43,10 @@ public class Customer extends User {
             super();
     }
 
-
+    public Customer(int userId, Address address) {
+        super(userId);
+        this.address = address;
+    }
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
         super(userId, firstName, preposition, lastName, userName, password);
     }

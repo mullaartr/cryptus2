@@ -1,41 +1,39 @@
-package com.example.cryptus.model;
+package com.example.cryptus.dto;
+import com.example.cryptus.model.Asset;
+import com.example.cryptus.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
-public class Transaction{
-    private final Logger logger = LoggerFactory.getLogger(Transaction.class);
+public class TransactionDTO {
+    private final Logger logger = LoggerFactory.getLogger(TransactionDTO.class);
     private int transactionId;
-    private User koper;
-    private User verkoper;
-    private Asset asset;
+    private String koperIban;
+    private String verkoperIban;
+    private int asset;
     private double assetammount;
     private double euroammount;
     private int commisionPercentage;
     private LocalDateTime timestamp;
 
-    public Transaction() {
+    public TransactionDTO() {
         super();
-        logger.info("Nieuwe transactie die de no arg constructor gebruikt.");
+        logger.info("Nieuwe transactieDTO die de no arg constructor gebruikt.");
     }
-    public Transaction(int transactionId, User koper, User verkoper,
-                       Asset asset, double assetammount, double euroammount, int commisionPercentage, LocalDateTime timestamp) {
+    public TransactionDTO(int transactionId, String koper, String verkoper,
+                          int asset, double assetammount, double euroammount,
+                          int commisionPercentage, LocalDateTime timestamp) {
         this.transactionId = transactionId;
-        this.koper = koper;
-        this.verkoper = verkoper;
+        this.koperIban = koper;
+        this.verkoperIban = verkoper;
         this.asset = asset;
         this.assetammount = assetammount;
         this.euroammount = euroammount;
         this.commisionPercentage = commisionPercentage;
         this.timestamp = timestamp;
-        logger.info("Nieuwe transactie die de all arg constructor gebruikt.");
-    }
-    public Transaction(User koper, User verkoper, Asset asset,
-                       double assetammount, double euroammount, int commisionPercentage) {
-        this (0,koper, verkoper, asset,assetammount,euroammount,commisionPercentage, LocalDateTime.now());
-        logger.info("Nieuwe transactie die de arg constructor voor de DB " +
-                "gebruikt.");
+        logger.info("Nieuwe transactieDTO die de all arg constructor gebruikt" +
+                ".");
     }
     public int getTransactionId() {
         return transactionId;
@@ -45,27 +43,27 @@ public class Transaction{
         this.transactionId = transactionId;
     }
 
-    public User getKoper() {
-        return koper;
+    public String getKoperIban() {
+        return koperIban;
     }
 
-    public void setKoper(User koper) {
-        this.koper = koper;
+    public void setKoperIban(String koperIban) {
+        this.koperIban = koperIban;
     }
 
-    public User getVerkoper() {
-        return verkoper;
+    public String getVerkoperIban() {
+        return verkoperIban;
     }
 
-    public void setVerkoper(User verkoper) {
-        this.verkoper = verkoper;
+    public void setVerkoperIban(String verkoperIban) {
+        this.verkoperIban = verkoperIban;
     }
 
-    public Asset getAsset() {
+    public int getAsset() {
         return asset;
     }
 
-    public void setAsset(Asset asset) {
+    public void setAsset(int asset) {
         this.asset = asset;
     }
 
@@ -101,18 +99,12 @@ public class Transaction{
         this.timestamp = timestamp;
     }
 
-    public double calcCommission(){
-        //cryptohoeveelheid*koersineuro*percentage
-
-        return 0;
-    }
-
     @Override
     public String toString() {
-        return "Transaction{" +
+        return "TransactionDTO{" +
                 "transactionId=" + transactionId +
-                ", koper=" + koper +
-                ", verkoper=" + verkoper +
+                ", koperIban='" + koperIban + '\'' +
+                ", verkoperIban='" + verkoperIban + '\'' +
                 ", asset=" + asset +
                 ", assetammount=" + assetammount +
                 ", euroammount=" + euroammount +
