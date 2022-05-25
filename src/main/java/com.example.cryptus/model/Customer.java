@@ -13,6 +13,9 @@ public class Customer extends User {
     private String phone;
     private Address address;
 
+
+
+
         @Autowired
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
                         String userName, Date birthDate, String BSN,
@@ -150,14 +153,13 @@ public class Customer extends User {
     @Override
     public String toString() {
         return     super.toString()+
-                " birthDate=" + birthDate +
-                ", BSN='" + BSN + '\'' +
-                ", city='" + address.getCity() + '\'' +
-                ", Street='" + address.getStreet() + '\'' +
-                ", houseNumber=" + address.getHouseNumber() +
-                ", email='" + email + '\'' +
-                ", postcode='" + address.getPostcode() + '\'' +
-                ", phone=" + phone +
-                '}';
+                " BirthDate= " + birthDate +'\n' +
+                " BSN= " + BSN + '\n' +
+                " City= " + address.getCity() + '\n' +
+                " Street= " + address.getStreet() + '\n' +
+                " HouseNumber=" + address.getHouseNumber() +'\n' +
+                " email= " + email + '\n' +
+                " Postcode= " + address.getPostcode() + '\n' +
+                " Phone= " + phone ;
     }
 }

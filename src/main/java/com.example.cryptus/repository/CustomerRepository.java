@@ -193,6 +193,18 @@ public class CustomerRepository  {
 
     }
 
+    public Optional<Customer> findCustomerByEmail(String email) {
+        Optional<Customer> customerOptional =customerDao.findCustomerByEmail(email);
+        if(customerOptional.isEmpty()){
+            return Optional.empty();
+
+        }else{
+            return customerDao.findCustomerByEmail(email);
+
+        }
+
+    }
+
     public List<Customer> list(){
         return customerDao.list();
     }

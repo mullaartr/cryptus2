@@ -60,14 +60,13 @@ public class CustomerDaoJdbc implements CustomerDao {
             return customer;
     };
 
-<<<<<<< HEAD
+
+
+
+
     RowMapper<Customer> userRowMapper = (rs, rowNum) -> {
-        Customer user = new Customer(0,"","","","","",new Date(0),
-                "",new Address(0,"","",""),"","","");
-=======
-    RowMapper<Customer> userRowMapper = ((rs, rowNum) -> {
         Customer user = new Customer(0, "", "", "", "", "",new Date(0),"",new Address(0,"","",""),"","", "");
->>>>>>> b21fe4826724140ac7507d1d5d781926ff703220
+
         user.setUserId(rs.getInt("userId"));
         user.setFirstName(rs.getString("voornaam"));
         user.setPreposition(rs.getString("tussenvoegsel"));
@@ -205,7 +204,20 @@ public class CustomerDaoJdbc implements CustomerDao {
         return Optional.ofNullable(portefeuille);
     }
 
+    @Override
+    public Optional<Customer> findCustomerByEmail(String email) {
+        String sql ="select * from klant where emailadres = ?";
+        Customer customer = null;
+        try{
 
+            customer = jdbcTemplate.queryForObject(sql,userRowMapper,email);
+
+        }catch (DataAccessException exception){
+            logger.info("A new customer");
+        }
+        return Optional.ofNullable(customer);
+
+    }
 
 
 }

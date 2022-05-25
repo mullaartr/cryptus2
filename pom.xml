@@ -65,6 +65,13 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+
         <dependency>
             <groupId>nl.garvelink.oss</groupId>
             <artifactId>iban</artifactId>
@@ -77,6 +84,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${project.parent.version}</version>
             </plugin>
         </plugins>
     </build>
