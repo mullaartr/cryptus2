@@ -1,10 +1,14 @@
 package com.example.cryptus.controller;
 
+import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.model.Customer;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.mindrot.jbcrypt.BCrypt.gensalt;
 
 public class TestControllerLasha {
+    private CustomerDaoJdbc customerDaoJdbc;
     public static void main(String[] args) {
         String password = "abracadabra";
         String candidate = "abracadabra";
@@ -27,6 +31,9 @@ public class TestControllerLasha {
         System.out.println(salt);
         System.out.println(salt.length());
     }
+
+    Customer Baruch = new Customer(0, "Baruch", null, "Spinoza",
+            "baruch@spinoza.com", "baruchspinoza");
 
 
 }
