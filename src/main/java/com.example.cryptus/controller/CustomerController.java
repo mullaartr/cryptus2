@@ -55,8 +55,7 @@ public class CustomerController {
     }
 
     @GetMapping("/findByLastname")
-    @ResponseBody
-    Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
+    @ResponseBody Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
         return  customerService.findCustomerByName(name);
     }
     @DeleteMapping(value = "/delete")
