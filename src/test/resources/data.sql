@@ -2,17 +2,17 @@ USE `cryptus`;
 /*SET FOREIGN_KEY_CHECKS=0;*/
 
 INSERT INTO `user`
-VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476', '12345'),
-       (2, 'Frits', NULL, 'Botersprits', 'boter', '12345', '12345'),
-       (3, 'Jan', 'van', 'Zevenaar', 'zeven', '12345', '12345'),
-       (4, 'Gerard', NULL, 'Klaasen', 'klaas', '12345', '12345'),
-       (5, 'Tinus', NULL, 'Peters', 'peter', '12345', '12345'),
-       (6, 'Klaas', '', 'Fransen', 'frans', '12345', '12345'),
-       (7, 'Barry', NULL, 'Olafsen', 'olaf', '12345', '12345'),
-       (8, 'Peter', NULL, 'Jacobseb', 'jacob', '12345', '12345'),
-       (9, 'Lars', 'van der', 'Lussen', 'lus', '12345', '12345'),
-       (10, 'Joris', NULL, 'Pietersen', 'piet', '12345', '12345'),
-       (11, 'Rogier', NULL, 'Mullaart', 'admin', 'admin', '12345');
+VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476'),
+       (2, 'Frits', NULL, 'Botersprits', 'boter', '12345'),
+       (3, 'Jan', 'van', 'Zevenaar', 'zeven', '12345'),
+       (4, 'Gerard', NULL, 'Klaasen', 'klaas', '12345'),
+       (5, 'Tinus', NULL, 'Peters', 'peter', '12345'),
+       (6, 'Klaas', '', 'Fransen', 'frans', '12345'),
+       (7, 'Barry', NULL, 'Olafsen', 'olaf', '12345'),
+       (8, 'Peter', NULL, 'Jacobseb', 'jacob', '12345'),
+       (9, 'Lars', 'van der', 'Lussen', 'lus', '12345'),
+       (10, 'Joris', NULL, 'Pietersen', 'piet', '12345'),
+       (11, 'Rogier', NULL, 'Mullaart', 'admin', 'admin');
 
 
 INSERT INTO `beheerder`
@@ -67,10 +67,10 @@ VALUES (1, 1, 25.000000),
 
 
 INSERT INTO `transactie`
-VALUES (1, '2022-05-19 01:14:07.00', 5.00, 15, '1234567891', '9876543211',
-        100.00, 1, 2, 1, 10.000000),
-       (2, '2022-05-19 01:14:07.00', 6.00, 15, '9876543211', '1234567891',
-        120.00, 2, 1, 2, 20.000000);
+VALUES (1, '2022-05-19 01:14:07.00', 5.00, '1234567891',  '9876543211', 300,  2,  2,
+        10, 1, 1 ),
+       (2, '2022-05-19 01:14:07.00', 6.00, '9876543211', '1234567891', 300, 1, 1,
+        20, 2, 2);
 
 
 INSERT INTO `koers`

@@ -7,7 +7,6 @@ import com.example.cryptus.model.Customer;
 import com.example.cryptus.service.CustomerDTO;
 import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.RegisterCustomerService;
-import com.example.cryptus.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,16 +23,16 @@ import static org.mindrot.jbcrypt.BCrypt.hashpw;
 @RequestMapping(path = "registration")
 public class RegisterCustomerController {
 
-    private RegistrationService registrationService;
+
     private final CustomerDaoJdbc customerDaoJdbc;
     private CustomerService customerService;
 
     Account forUser = new Account("password");
 
     @Autowired
-    public RegisterCustomerController(RegistrationService registrationService, CustomerDaoJdbc customerDaoJdbc,
+    public RegisterCustomerController( CustomerDaoJdbc customerDaoJdbc,
                                       CustomerService customerService) {
-        this.registrationService = registrationService;
+
         this.customerDaoJdbc = customerDaoJdbc;
         this.customerService = customerService;
     }
@@ -44,13 +43,11 @@ public class RegisterCustomerController {
         if (mpCustomer instanceof Customer)
         {
             System.out.println(mpCustomer.getFirstName());
-            mpCustomer.setSalt(gensalt(12));
-            mpCustomer.setPassword(hashpw(mpCustomer.getPassword(), mpCustomer.getSalt() + forUser.getPEPPER()));
+            mpCustomer.setPassword(hashpw(mpCustomer.getPassword(), gensalt(12) + forUser.getPEPPER()));
             customerService.storeCustomer(mpCustomer);
             System.out.println((mpCustomer.getPassword()).length());
             return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
         }
         else return "Your registration was incomplete, please try again. Thank you!";
     }
-
 }

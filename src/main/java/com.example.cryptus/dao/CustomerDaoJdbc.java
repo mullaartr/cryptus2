@@ -37,7 +37,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
         Customer customer = new Customer(0,"","","","","",new Date(0),
-                "",new Address(0,"","",""),"","","");
+                "",new Address(0,"","",""),"","");
         System.out.println("hello");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
@@ -45,7 +45,6 @@ public class CustomerDaoJdbc implements CustomerDao {
         customer.setLastName(rs.getString("achternaam"));
         customer.setUserName(rs.getString("gebruikersnaam"));
         customer.setPassword(rs.getString("wachtwoord"));
-        customer.setSalt(rs.getString("salt"));
         customer.setBirthDate(rs.getDate("geboortedatum"));
 
         customer.setStreet(rs.getString("straat"));
@@ -60,17 +59,24 @@ public class CustomerDaoJdbc implements CustomerDao {
             return customer;
     };
 
-    RowMapper<Customer> userRowMapper = ((rs, rowNum) -> {
-        Customer user = new Customer(0, "", "", "", "", "",new Date(0),"",new Address(0,"","",""),"","", "");
+
+
+
+
+
+
+
+    RowMapper<Customer> userRowMapper = (rs, rowNum) -> {
+        Customer user = new Customer(0, "", "", "", "", "");
+
         user.setUserId(rs.getInt("userId"));
         user.setFirstName(rs.getString("voornaam"));
         user.setPreposition(rs.getString("tussenvoegsel"));
         user.setLastName(rs.getString("achternaam"));
         user.setUserName(rs.getString("gebruikersnaam"));
         user.setPassword(rs.getString("wachtwoord"));
-        user.setSalt(rs.getString("salt"));
         return user;
-    });
+    };
 
 
     @Override
@@ -89,13 +95,12 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
     private PreparedStatement insertUserStatement(Customer customer, Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord, salt) values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, customer.getFirstName());
         ps.setString(2, customer.getPreposition());
         ps.setString(3, customer.getLastName());
         ps.setString(4, customer.getUserName());
         ps.setString(5, customer.getPassword());
-        ps.setString(6, customer.getSalt());
        return ps;
     }
 
@@ -129,9 +134,9 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Override
     public void update(Customer customer) {
         String sql = "UPDATE user " +
-                "SET voornaam = ?, tussenvoegsel = ?, achternaam = ?, gebruikersnaam = ?, wachtwoord = ?, salt = ?  WHERE userId = ?" ;
+                "SET voornaam = ?, tussenvoegsel = ?, achternaam = ?, gebruikersnaam = ?, wachtwoord = ?  WHERE userId = ?" ;
         int update2 = jdbcTemplate.update(sql,customer.getFirstName(), customer.getPreposition(), customer.getLastName(), customer.getUserName(),
-                customer.getPassword(),customer.getSalt());
+                customer.getPassword());
         String sql1 =  "UPDATE klant " +
                 "SET geboortedatum = ?, straat = ?, huisnummer = ?, postcode = ?, woonplaats = ?, bsn = ?, emailadres = ?," +
                 " telefoon = ?, geboorteDatum = ?, BSN =?  WHERE userId = ?" ;
@@ -145,7 +150,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM user WHERE userId= ?");
+        jdbcTemplate.update("DELETE FROM user WHERE userId= ?",id);
 
 
     }
@@ -199,7 +204,20 @@ public class CustomerDaoJdbc implements CustomerDao {
         return Optional.ofNullable(portefeuille);
     }
 
+    @Override
+    public Optional<Customer> findCustomerByEmail(String email) {
+        String sql ="select * from klant where emailadres = ?";
+        Customer customer = null;
+        try{
 
+            customer = jdbcTemplate.queryForObject(sql,userRowMapper,email);
+
+        }catch (DataAccessException exception){
+            logger.info("A new customer");
+        }
+        return Optional.ofNullable(customer);
+
+    }
 
 
 }

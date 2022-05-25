@@ -5,11 +5,10 @@ import com.example.cryptus.model.Account;
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
-import com.example.cryptus.service.AuthenticatieService;
 import com.example.cryptus.service.CustomerDTO;
 import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.LoginCustomerService;
-import com.example.cryptus.service.LoginService;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +23,7 @@ import java.util.Optional;
 @RequestMapping(path = "login")
 public class LoginController {
     private final LoginCustomerService loginCustomerService;
-    private AuthenticatieService authenticatieService;
     private CustomerService customerService;
-    private LoginService loginService;
     private CustomerDaoJdbc customerDaoJdbc;
 
     Account forUser = new Account("password");
@@ -44,8 +41,7 @@ public class LoginController {
             "12345678",
            new Address(11, "Suchlaan", "1234BC", "Hilversum"),
             "adam@hilversum.von",
-            "067373837463",
-            "**********"
+            "067373837463"
     );
 
     Customer devil = new Customer(
@@ -59,16 +55,12 @@ public class LoginController {
             "12345678",
             new Address(11, "Suchlaan", "1234BC", "Hilversum"),
             "adam@hilversum.von",
-            "067373837463",
-            "**********"
+            "067373837463"
     );
 
     @Autowired
-    LoginController(LoginCustomerService loginCustomerService, LoginService loginService,
-                    AuthenticatieService authenticatieService, CustomerDaoJdbc customerDaoJdbc) {
+    LoginController(LoginCustomerService loginCustomerService, CustomerDaoJdbc customerDaoJdbc) {
         this.loginCustomerService = loginCustomerService;
-        this.loginService = loginService;
-        this.authenticatieService = authenticatieService;
         this.customerDaoJdbc = customerDaoJdbc;
     }
 

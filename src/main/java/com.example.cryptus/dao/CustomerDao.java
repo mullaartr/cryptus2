@@ -20,4 +20,6 @@ public interface CustomerDao {
 
     Optional<Portefeuille>findCustomerByPortefeuilleId(int portefeuilleId);
 
+    Optional<Customer> findCustomerByEmail(String email);
+
 }
