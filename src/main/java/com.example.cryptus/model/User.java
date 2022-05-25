@@ -35,12 +35,19 @@ public abstract class User {
         this.password = password;
     }
 
-
-
     //Daan: I created this no-args constructor
     public User() {
         super();
         logger.info("User created with no-args constructor");
+    }
+
+    //Daan: I created this constructor for registration
+    public User(String firstName, String preposition, String lastName, String userName, String password) {
+        this.firstName = firstName;
+        this.preposition = preposition;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
     }
 
     public User(int userId) {
