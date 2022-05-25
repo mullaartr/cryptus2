@@ -30,12 +30,8 @@ public abstract class User {
         this.password = password;
     }
 
-    public User(String firstName, String preposition, String lastName, String userName, String password) {
-        this.firstName = firstName;
-        this.preposition = preposition;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
+
+    public User() {
     }
 
     public User(int userId) {

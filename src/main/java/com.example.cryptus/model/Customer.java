@@ -29,11 +29,22 @@ public class Customer extends User {
     }
 
 
+    public Customer() {
+            super();
+    }
+
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
         super(userId, firstName, preposition, lastName, userName, password);
     }
 
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public int getUserId() {
         return super.getUserId();

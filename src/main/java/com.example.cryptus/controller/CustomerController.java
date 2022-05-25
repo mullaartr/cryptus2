@@ -55,8 +55,7 @@ public class CustomerController {
     }
 
     @GetMapping("/findByLastname")
-    @ResponseBody
-    Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
+    @ResponseBody Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
         return  customerService.findCustomerByName(name);
     }
     @DeleteMapping(value = "/delete")
@@ -75,8 +74,7 @@ public class CustomerController {
     @PostMapping(value = "/create")
     @ResponseBody String createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException{
         if (customer instanceof Customer) {
-            customer.setSalt(gensalt(12));
-            customer.setPassword(hashpw(customer.getPassword(),customer.getSalt()+ customerAccount.getPEPPER()));
+            customer.setPassword(hashpw(customer.getPassword(),gensalt(12)+ customerAccount.getPEPPER()));
             customerService.storeCustomer(customer);
         }
         return "Hello " + customer.getFirstName() + " Here is a summary of your information: \n "  + customer.toString();
