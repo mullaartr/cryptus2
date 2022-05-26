@@ -204,7 +204,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId) {
-        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId where p.portefeuilleID = ?";
+        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId join klant k on k.userId = user.userId  where p.portefeuilleID = ?";
         Customer customer = null;
 
         try{

@@ -4,11 +4,12 @@ import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.dao.PortefeuilleDAOJdbc;
 import com.example.cryptus.dto.PortefeuilleDTO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Portefeuille {
+public class Portefeuille implements Serializable {
 
     int portefeuilleId;
     private List<Asset> assets;
@@ -32,7 +33,7 @@ public class Portefeuille {
     }
 
     public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
-        this(0, portefeuilleDTO.getOwner(), portefeuilleDTO.getAssets());
+        this(portefeuilleDTO.getPortefeuilleId(), portefeuilleDTO.getOwner(), portefeuilleDTO.getAssets());
     }
 
     public double berekenWaarde(){

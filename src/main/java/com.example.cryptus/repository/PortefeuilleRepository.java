@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,6 +33,26 @@ public class PortefeuilleRepository {
         portefeuilleDAO.store(portefeuille);
     }
 
+    public Optional<List<Portefeuille>> findAllPortefeuilles(){
+        Optional<List<Portefeuille>> portefeuilles = portefeuilleDAO.findPortefeuilles();
+
+        if(portefeuilles.isEmpty()){
+            return Optional.empty();
+        }
+
+        List<Portefeuille> portefeuilles1 = portefeuilles.get();
+        for (int i = 0; i < portefeuilles1.size(); i++) {
+            Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(portefeuilles1.get(i).getPortefeuilleId());
+            if (customerOptional.isEmpty()) {
+                return Optional.empty();
+            }
+            Customer customer = customerOptional.get();
+            portefeuilles1.get(i).setOwner(customer);
+            //customer.setPortefeuille(portefeuilles1.get(i));
+        }
+        return Optional.of(portefeuilles1);
+    }
+
     public Optional<Portefeuille> findPortefeuilleWithCustomerById(int id){
         Optional<Portefeuille> portefeuilleOptional = portefeuilleDAO.findPortefeuilleById(id);
 
@@ -47,7 +68,7 @@ public class PortefeuilleRepository {
         }
         Customer customer = customerOptional.get();
         portefeuille.setOwner(customer);
-        customer.setPortefeuille(portefeuille);
+        //customer.setPortefeuille(portefeuille);
 
         return Optional.of(portefeuille);
     }
@@ -56,7 +77,7 @@ public class PortefeuilleRepository {
         portefeuilleDAO.update(portefeuille, asset);
     }
 
-    public void deletePortefeuille(Portefeuille portefeuille){
-        portefeuilleDAO.delete(portefeuille.getPortefeuilleId());
+    public void deletePortefeuille(int id){
+        portefeuilleDAO.delete(id);
     }
 }

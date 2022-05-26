@@ -26,9 +26,8 @@ public class BsnService {
 
     private boolean isElfProef(int[] digits, int[] multipliers)
     {
-        long sum = 0;
-        for (int i = 0; i < multipliers.length; i++)
-        {
+        int sum = 0;
+        for (int i = 0; i < multipliers.length; i++) {
             sum += digits[i] * multipliers[i];
         }
         return sum % 11 == uitkomst;

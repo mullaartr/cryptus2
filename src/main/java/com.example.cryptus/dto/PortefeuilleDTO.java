@@ -4,19 +4,24 @@ import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class PortefeuilleDTO {
-
+public class PortefeuilleDTO  {
+    private int portefeuilleId;
     private List<Asset> assets;
-    private CustomerDTO owner;
+    private Customer owner; // moet eigenlijk customerDTo worden
 
 
+    public PortefeuilleDTO() {
 
+    }
 
     public PortefeuilleDTO(Portefeuille portefeuille) {
+        this.portefeuilleId = portefeuille.getPortefeuilleId();
         this.assets = portefeuille.getAssets();
-        //this.owner = new CustomerDTO(portefeuille.getOwner());
+        this.owner = portefeuille.getOwner();
     }
 
     public List<Asset> getAssets() {
@@ -27,4 +32,19 @@ public class PortefeuilleDTO {
         this.assets = assets;
     }
 
+    public int getPortefeuilleId() {
+        return portefeuilleId;
+    }
+
+    public void setPortefeuilleId(int portefeuilleId) {
+        this.portefeuilleId = portefeuilleId;
+    }
+
+    public Customer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
 }
