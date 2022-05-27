@@ -34,20 +34,10 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     }
 
 
-    ResultSetExtractor<Portefeuille> resultSetExtractor = rs ->  {
+    RowMapper<Portefeuille> rowMapper = (rs, rownum) ->  {
         Portefeuille portefeuille = new Portefeuille();
         portefeuille.setOwner(null);
-        List<Asset> assets = new ArrayList<>();
-        while(rs.next()){
-            portefeuille.setPortefeuilleId(rs.getInt("portefeuilleId"));
-            Asset asset = new Asset();
-            asset.setAssetId(rs.getInt("assetId"));
-            asset.setAssetNaam(rs.getString("naam"));
-            asset.setAssetAfkorting(rs.getString("afkorting"));
-            asset.setSaldo(rs.getDouble("saldo"));
-            assets.add(asset);
-        }
-        portefeuille.setAssets(assets);
+        portefeuille.setPortefeuilleId(rs.getInt("portefeuilleId"));
         return portefeuille;
     };
 
@@ -78,15 +68,26 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     @Override
     public Optional<Portefeuille> findPortefeuilleById(int id) {
-        String Sql = "select * from portefeuille p join portefeuille_Regel po on p.portefeuilleID = po.portefeuilleId" +
-                "                join asset a on a.assetId = po.assetId  where p.portefeuilleId = ?";
+        String Sql = "select * from portefeuille p where p.portefeuilleId = ?";
         Portefeuille portefeuille = null;
         try{
-            portefeuille = jdbcTemplate.query(Sql, resultSetExtractor, id);
+            portefeuille = jdbcTemplate.queryForObject(Sql, rowMapper, id);
+            portefeuille.setAssets(findAssetsByPortefeuille(id).orElse(null));
         }catch (DataAccessException exception){
             logger.info("portefeuille was not found");
         }
         return Optional.of(portefeuille);
+    }
+
+    private Optional<List<Asset>> findAssetsByPortefeuille(int id){
+        String sql = "select * from portefeuille_Regel po join asset a on a.assetId = po.assetId  where po.portefeuilleId = ?";
+        List<Asset> assets = null;
+        try {
+            assets = jdbcTemplate.query(sql, assetResultExtractor, id);
+        }catch (DataAccessException exception){
+            logger.info("no assets where found found");
+        }
+        return Optional.of(assets);
     }
 
     @Override
