@@ -5,8 +5,10 @@ import com.example.cryptus.service.TransactionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -37,9 +39,27 @@ public class TransactionController {
     }
 
     @PostMapping("create_transaction")
-    @ResponseBody Transaction createTransaction(@RequestBody Transaction transaction) {
+    @ResponseBody
+    public ResponseEntity<Transaction> createTransaction (@RequestBody Transaction transaction) throws NoSuchAlgorithmException {
         transactionService.createTransaction(transaction);
-        return transaction;
+        return ResponseEntity.ok().body(transaction);
     }
+
+    @PostMapping(value = "/update_transaction/{transactionid}/{assetammount}")
+    @ResponseBody
+    public ResponseEntity<Transaction> updateTransaction (@PathVariable ("transactionid") int transactionId,
+                                                          @PathVariable ("assetammount") int assetAmount) {
+        transactionService.updateTransaction(transactionId, assetAmount);
+        return null;
+
+    }
+
+    @DeleteMapping(value = "/delete_transaction/{transactionid}")
+    @ResponseBody
+    public ResponseEntity<Transaction> deleteTransaction (@RequestBody Transaction transaction, @PathVariable("transactionid")int transactionId){
+        transactionService.deleteTransaction(transaction, transactionId);
+        return null;
+    }
+
 
 }

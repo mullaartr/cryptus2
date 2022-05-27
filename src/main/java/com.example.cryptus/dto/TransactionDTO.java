@@ -1,6 +1,4 @@
 package com.example.cryptus.dto;
-import com.example.cryptus.model.Asset;
-import com.example.cryptus.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +13,7 @@ public class TransactionDTO {
     private double assetammount;
     private double euroammount;
     private int commisionPercentage;
-    private LocalDateTime timestamp;
+    private LocalDateTime creationTimestamp;
 
     public TransactionDTO() {
         super();
@@ -23,7 +21,7 @@ public class TransactionDTO {
     }
     public TransactionDTO(int transactionId, String koper, String verkoper,
                           int asset, double assetammount, double euroammount,
-                          int commisionPercentage, LocalDateTime timestamp) {
+                          int commisionPercentage, LocalDateTime creationTimestamp) {
         this.transactionId = transactionId;
         this.koperIban = koper;
         this.verkoperIban = verkoper;
@@ -31,7 +29,7 @@ public class TransactionDTO {
         this.assetammount = assetammount;
         this.euroammount = euroammount;
         this.commisionPercentage = commisionPercentage;
-        this.timestamp = timestamp;
+        this.creationTimestamp = creationTimestamp;
         logger.info("Nieuwe transactieDTO die de all arg constructor gebruikt" +
                 ".");
     }
@@ -91,12 +89,12 @@ public class TransactionDTO {
         this.commisionPercentage = commisionPercentage;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreationTimestamp() {
+        return creationTimestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreationTimestamp(LocalDateTime creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
     @Override
@@ -109,7 +107,7 @@ public class TransactionDTO {
                 ", assetammount=" + assetammount +
                 ", euroammount=" + euroammount +
                 ", commisionPercentage=" + commisionPercentage +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + creationTimestamp +
                 '}';
     }
 }
