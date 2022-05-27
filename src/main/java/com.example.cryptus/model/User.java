@@ -2,7 +2,9 @@ package com.example.cryptus.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public abstract class User {
 
@@ -29,7 +31,6 @@ public abstract class User {
         this.userName = userName;
         this.password = password;
     }
-
 
     public User() {
     }

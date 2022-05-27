@@ -5,10 +5,14 @@ import com.example.cryptus.model.Customer;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mindrot.jbcrypt.BCrypt.gensalt;
 
 public class TestControllerLasha {
-    private CustomerDaoJdbc customerDaoJdbc;
+    private static CustomerDaoJdbc customerDaoJdbc;
     public static void main(String[] args) {
         String password = "abracadabra";
         String candidate = "abracadabra";
@@ -30,10 +34,16 @@ public class TestControllerLasha {
         String salt = gensalt(3);
         System.out.println(salt);
         System.out.println(salt.length());
-    }
 
-    Customer Baruch = new Customer(0, "Baruch", null, "Spinoza",
-            "baruch@spinoza.com", "baruchspinoza");
+        Customer Baruch = new Customer(0, "Baruch", null, "Spinoza",
+                "baruch@spinoza.com", "baruchspinoza");
+
+//        TEST TO EXTRACT ALL USERS AS LIST FROM DATABASE
+//        CURRENTLY NOT!!!
+        List<Customer> allCustomers = customerDaoJdbc.list();
+
+        System.out.println(Arrays.toString(allCustomers.toArray()));
+    }
 
 
 }
