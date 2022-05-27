@@ -7,25 +7,24 @@ public class Asset {
     String assetNaam;
     String assetAfkorting;
     double koersEuro; //voorlopig alleen koers waarde crypto in euro; later eventueel koers is dollar toevoegen
-    Portefeuille portefeuille;
 
     private double saldo;
 
-    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro, Portefeuille portefeuille, Double saldo) {
+    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro,  Double saldo) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
         this.koersEuro = koersEuro;
-        this.portefeuille = portefeuille;
+
         this.saldo = saldo;
     }
 
-    public Asset(String assetNaam, String assetAfkorting, double koersEuro, Portefeuille portefeuille, double saldo) {
-        this(0, assetNaam, assetAfkorting, koersEuro, portefeuille, saldo);
+    public Asset(String assetNaam, String assetAfkorting, double koersEuro, double saldo) {
+        this(0, assetNaam, assetAfkorting, koersEuro,  saldo);
     }
 
     public Asset() {
-        this(null, null, 0, null, 0);
+        this(0, null, null, 0, 0.0);
     }
 
 
@@ -62,13 +61,7 @@ public class Asset {
         this.koersEuro = koersEuro;
     }
 
-    public Portefeuille getPortefeuille() {
-        return portefeuille;
-    }
 
-    public void setPortefeuille(Portefeuille portefeuille) {
-        this.portefeuille = portefeuille;
-    }
 
     public double getSaldo() {
         return saldo;
@@ -98,7 +91,6 @@ public class Asset {
                 ", assetNaam='" + assetNaam + '\'' +
                 ", assetAfkorting='" + assetAfkorting + '\'' +
                 ", koersEuro=" + koersEuro +
-                ", portefeuille=" + portefeuille +
                 ", saldo=" + saldo +
                 '}';
     }

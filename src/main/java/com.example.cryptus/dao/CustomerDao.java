@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface CustomerDao {
 
     Optional<Customer> findCustomerById(int id);
+    Optional<Customer> findCustomerByIban(String iban);
+
     void storeCustomer(Customer customer);
     List<Customer> list();
     void update(Customer customer);
@@ -18,7 +20,7 @@ public interface CustomerDao {
     Optional<Customer> findCustomerByName(String name);
     Optional<Customer> findCustomerByUsernamePassword(String username);
 
-    Optional<Portefeuille>findCustomerByPortefeuilleId(int portefeuilleId);
+    Optional<Customer>findCustomerByPortefeuilleId(int portefeuilleId);
 
     Optional<Customer> findCustomerByEmail(String email);
 

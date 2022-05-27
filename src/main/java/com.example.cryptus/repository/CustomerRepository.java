@@ -181,9 +181,10 @@ public class CustomerRepository  {
 
     }
 
-    public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId){
-        Optional<Portefeuille> portefeuilleOptional = customerDao.findCustomerByPortefeuilleId(portefeuilleId);
-        if(portefeuilleOptional.isEmpty()){
+    public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId){
+
+        Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(portefeuilleId);
+        if(customerOptional.isEmpty()){
             return Optional.empty();
 
         }else{

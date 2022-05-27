@@ -1,11 +1,17 @@
 package com.example.cryptus.model;
 
+
+import com.example.cryptus.dao.transfer.RegisterDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public abstract class User {
 
+    //Daan: I made a logger
+    private final Logger logger = LoggerFactory.getLogger(User.class);
 
     private int userId;
     private String firstName;
@@ -18,7 +24,6 @@ public abstract class User {
 
     Portefeuille portefeuille;
 
-
     @Autowired
     public User(int userId, String firstName, String preposition, String lastName, String userName, String password) {
 
@@ -30,8 +35,19 @@ public abstract class User {
         this.password = password;
     }
 
-
+    //Daan: I created this no-args constructor
     public User() {
+        super();
+        logger.info("User created with no-args constructor");
+    }
+
+    //Daan: I created this constructor for registration
+    public User(String firstName, String preposition, String lastName, String userName, String password) {
+        this.firstName = firstName;
+        this.preposition = preposition;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
     }
 
     public User(int userId) {

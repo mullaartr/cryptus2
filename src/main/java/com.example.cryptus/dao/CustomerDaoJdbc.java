@@ -93,6 +93,22 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 
+    @Override
+    public Optional<Customer> findCustomerByIban(String iban) {
+        String sql ="select * from klant JOIN user JOIN bankrekening on " +
+                "user.userId = klant.userId AND " +
+                "user.userid = bankrekening.userId where " +
+                "bankrekening.iban = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,iban);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+
+    }
 
     private PreparedStatement insertUserStatement(Customer customer, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -187,13 +203,13 @@ public class CustomerDaoJdbc implements CustomerDao {
     //SELECT * FROM cryptus.user WHERE gebruikersnaam = 'username' AND wachtwoord = 'password'"
 
     @Override
-    public Optional<Portefeuille> findCustomerByPortefeuilleId(int portefeuilleId) {
-        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId where p.portefeuilleID = ?";
-        Portefeuille portefeuille = null;
-        ResultSetExtractor resultSetExtractor = null;
+    public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId) {
+        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId join klant k on k.userId = user.userId  where p.portefeuilleID = ?";
+        Customer customer = null;
+
         try{
 
-            portefeuille = (Portefeuille) jdbcTemplate.query(sql, resultSetExtractor, portefeuilleId);
+            customer =  jdbcTemplate.queryForObject(sql, rowMapper, portefeuilleId);
 
            // portefeuille = jdbcTemplate.queryForObject(sql,new Object[]{portefeuilleId}, portefeuilleDAOJdbc.rowMapper);
 
@@ -201,7 +217,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
         }
-        return Optional.ofNullable(portefeuille);
+        return Optional.ofNullable(customer);
     }
 
     @Override

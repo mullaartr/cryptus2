@@ -9,11 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class AssetDaoJdbc implements AssetDao {
 
     private final Logger logger = LogManager.getLogger(AssetDaoJdbc.class);
@@ -51,23 +54,27 @@ public class AssetDaoJdbc implements AssetDao {
     @Override
     public Optional<Asset> findAssetById(int id) {
         List<Asset> assets =
-                jdbcTemplate.query("select * from Cryptus.Asset where AssetId = ?", new AssetRowMapper(), id);
-        if(assets.size() != 1) {
+                jdbcTemplate.query("select * from asset join " +
+                        "koers on asset.assetId = koers.assetb where assetId " +
+                        " = ?", new AssetRowMapper(), id);
+        if(assets.size() == 0) {
             return Optional.empty();
         } else {
             return Optional.of(assets.get(0));
         }
     }
 
-    //todo klopt mysql join?
+ //   todo klopt mysql join?
     @Override
     public Optional<Asset> findAssetByPortefeuille(Portefeuille portefeuille) {
         List<Asset> assets =
-                jdbcTemplate.query("select assetId, naam, afkorting, portefeuilleID " +
-                        "from Asset " +
-                        "left join portefeuille_regel on" +
-                        "portefeuille_regel.assetId = asset.assetId",
-                        new AssetRowMapper(), portefeuille);
+                jdbcTemplate.query("SELECT assetId, naam, afkorting, " +
+                                "portefeuilleID, wisselkoers " +
+                        "FROM Asset A JOIN portefeuille_regel on portefeuille_regel.assetId = A.assetId " +
+                                "join koers K on A.assetid = K.assetb " +
+                                "where portefeuilleID = ?"
+                        ,
+                        new AssetRowMapper(), portefeuille.getPortefeuilleId());
         if(assets.size() != 1) {
             return Optional.empty();
         } else return Optional.of(assets.get(0));
@@ -89,7 +96,11 @@ public class AssetDaoJdbc implements AssetDao {
     //update koers: set meest recente koers met een join
     @Override
     public void update(Asset asset, int id) {
-        String sql = "UPDATE cryptus.asset SET naam = ?, afkorting = ?, koers = ? WHERE assetId = ?";
+        String sql = "UPDATE asset A SET A.naam = ?, A.afkorting = ?, " +
+                "cryptus.koers.wisselkoers" +
+                " = ?" +
+ //       " JOIN koers K ON A.assetid = K.asseta" +
+                " WHERE assetId = ?";
         int update = jdbcTemplate.update(sql, asset.getAssetNaam(), asset.getAssetAfkorting(), asset.getKoersEuro());
         if(update==1) {
             logger.info("Asset updated" + asset.getAssetId());
@@ -106,11 +117,11 @@ public class AssetDaoJdbc implements AssetDao {
 
         @Override
         public Asset mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            int id = resultSet.getInt("cryptus.asset.AssetId");
-            String assetNaam = resultSet.getString("cryptus.naam");
-            String assetAfkorting = resultSet.getString("cryptus.afkorting");
-            double koersEuro = resultSet.getDouble("cryptus.koers.wisselkoers");
-            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, null, 0.0);//moet portefeuille wel null zijn?
+            int id = resultSet.getInt("assetId");
+            String assetNaam = resultSet.getString("naam");
+            String assetAfkorting = resultSet.getString("afkorting");
+            double koersEuro = resultSet.getDouble("wisselkoers");
+            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, 0.0);//moet portefeuille wel null zijn?
             return asset;
         }
     }

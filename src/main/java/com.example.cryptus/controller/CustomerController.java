@@ -1,5 +1,6 @@
 package com.example.cryptus.controller;
 import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.dto.CustomerDTO;
 import com.example.cryptus.model.Account;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
@@ -30,9 +31,9 @@ public class CustomerController {
     User user;
 
 
-
     private CustomerService customerService;
     CustomerRepository customerRepository;
+    CustomerDTO customerDTO;
     private CustomerDaoJdbc customerDaoJdbc;
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
@@ -71,15 +72,16 @@ public class CustomerController {
 
     }
 
-    @PostMapping(value = "/create")
-    @ResponseBody String createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException{
-        if (customer instanceof Customer) {
-            customer.setPassword(hashpw(customer.getPassword(),gensalt(12)+ customerAccount.getPEPPER()));
-            customerService.storeCustomer(customer);
-        }
-        return "Hello " + customer.getFirstName() + " Here is a summary of your information: \n "  + customer.toString();
+//<<<<<<< HEAD
+//    @PostMapping(value = "/create")
+//    @ResponseBody String createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException{
+//        if (customer instanceof Customer) {
+//            customer.setPassword(hashpw(customer.getPassword(),gensalt(12)+ customerAccount.getPEPPER()));
+//            customerService.storeCustomer(customer);
+//        }
+//        return "Hello " + customer.getFirstName() + " Here is a summary of your information: \n "  + customer.toString();
+//
 
-    }
 
     @PostMapping(value = "/login")
     @ResponseBody String login(@RequestBody Account account) throws NoSuchAlgorithmException {
@@ -91,6 +93,11 @@ public class CustomerController {
             return "Hello " + dbCustomer.getFirstName() + ", login successful!";
         }
         else return "Wrong username password combination";
+    }
+
+    @PostMapping("/save")
+    public CustomerDTO save(@RequestBody CustomerDTO customerDTO){
+        return null;
     }
 
 

@@ -1,22 +1,25 @@
 package com.example.cryptus.model;
 
+import com.example.cryptus.dao.transfer.RegisterDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 
 public class Customer extends User {
 
+    //Daan: I made a logger
+    private final Logger logger = LoggerFactory.getLogger(Customer.class);
 
-    private Date birthDate;
+    private java.util.Date birthDate;
     private String BSN;
     private String email;
     private String phone;
     private Address address;
 
-
-
-
         @Autowired
+
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
                         String userName, Date birthDate, String BSN,
                         Address address, String email, String phone) {
@@ -28,16 +31,31 @@ public class Customer extends User {
         this.address = address;
     }
 
-
     public Customer() {
             super();
+    }
+
+    public Customer(int userId, Address address) {
+        super(userId);
+        this.address = address;
     }
 
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
         super(userId, firstName, preposition, lastName, userName, password);
     }
 
+    //Daan: constructor for registerDto
+    public Customer(RegisterDto registerDto) {
+        super(registerDto.getFirstName(), registerDto.getPreposition(), registerDto.getLastName(),
+                registerDto.getUsername(), registerDto.getPassword());
+        this.birthDate = registerDto.getBirthDate();
+        this.BSN = registerDto.getBSN();
+        this.address = registerDto.getAddress();
+        this.phone = registerDto.getPhone();
+        this.email = registerDto.getEmail();
+    }
 
+    //Daan: I made getter and setter for Address
     public Address getAddress() {
         return address;
     }
@@ -94,7 +112,7 @@ public class Customer extends User {
         super.setPassword(password);
     }
 
-    public Date getBirthDate() {
+    public java.util.Date getBirthDate() {
         return birthDate;
     }
 
