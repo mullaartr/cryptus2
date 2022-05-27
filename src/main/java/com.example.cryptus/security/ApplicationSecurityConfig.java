@@ -90,13 +90,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .roles(ADMINTRAINEE.name()) // ROLE_ADMINTRAINEE
                 .authorities(ADMINTRAINEE.getGrantedAuthorities())
                 .build();
+//        UserDetails alainBadioUser = User.builder()
+//                .username(customerDaoJdbc.findCustomerByUsernamePassword("alain@badiou.nl").get().getUserName())
+//                .password(passwordEncoder.encode("alainbadiou"))
+//                .roles(CUSTOMER.name())
+//                .build();
 
         return new InMemoryUserDetailsManager(
                 baruchSpinozaUser,
                 napoleonUser,
                 adamHilversumUser,
                 alainBadioUser,
-                peterPanUser
+                peterPanUser,
+                adamHilversumUser
+                //alainBadioUser
         );
     }
 }

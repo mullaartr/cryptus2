@@ -1,7 +1,9 @@
 package com.example.cryptus.dao;
 
 import com.example.cryptus.dto.TransactionDTO;
-import com.example.cryptus.model.*;
+import com.example.cryptus.model.Asset;
+import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +12,19 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class TransactionDaoJdbc {
+public class TransactionDaoJdbc implements TransactionDao {
 
-    private final Logger logger = LoggerFactory.getLogger(TransactionDaoJdbc.class);
-    private JdbcTemplate jdbcTemplate;
+    private final Logger logger =
+            LoggerFactory.getLogger(TransactionDaoJdbc.class);
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public TransactionDaoJdbc(JdbcTemplate jdbcTemplate) {
@@ -31,34 +34,34 @@ public class TransactionDaoJdbc {
     }
 
     private PreparedStatement insertTransactionStatement(Transaction transaction, Connection connection) throws SQLException {
-
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
-                        "transactie (datumtijd, kosten, percentage, creditiban, " +
-                        "debitiban,euroammount, debitPortefeuilleID, " +
-                        "creditportefeuilleID1, " +
-                        "AssetId, assetammount) VALUES (?,?,?,?,?,?,?,?,?,?) ",
-                Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, transaction.getTimestamp().toString());
-        ps.setDouble(2, transaction.calcCommission());
-        ps.setInt(3, transaction.getCommisionPercentage());
-        ps.setString(3, transaction.getVerkoper().getBankAccount().getIban());
-        ps.setString(4, transaction.getKoper().getBankAccount().getIban());
-        ps.setDouble(5, transaction.getEuroammount());
-        ps.setInt(6,
-                transaction.getKoper().getPortefeuille().getPortefeuilleId());
-        ps.setInt(7,
-                transaction.getVerkoper().getPortefeuille().getPortefeuilleId());
-        ps.setInt(8, transaction.getAsset().getAssetId());
-        ps.setDouble(9, transaction.getAssetammount());
-        return ps;
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
+                            "transactie (datumtijd, kosten, percentage, creditiban, debitiban,euroammount, debitPortefeuilleID,creditportefeuilleID1,AssetId, assetammount) VALUES (?,?,?,?,?,?,?,?,?,?) ",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, transaction.getTimestamp().toString());
+            ps.setDouble(2, transaction.calcCommission());
+            ps.setInt(3, transaction.getCommisionPercentage());
+            ps.setString(4, transaction.getVerkoper().getBankAccount().getIban());
+            ps.setString(5, transaction.getKoper().getBankAccount().getIban());
+            ps.setDouble(6, transaction.getEuroammount());
+            ps.setInt(7,
+                    transaction.getKoper().getPortefeuille().getPortefeuilleId());
+            ps.setInt(8,
+                    transaction.getVerkoper().getPortefeuille().getPortefeuilleId());
+            ps.setInt(9, transaction.getAsset().getAssetId());
+            ps.setDouble(10, transaction.getAssetammount());
+            return ps;
+        } catch (SQLException e) {
+            logger.error("SQL fout tegengekomen");
+            e.printStackTrace();
+            System.exit(-99);
+        }
+        return null;
     }
 
     private static class TransactionDTORowMapper implements RowMapper<TransactionDTO> {
 
-        private Customer user;
-
-        public TransactionDTORowMapper() {
-        }
+        private final Customer user;
 
         public TransactionDTORowMapper(Customer user) {
             this.user = user;
@@ -85,23 +88,26 @@ public class TransactionDaoJdbc {
         }
     }
 
-//    @Override
+    @Override
     public void createTransaction(Transaction transaction) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertTransactionStatement(transaction, connection), keyHolder);
-        int newKey = keyHolder.getKey().intValue();
+        int newKey = Objects.requireNonNull(keyHolder.getKey()).intValue();
         transaction.setTransactionId(newKey);
     }
 
-//    @Override
-    public void update(Transaction transaction) {
+    @Override
+    public void update(int transactionId, int assetAmount) {
+        jdbcTemplate.update("UPDATE transactie SET assetammount = ? WHERE " +
+                "transactieId = ?", assetAmount, transactionId);
 
     }
 
-//    @Override
+    @Override
     public void deleteTransaction(int transactionId) {
-        jdbcTemplate.update("DELETE FROM transactie WHERE transactieId = ?", transactionId);
+        jdbcTemplate.update("DELETE FROM transactie WHERE transactieId = ?",transactionId);
     }
+
 
 //    @Override
 //    public List<TransactionDTO> findTransactionsByUser(int userId) {
@@ -112,20 +118,19 @@ public class TransactionDaoJdbc {
 //        return transactions;
 //    }
 
-//    @Override
+    @Override
     public List<TransactionDTO> findTransactionsByUser(Customer user) {
-        List<TransactionDTO> transactions = jdbcTemplate.query("SELECT * FROM " +
+        return jdbcTemplate.query("SELECT * FROM " +
                         "transactie JOIN bankrekening on " +
                         "bankrekening.iban = transactie.debitiban OR " +
                         "bankrekening.iban = transactie.creditiban WHERE" +
                         " userId = ?",
                 new TransactionDTORowMapper(user), user.getUserId());
-        return transactions;
     }
 
-//    @Override
-//    public Optional<Transaction> findTransactionById(int transactionId) {
-//        List<Transaction> transactions =
+    @Override
+    public Optional<Transaction> findTransactionById(int transactionId) {
+//        List<TransactionDTO> transactions =
 //                jdbcTemplate.query ("select * from transactie where " +
 //                                "transactieId = ?",new TransactionDTORowMapper(),
 //                        transactionId);
@@ -134,5 +139,6 @@ public class TransactionDaoJdbc {
 //        } else {
 //            return Optional.of(transactions.get(0));
 //        }
-//    }
+        return Optional.empty();
+    }
 }

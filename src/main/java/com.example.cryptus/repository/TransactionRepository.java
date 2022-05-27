@@ -19,9 +19,9 @@ import java.util.Optional;
 public class TransactionRepository {
 
     private TransactionDao transactionDao;
-    private TransactionDaoJdbc transactionDaoJdbc;
-    private CustomerDaoJdbc customerDaoJdbc;
-    private AssetDaoJdbc assetDaoJdbc;
+    private final TransactionDaoJdbc transactionDaoJdbc;
+    private final CustomerDaoJdbc customerDaoJdbc;
+    private final AssetDaoJdbc assetDaoJdbc;
 
     @Autowired
     public TransactionRepository(TransactionDaoJdbc transactionDaoJdbc,
@@ -39,25 +39,31 @@ public class TransactionRepository {
                 transactionDaoJdbc.findTransactionsByUser(customer);
 
         for (TransactionDTO t : transactions) {
-            // vind transactie met dit id EN en id verkoper
-            Optional<Customer> buyer =
+
+            Optional<Customer> koper =
                     customerDaoJdbc.findCustomerByIban(t.getKoperIban());
-            Optional<Customer> seller =
+            Optional<Customer> verkoper =
                     customerDaoJdbc.findCustomerByIban(t.getVerkoperIban());
-            Asset asset = assetDaoJdbc.findAssetById(t.getAsset()).get();
+            Asset asset =
+                    assetDaoJdbc.findAssetById(t.getAsset()).get();
             Transaction transaction = new Transaction(
-                    t.getTransactionId(), buyer.get(), seller.get(),//wat als
-                    // buyer of seller er niet is in de DB
-                    asset, t.getAssetammount(), t.getEuroammount(), t.getCommisionPercentage(),
-                    t.getTimestamp()
+                    t.getTransactionId(), koper.get(), verkoper.get(),
+                    asset, t.getAssetammount(), t.getEuroammount(),
+                    t.getCommisionPercentage(), t.getCreationTimestamp()
             );
-            result.add( transaction);
+            result.add(transaction);
         }
         return result;
     }
 
     public void createTransaction(Transaction transaction) {
-        transactionDao.createTransaction(transaction);
+        transactionDaoJdbc.createTransaction(transaction);
+    }
 
+    public void updateTransaction(int transactionId, int assetAmount) {
+        transactionDao.update(transactionId, assetAmount);
+    }
+
+    public void deleteTransaction(Transaction transaction, int id) {
     }
 }

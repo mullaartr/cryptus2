@@ -24,8 +24,7 @@ public class BsnService {
 
     }
 
-    private boolean isElfProef(int[] digits, int[] multipliers)
-    {
+    private boolean isElfProef(int[] digits, int[] multipliers){
         int sum = 0;
         for (int i = 0; i < multipliers.length; i++) {
             sum += digits[i] * multipliers[i];
@@ -33,13 +32,11 @@ public class BsnService {
         return sum % 11 == uitkomst;
     }
 
-    private int[] getDigits(String nummer)
-    {
+    private int[] getDigits(String nummer) {
         int[] digits = new int[9];
         for (int i = 0; i < nummer.length() ; i++) {
             digits[i] = Character.getNumericValue(nummer.charAt(i));
         }
-
         return digits;
     }
 }

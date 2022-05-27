@@ -35,8 +35,17 @@ public class TransactionService {
         }
         return new ArrayList<>();
     }
+
     public void createTransaction(Transaction transaction) {
-         transactionRepository.createTransaction(transaction);
+        transactionRepository.createTransaction(transaction);
+    }
+
+    public void updateTransaction(int transactionId, int assetAmount) {
+        transactionRepository.updateTransaction(transactionId, assetAmount);
+    }
+
+    public void deleteTransaction(Transaction transaction, int id) {
+        transactionRepository.deleteTransaction(transaction, id);
     }
 
 }
