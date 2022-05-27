@@ -16,17 +16,81 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "login")
+@RequestMapping(path = "/login")
 public class LoginController {
     private final LoginCustomerService loginCustomerService;
     private CustomerService customerService;
     private CustomerDaoJdbc customerDaoJdbc;
 
-    Account forUser = new Account("password");
+    static Account forUser = new Account("password");
+
+    private static final List<Customer> CUSTOMERS = Arrays.asList(
+            new Customer(
+                    1,
+                    "Adam",
+                    null,
+                    "Hilversum",
+                    "adamhilversum",
+                    "adam@hilversum.nl",
+                    Date.valueOf("1982-12-12"),
+                    "12345678",
+                    new Address(11, "Suchlaan", "1234BC", "Hilversum"),
+                    "adam@hilversum.von",
+                    "067373837463"),
+            new Customer(
+                    2,
+                    "Baruch",
+                    null,
+                    "Spinoza",
+                   "baruchspinoza",
+                    "baruch@spinoza.nl",
+                    Date.valueOf("1982-12-12"),
+                    "12345678",
+                    new Address(11, "Suchlaan", "1234BC", "Hilversum"),
+                    "adam@hilversum.von",
+                    "067373837463"),
+            new Customer(
+                    3,
+                    "Alain",
+                    null,
+                    "Badiou",
+                    "alainbadiou",
+                    "alain@badiou.nl",
+                    Date.valueOf("1982-12-12"),
+                    "12345678",
+                    new Address(11, "Suchlaan", "1234BC", "Hilversum"),
+                    "adam@hilversum.von",
+                    "067373837463"),
+            new Customer(
+                    4,
+                    "James",
+                    null,
+                    "Bond",
+                    "jamesbond",
+                    "james@bond.nl",
+                    Date.valueOf("1982-12-12"),
+                    "12345678",
+                    new Address(11, "Suchlaan", "1234BC", "Hilversum"),
+                    "adam@hilversum.von",
+                    "067373837463"),
+            new Customer(
+                    5,
+                    "Tom",
+                    "and",
+                    "Jerry",
+                    "tomjerry",
+                    "tom@jerry.nl",
+                    Date.valueOf("1982-12-12"),
+                    "12345678",
+                    new Address(11, "Suchlaan", "1234BC", "Hilversum"),
+                    "adam@hilversum.von",
+                    "067373837463")
+    );
 
     String wordForPassword = forUser.hashSaltNPepper("password");
 
@@ -44,19 +108,19 @@ public class LoginController {
             "067373837463"
     );
 
-    Customer devil = new Customer(
-            1,
-            "Adam",
-            "von",
-            "Hilversum",
-            forUser.hashSaltNPepper("password"),
-            "alsomail@email.com",
-            Date.valueOf("1982-12-12"),
-            "12345678",
-            new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-            "adam@hilversum.von",
-            "067373837463"
-    );
+//    Customer devil = new Customer(
+//            1,
+//            "Adam",
+//            "von",
+//            "Hilversum",
+//            forUser.hashSaltNPepper("password"),
+//            "alsomail@email.com",
+//            Date.valueOf("1982-12-12"),
+//            "12345678",
+//            new Address(11, "Suchlaan", "1234BC", "Hilversum"),
+//            "adam@hilversum.von",
+//            "067373837463"
+//    );
 
     @Autowired
     LoginController(LoginCustomerService loginCustomerService, CustomerDaoJdbc customerDaoJdbc) {
@@ -111,4 +175,11 @@ public class LoginController {
 //        return ResponseEntity.ok().body(new CustomerDTO(customer));
 //    }
 
+    @GetMapping(path = "/customer/{userId}")
+    public Customer getCustomerView(@PathVariable("userId") Integer userId) {
+        return CUSTOMERS.stream()
+                .filter(customer -> userId.equals(customer.getUserId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Customer " + userId + " does not exist"));
+    }
 }

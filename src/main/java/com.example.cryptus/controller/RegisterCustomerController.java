@@ -38,29 +38,25 @@ public class RegisterCustomerController {
     }
 
 
-    @PostMapping
-<<<<<<< HEAD
-    public String registration(@RequestBody Customer mpCustomer) throws NoSuchAlgorithmException {
-//        ResponseEntity<?>
-        if (mpCustomer instanceof Customer)
-        {
-            System.out.println(mpCustomer.getFirstName());
-            mpCustomer.setPassword(hashpw(mpCustomer.getPassword(), gensalt(12) + forUser.getPEPPER()));
-            customerService.storeCustomer(mpCustomer);
-            System.out.println((mpCustomer.getPassword()).length());
-            return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
-        }
-        else return "Your registration was incomplete, please try again. Thank you!";
-=======
-    public ResponseEntity<RegisterDto> registration(@RequestBody RegisterDto registerDto) throws NoSuchAlgorithmException {
-        Customer customer = new Customer(registerDto);
-        customer.setPassword(hashpw(customer.getPassword(), gensalt(12) + forUser.getPEPPER()));
-        customerService.storeCustomer(customer);
-        //registrationService.checkDouble(customer); //change to this when all methods work
-        return ResponseEntity.ok().body(registerDto);
->>>>>>> 085f5aecd69e2b9995f3e58e1989eb2e9ef24399
-    }
-
+//    @PostMapping
+//    public String registration(@RequestBody Customer mpCustomer) throws NoSuchAlgorithmException {
+////        ResponseEntity<?>
+//        if (mpCustomer instanceof Customer) {
+//            System.out.println(mpCustomer.getFirstName());
+//            mpCustomer.setPassword(hashpw(mpCustomer.getPassword(), gensalt(12) + forUser.getPEPPER()));
+//            customerService.storeCustomer(mpCustomer);
+//            System.out.println((mpCustomer.getPassword()).length());
+//            return "Congratulations " + mpCustomer.getFirstName() + ", you are now a registered member of Cryptus!";
+//        } else return "Your registration was incomplete, please try again. Thank you!";
+//        public ResponseEntity<RegisterDto> registration (@RequestBody RegisterDto registerDto) throws
+//        NoSuchAlgorithmException {
+//            Customer customer = new Customer(registerDto);
+//            customer.setPassword(hashpw(customer.getPassword(), gensalt(12) + forUser.getPEPPER()));
+//            customerService.storeCustomer(customer);
+//            //registrationService.checkDouble(customer); //change to this when all methods work
+//            return ResponseEntity.ok().body(registerDto);
+//        }
+//    }
 
 //    public String registration(@RequestBody Customer mpCustomer) throws NoSuchAlgorithmException {
 //        if (mpCustomer instanceof Customer)
