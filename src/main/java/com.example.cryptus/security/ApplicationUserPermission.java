@@ -6,7 +6,7 @@ public enum ApplicationUserPermission {
     CUSTOMER_WRITE("customer:write"),
     TRANSACTION_READ("transaction:read"),
     TRANSACTION_WRITE("transaction:write"),
-    PORTEFEUILLE_READ("portefeuille_read"),
+    PORTEFEUILLE_READ("portefeuille:read"),
     PORTEFEUILLE_WRITE("portefeuille:write");
 
     private final String permission;
