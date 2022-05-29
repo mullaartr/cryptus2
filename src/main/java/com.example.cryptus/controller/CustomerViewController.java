@@ -88,9 +88,9 @@ public class CustomerViewController {
                 .orElseThrow(() -> new IllegalStateException("Customer " + userId + " does not exist"));
     }
 
-    @GetMapping(path = "/allcustomers")
-    public List<Customer> getAllCustomerView(){
-        return CUSTOMERS;
-    }
+//    @GetMapping(path = "/allcustomers")
+//    public List<Customer> getAllCustomerView(){
+//        return CUSTOMERS;
+//    }
 
 }
