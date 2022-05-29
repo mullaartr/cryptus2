@@ -14,6 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.example.cryptus.security.ApplicationUserPermission.*;
 import static com.example.cryptus.security.ApplicationUserRole.*;
@@ -24,6 +28,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final CustomerDaoJdbc customerDaoJdbc;
+    private final String PEPPER = "iliaWavWavaZisSublisZarRvi";
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, CustomerDaoJdbc customerDaoJdbc) {
@@ -36,7 +41,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        Whitelisting URLs
         http
-                .csrf().disable() // COMING UP!
+//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
@@ -50,12 +57,31 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .defaultSuccessUrl("/assets", true)
+                    .passwordParameter("password")
+                    .usernameParameter("username")
+                .and()
+                .rememberMe()
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1))
+                    .key("cryptusSecureKey")
+                    .rememberMeParameter("remember-me")
+                .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                    .clearAuthentication((true))
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
     }
 
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
+//        This method should eventually retrieve users from the database
         UserDetails baruchSpinozaUser = User.builder()
                 .username("baruch@spinoza.nl")
                 .password(passwordEncoder.encode("baruchspinoza"))
