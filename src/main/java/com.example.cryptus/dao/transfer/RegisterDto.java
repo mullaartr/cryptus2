@@ -1,6 +1,7 @@
 package com.example.cryptus.dao.transfer;
 
 import com.example.cryptus.model.Address;
+import com.example.cryptus.model.BankAccount;
 
 import java.sql.Date;
 
@@ -16,12 +17,14 @@ public class RegisterDto {
     String email;
     String password;
     String username;
+    BankAccount bankAccount;
 
-    public RegisterDto(String firstName, String preposition, String lastName, java.sql.Date birthDate, String BSN,
+    public RegisterDto(String firstName, String preposition, String lastName, BankAccount bankAccount, java.sql.Date birthDate, String BSN,
                        Address address, String phone, String email, String password, String username) {
         this.firstName = firstName;
         this.preposition = preposition;
         this.lastName = lastName;
+        this.bankAccount = bankAccount;
         this.birthDate = birthDate;
         this.BSN = BSN;
         this.address = address;
@@ -29,6 +32,14 @@ public class RegisterDto {
         this.email = email;
         this.password = password;
         this.username = email;
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public String getUsername() {
