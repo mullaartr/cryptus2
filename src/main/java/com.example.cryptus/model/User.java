@@ -45,12 +45,13 @@ public abstract class User implements Serializable {
     }
 
     //Daan: I created this constructor for registration
-    public User(String firstName, String preposition, String lastName, String userName, String password) {
+    public User(String firstName, String preposition, String lastName, String userName, String password, BankAccount bankAccount) {
         this.firstName = firstName;
         this.preposition = preposition;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
+        this.bankAccount = bankAccount;
     }
 
     public User(int userId) {

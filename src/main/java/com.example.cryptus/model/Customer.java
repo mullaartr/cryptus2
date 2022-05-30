@@ -48,7 +48,7 @@ public class Customer extends User {
     //Daan: constructor for registerDto
     public Customer(RegisterDto registerDto) {
         super(registerDto.getFirstName(), registerDto.getPreposition(), registerDto.getLastName(),
-                registerDto.getUsername(), registerDto.getPassword());
+                registerDto.getUsername(), registerDto.getPassword(), registerDto.getBankAccount());
         this.birthDate = registerDto.getBirthDate();
         this.BSN = registerDto.getBSN();
         this.address = registerDto.getAddress();

@@ -1,21 +1,17 @@
 package com.example.cryptus.controller;
 
-import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.repository.CustomerRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers/view")
-public class CustomerViewController {
+@RequestMapping("manage/customers")
+public class CustomerManagementController {
 
     private static final List<Customer> CUSTOMERS = Arrays.asList(
             new Customer(
@@ -80,17 +76,29 @@ public class CustomerViewController {
                     "067373837463")
     );
 
-    @GetMapping(path = "{userId}")
-    public Customer getCustomerView(@PathVariable("userId") Integer userId) {
-        return CUSTOMERS.stream()
-                .filter(customer -> userId.equals(customer.getUserId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Customer " + userId + " does not exist"));
+//    hasRole("ROLE_") hasAnyRole("ROLE_") hasAuthority("permission") hasAnyAuthority("permission")
+
+    @GetMapping(path = "/allcustomers")
+    public List<Customer> getAllCustomers(){
+        System.out.println("getAllCustomers");
+        return CUSTOMERS;
     }
 
-//    @GetMapping(path = "/allcustomers")
-//    public List<Customer> getAllCustomerView(){
-//        return CUSTOMERS;
-//    }
+    @PostMapping(path = "{customerId}")
+    public void registerNewCustomer(@RequestBody Customer customer) {
+        System.out.println("registerNewCustomer");
+        System.out.println(customer);
+    }
 
+    @DeleteMapping(path = "{customerId}")
+    public void deleteCustomer(@PathVariable("customerId") Integer customerId){
+        System.out.println("deleteCustomer");
+        System.out.println(customerId);
+    }
+
+    @PutMapping(path = "{customerId}")
+    public void updateCustomer(@PathVariable("{customerId}") Integer customerId, @RequestBody Customer customer){
+        System.out.println("updateCustomer");
+        System.out.println(String.format("%s %s", customerId, customer));
+    }
 }

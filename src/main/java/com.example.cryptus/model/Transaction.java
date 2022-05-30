@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public class Transaction{
     private final Logger logger = LoggerFactory.getLogger(Transaction.class);
     private int transactionId;
-    private User koper;
-    private User verkoper;
+    private Customer koper;
+    private Customer verkoper;
     private Asset asset;
     private double assetammount;
     private double euroammount;
@@ -17,10 +17,13 @@ public class Transaction{
 
     public Transaction() {
         super();
+        this.timestamp = LocalDateTime.now();
         logger.info("Nieuwe transactie die de no arg constructor gebruikt.");
     }
-    public Transaction(int transactionId, User koper, User verkoper,
-                       Asset asset, double assetammount, double euroammount, int commisionPercentage, LocalDateTime timestamp) {
+    public Transaction(int transactionId, Customer koper, Customer verkoper,
+                       Asset asset, double assetammount, double euroammount,
+                       int commisionPercentage,
+                       LocalDateTime creationTimestamp) {
         this.transactionId = transactionId;
         this.koper = koper;
         this.verkoper = verkoper;
@@ -28,12 +31,13 @@ public class Transaction{
         this.assetammount = assetammount;
         this.euroammount = euroammount;
         this.commisionPercentage = commisionPercentage;
-        this.timestamp = timestamp;
+        this.timestamp = creationTimestamp;
         logger.info("Nieuwe transactie die de all arg constructor gebruikt.");
     }
-    public Transaction(User koper, User verkoper, Asset asset,
+    public Transaction(Customer koper, Customer verkoper, Asset asset,
                        double assetammount, double euroammount, int commisionPercentage) {
-        this (0,koper, verkoper, asset,assetammount,euroammount,commisionPercentage, LocalDateTime.now());
+        this (0,koper, verkoper, asset,assetammount,euroammount,
+                commisionPercentage, LocalDateTime.now());
         logger.info("Nieuwe transactie die de arg constructor voor de DB " +
                 "gebruikt.");
     }
@@ -49,7 +53,7 @@ public class Transaction{
         return koper;
     }
 
-    public void setKoper(User koper) {
+    public void setKoper(Customer koper) {
         this.koper = koper;
     }
 
@@ -57,7 +61,7 @@ public class Transaction{
         return verkoper;
     }
 
-    public void setVerkoper(User verkoper) {
+    public void setVerkoper(Customer verkoper) {
         this.verkoper = verkoper;
     }
 
@@ -102,9 +106,9 @@ public class Transaction{
     }
 
     public double calcCommission(){
-        //cryptohoeveelheid*koersineuro*percentage
 
-        return 0;
+        double percentage = commisionPercentage;
+        return (euroammount)*(percentage/100.00);
     }
 
     @Override
