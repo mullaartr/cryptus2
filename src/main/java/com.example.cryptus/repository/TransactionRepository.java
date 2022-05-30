@@ -48,8 +48,7 @@ public class TransactionRepository {
                     assetDaoJdbc.findAssetById(t.getAsset()).get();
             Transaction transaction = new Transaction(
                     t.getTransactionId(), koper.get(), verkoper.get(),
-                    asset, t.getAssetammount(), t.getEuroammount(),
-                    t.getCommisionPercentage(), t.getCreationTimestamp()
+                    asset, t.getAssetammount(), t.getEuroammount(), t.getCreationTimestamp()
             );
             result.add(transaction);
         }
@@ -60,10 +59,21 @@ public class TransactionRepository {
         transactionDaoJdbc.createTransaction(transaction);
     }
 
-    public void updateTransaction(int transactionId, int assetAmount) {
-        transactionDao.update(transactionId, assetAmount);
+    public void updateTransaction(Transaction transaction,
+                                  int transactionId) {
+        transactionDao.update(transaction,transactionId);
     }
 
-    public void deleteTransaction(Transaction transaction, int id) {
+    public void deleteTransaction(int id) {
+    }
+    public Optional<TransactionDTO> findTransactionById(int transactionId) {
+        Optional<TransactionDTO> opt =
+                transactionDao.findTransactionById(transactionId);
+        if(opt.isEmpty()){
+            return Optional.empty();
+
+        }else{
+            return transactionDao.findTransactionById(transactionId);
+        }
     }
 }

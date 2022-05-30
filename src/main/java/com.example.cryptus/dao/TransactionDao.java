@@ -10,9 +10,11 @@ import java.util.Optional;
 public interface TransactionDao {
 
     void createTransaction(Transaction transaction);
-    void update(int transactionId, int assetAmount);
+    void update(Transaction transaction, int transactionId);
      void deleteTransaction(int transactionId);
     List<TransactionDTO> findTransactionsByUser(Customer customer);
-    Optional<Transaction> findTransactionById(int transactionId);
+    Optional<TransactionDTO> findTransactionById(int transactionId);
+
+    public List<TransactionDTO> findTransactionsByUser(int userId);
 
 }
