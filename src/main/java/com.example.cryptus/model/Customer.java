@@ -6,13 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Customer extends User {
 
     //Daan: I made a logger
-    private final Logger logger = LoggerFactory.getLogger(Customer.class);
+    private final transient Logger logger = LoggerFactory.getLogger(Customer.class);
 
-    private java.util.Date birthDate;
+    private Date birthDate;
     private String BSN;
     private String email;
     private String phone;

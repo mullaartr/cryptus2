@@ -110,7 +110,7 @@ class PortefeuilleDAOJdbcTest {
         portefeuille1.setPortefeuilleId(4);
         portefeuilleDaoJDBCUnderTest.store(portefeuille1);
         Asset asset = portefeuille1.getAssets().
-                stream().filter(asset1 -> asset1.getAssetNaam() == "Bitcoin").
+                stream().filter(asset1 -> asset1.getAssetNaam().equals("Bitcoin")).
                 findAny().orElse(null);
         asset.setSaldo(10);
         portefeuilleDaoJDBCUnderTest.update(portefeuille1, "Bitcoin");
@@ -124,4 +124,6 @@ class PortefeuilleDAOJdbcTest {
         portefeuilleDaoJDBCUnderTest.delete(portefeuille1.getPortefeuilleId());
         assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4).orElse(null)).isEqualTo(new Portefeuille());
     }
+
+
 }

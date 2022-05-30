@@ -35,7 +35,7 @@ public class PortefeuilleController {
     }
 
 
-    @GetMapping(value = "/portefeuilleLijst")
+    @GetMapping
     @ResponseBody public ResponseEntity<List<PortefeuilleDTO>> portefeuilles(){
         List<Portefeuille> portefeuilles = portefeuilleService.findAll().orElse(null);
         List<PortefeuilleDTO> portefeuilleDTO = new ArrayList<>();
@@ -45,17 +45,24 @@ public class PortefeuilleController {
 
     @GetMapping(value = "/{id}")
     @ResponseBody public ResponseEntity<PortefeuilleDTO> portefeuille(@PathVariable("id") int id){
-        return ResponseEntity.ok().body(new PortefeuilleDTO(portefeuilleService.findPortefeuilleById(id).orElse(null)));
+        Optional<Portefeuille> portefeuille = portefeuilleService.findPortefeuilleById(id);
+        if(portefeuille.isPresent()){
+            return ResponseEntity.ok().body(new PortefeuilleDTO(portefeuille.orElse(null)));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<Portefeuille> store(@RequestBody PortefeuilleDTO portefeuilleDTO){
+    public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO){
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
         portefeuilleService.storePortefeuille(portefeuille);
-        return ResponseEntity.ok().body(portefeuille);
+        return ResponseEntity.ok().build();
+
     }
 
-    @PostMapping(value = "/update/{assetNaam}")
+    @PatchMapping (value = "/update/{assetNaam}")
     public ResponseEntity<Portefeuille> updateSaldo(@PathVariable("assetNaam") String asset, @RequestBody PortefeuilleDTO portefeuilleDTO){
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
         portefeuilleService.updatePortefeuille(portefeuille, asset);
@@ -63,8 +70,15 @@ public class PortefeuilleController {
     }
     //werkt niet: foreign key constraint
     @DeleteMapping(value = "/delete/{id}")
-    @ResponseBody public void deletePortefeuille(@PathVariable("id")int id){
-        portefeuilleService.deletePortefeuille(id);
+    public ResponseEntity <?>deletePortefeuille(@PathVariable("id")int id){
+        Optional<Portefeuille> portefeuille = portefeuilleService.findPortefeuilleById(id);
+        if(portefeuille.isPresent()){
+            portefeuilleService.deletePortefeuille(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 

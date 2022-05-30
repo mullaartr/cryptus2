@@ -1,3 +1,4 @@
+/*
 package com.example.cryptus.security;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
@@ -42,7 +43,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
-    @Override
+  @Override
     @Bean
     protected UserDetailsService userDetailsService() {
         UserDetails baruchSpinozaUser = User.builder()
@@ -76,4 +77,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 alainBadioUser
         );
     }
+
 }
+*/
