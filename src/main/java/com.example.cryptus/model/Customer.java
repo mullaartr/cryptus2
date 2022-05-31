@@ -19,11 +19,6 @@ public class Customer extends User {
     private Address address;
 
 
-
-
-
-
-
         @Autowired
 
         public Customer(int userId, String firstName, String preposition, String lastName, String password,
@@ -35,6 +30,9 @@ public class Customer extends User {
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+    public Customer(BankAccount bankAccount){
+            super();
     }
 
 

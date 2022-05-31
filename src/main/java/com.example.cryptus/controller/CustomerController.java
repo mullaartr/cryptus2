@@ -1,4 +1,5 @@
 package com.example.cryptus.controller;
+
 import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.dto.CustomerDTO;
 import com.example.cryptus.model.Account;
@@ -10,9 +11,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
@@ -73,15 +75,17 @@ public class CustomerController {
 
     }
 
-//<<<<<<< HEAD
-//    @PostMapping(value = "/create")
-//    @ResponseBody String createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException{
-//        if (customer instanceof Customer) {
-//            customer.setPassword(hashpw(customer.getPassword(),gensalt(12)+ customerAccount.getPEPPER()));
-//            customerService.storeCustomer(customer);
-//        }
-//        return "Hello " + customer.getFirstName() + " Here is a summary of your information: \n "  + customer.toString();
-//
+
+    @PostMapping(value = "/create")
+    @ResponseBody
+    ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
+        if (customer instanceof Customer) {
+            customer.setPassword(hashpw(customer.getPassword(), gensalt(12) + customerAccount.getPEPPER()));
+            customerService.storeCustomer(customer);
+        }
+        return new ResponseEntity<Customer>(HttpStatus.CREATED);
+    }
+
 
 
     @PostMapping(value = "/login")
