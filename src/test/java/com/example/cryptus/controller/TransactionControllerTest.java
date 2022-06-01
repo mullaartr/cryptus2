@@ -9,4 +9,8 @@ class TransactionControllerTest {
     @Test
     void getTransactionsFromUser() {
     }
+
+    @Test
+    void setCommisionPercentage() {
+    }
 }

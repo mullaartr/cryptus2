@@ -1,6 +1,7 @@
 package com.example.cryptus.service;
 
 import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.repository.CustomerRepository;
 import com.example.cryptus.repository.TransactionRepository;
@@ -20,6 +21,7 @@ public class TransactionService {
 
     public TransactionService(TransactionRepository transactionRepository,
                               CustomerRepository customerRepository) {
+        super();
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;
         logger.info("Nieuwe TransactieService");
@@ -40,12 +42,18 @@ public class TransactionService {
         transactionRepository.createTransaction(transaction);
     }
 
-    public void updateTransaction(int transactionId, int assetAmount) {
-        transactionRepository.updateTransaction(transactionId, assetAmount);
+    public Optional<Transaction> updateTransaction(Transaction transaction, int transactionId) {
+        transactionRepository.updateTransaction(transaction, transactionId);
+        return null;
     }
 
-    public void deleteTransaction(Transaction transaction, int id) {
-        transactionRepository.deleteTransaction(transaction, id);
+    public void deleteTransaction(int transactionId) {
+        transactionRepository.deleteTransaction(transactionId);
     }
+
+    // ik weet niet wat ik hier mee moet doen
+//    public Optional<Transaction> findTransactionById(int transactionId){
+//        return  transactionRepository.findTransactionById(transactionId);
+//    }
 
 }
