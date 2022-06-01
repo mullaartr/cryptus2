@@ -32,7 +32,8 @@ public class Portefeuille implements Serializable {
     }
 
     public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
-        this(portefeuilleDTO.getPortefeuilleId(), portefeuilleDTO.getOwner(), portefeuilleDTO.getAssets());
+
+        this(portefeuilleDTO.getPortefeuilleId(), new Customer(), portefeuilleDTO.getAssets());
     }
 
     public double berekenWaarde(){

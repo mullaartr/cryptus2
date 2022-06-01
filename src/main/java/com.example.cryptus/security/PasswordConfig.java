@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PasswordConfig {
 
     private final String PEPPER = "iliaWavWavaZisSublisZarRvi";
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);

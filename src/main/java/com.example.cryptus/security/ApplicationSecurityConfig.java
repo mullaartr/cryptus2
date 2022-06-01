@@ -1,4 +1,3 @@
-/*
 package com.example.cryptus.security;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
@@ -42,11 +41,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        Whitelisting URLs
         http
-//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and()
-                .csrf().disable()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+.csrf().disable()
+
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/", "/*", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
                 .antMatchers(HttpMethod.DELETE,"/manage/**")
                     .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
@@ -76,8 +76,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID", "remember-me")
                     .logoutSuccessUrl("/login");
-    }
 
+
+    }
   @Override
     @Bean
     protected UserDetailsService userDetailsService() {
@@ -127,4 +128,3 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
-*/

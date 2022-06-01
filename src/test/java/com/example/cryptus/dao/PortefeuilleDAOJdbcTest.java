@@ -54,7 +54,7 @@ class PortefeuilleDAOJdbcTest {
         asset = new Asset(1, "Bitcoin", "BTC", 0.0, 25.0);
         assetList.add(asset);
         portefeuille = new Portefeuille(1, null, assetList);
-        mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",
+        mullaart = new Customer(1,"Rogier","","Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",
                 new Address(6,"Justine de Gouwerhof","2011GP","Haarlem")
                 ,"rogier.mullaart@gmail.com","0647185165");
         portefeuille1 = new Portefeuille(3, mullaart, new ArrayList<>());
@@ -122,7 +122,7 @@ class PortefeuilleDAOJdbcTest {
     @Order(5)
     void deletePortefeuille(){
         portefeuilleDaoJDBCUnderTest.delete(portefeuille1.getPortefeuilleId());
-        assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4).orElse(null)).isEqualTo(new Portefeuille());
+        assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4)).isEqualTo(new Portefeuille());
     }
 
 

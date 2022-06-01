@@ -6,9 +6,16 @@ import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.repository.PortefeuilleRepository;
 
+//import com.example.cryptus.security.ApplicationSecurityConfig;
+import com.example.cryptus.security.ApplicationSecurityConfig;
+import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.PortefeuilleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,11 +33,13 @@ public class PortefeuilleController {
     private PortefeuilleDTO portefeuilleDTO;
     private PortefeuilleDAO portefeuilleDAO;
     private PortefeuilleService portefeuilleService;
+    private CustomerService customerService;
     private Logger logger = LogManager.getLogger(PortefeuilleController.class);
 
     @Autowired
-    public PortefeuilleController(PortefeuilleService portefeuilleService) {
+    public PortefeuilleController(PortefeuilleService portefeuilleService, CustomerService customerService) {
         this.portefeuilleService = portefeuilleService;
+        this.customerService = customerService;
         logger.info("new PortefeuilleController");
     }
 
@@ -55,8 +64,16 @@ public class PortefeuilleController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO){
+    public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO) throws Exception {
+        // owner moet geauthenticeerd en opgehaald worden aan de hand van de token
+        String currentUserName = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            currentUserName = authentication.getName();
+        }
+
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
+        portefeuille.setOwner(customerService.findCustomerByUsernamePassword(currentUserName).orElse(null));
         portefeuilleService.storePortefeuille(portefeuille);
         return ResponseEntity.ok().build();
 
