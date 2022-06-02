@@ -1,12 +1,21 @@
-CREATE SCHEMA  `cryptus`;
+CREATE SCHEMA `cryptus`;
 USE `cryptus`;
+
+CREATE TABLE IF NOT EXISTS `cryptus`.`bankinstelling`
+(
+    `Key`   VARCHAR(45) NOT NULL,
+    `Value` VARCHAR(45) NOT NULL,
+
+    PRIMARY KEY (`Key`)
+);
+
 CREATE TABLE if not exists `user`
 (
-    `userId`         INT         NOT NULL AUTO_INCREMENT,
-    `voornaam`       VARCHAR(45) NOT NULL,
-    `tussenvoegsel`  VARCHAR(10) NULL,
-    `achternaam`     VARCHAR(45) NOT NULL,
-    `gebruikersnaam` VARCHAR(45) NOT NULL,
+    `userId`         INT          NOT NULL AUTO_INCREMENT,
+    `voornaam`       VARCHAR(45)  NOT NULL,
+    `tussenvoegsel`  VARCHAR(10)  NULL,
+    `achternaam`     VARCHAR(45)  NOT NULL,
+    `gebruikersnaam` VARCHAR(45)  NOT NULL,
     `wachtwoord`     VARCHAR(100) NOT NULL,
 
     PRIMARY KEY (`userId`)

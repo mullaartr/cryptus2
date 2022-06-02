@@ -93,6 +93,35 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 
+    public Optional<Customer> findBuyerByTransactionId( int transactionId) {
+        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
+                " transactie t on b.iban = t.debitiban and b.userId = u.userId and "+
+                " u.userId = klant.userId where t.transactieId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+    }
+
+    public Optional<Customer> findSellerByTransactionId( int transactionId) {
+        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
+                " transactie t on b.iban = t.creditiban and b.userId = u" +
+                ".userId and "+
+                " u.userId = klant.userId where t.transactieId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+    }
+
     @Override
     public Optional<Customer> findCustomerByIban(String iban) {
         String sql ="select * from klant JOIN user JOIN bankrekening on " +

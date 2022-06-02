@@ -1,19 +1,25 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.dto.TransactionDTO;
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,11 +30,14 @@ public class TransactionDaoJdbc implements TransactionDao {
     private final Logger logger =
             LoggerFactory.getLogger(TransactionDaoJdbc.class);
     private final JdbcTemplate jdbcTemplate;
+    private final CustomerDao customerDao;
 
     @Autowired
-    public TransactionDaoJdbc(JdbcTemplate jdbcTemplate) {
+    public TransactionDaoJdbc(JdbcTemplate jdbcTemplate,
+                              CustomerDaoJdbc customerDao ) {
         super();
         this.jdbcTemplate = jdbcTemplate;
+        this.customerDao = customerDao;
         logger.info("Nieuwe TransactionDaoJdbc");
     }
 
@@ -58,24 +67,127 @@ public class TransactionDaoJdbc implements TransactionDao {
         return null;
     }
 
-    private static class TransactionDTORowMapper implements RowMapper<TransactionDTO> {
-        @Override
-        public TransactionDTO mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    RowMapper<Transaction> rowMapper = (rs, rownum) -> {
+        Transaction transaction = new Transaction();
+        transaction.setBuyer(null);
+        transaction.setSeller(null);
+        transaction.setAsset(null);
+        transaction.setTimestamp(rs.getObject("datumtijd", LocalDateTime.class));
+        transaction.setCommisionPercentage(rs.getInt("percentage"));
+        transaction.setEuroamount(rs.getDouble("euroammount"));
+        transaction.setAssetamount(rs.getDouble("assetammount"));
+        transaction.setTransactionId(rs.getInt("transactieId"));
+        return transaction;
+    };
 
-            int transactieId = resultSet.getInt("transactieid");
-            LocalDateTime timestamp = resultSet.getObject("datumtijd", LocalDateTime.class);
-            int percentage = resultSet.getInt("percentage");
-            String creditIban = resultSet.getString("creditiban");
-            String debitIban = resultSet.getString("debitiban");
-            double euroammount = resultSet.getDouble("euroammount");
-            int assetId = resultSet.getInt("assetid");
-            double assetammount = resultSet.getDouble("assetammount");
-
-            return new TransactionDTO(transactieId, creditIban,
-                    debitIban, assetId, assetammount, euroammount, percentage,
-                    timestamp);
+    ResultSetExtractor<List<Transaction>> transactionResultExtractor = rs -> {
+        List<Transaction> transactions = new ArrayList<>();
+        while (rs.next()) {
+            Transaction transaction = new Transaction();
+            transaction.setBuyer(null);
+            transaction.setSeller(null);
+            transaction.setAsset(null);
+            transaction.setTimestamp(null);
+            transaction.setTransactionId(rs.getInt("transactieId"));
+            transactions.add(transaction);
         }
+        return transactions;
+    };
+
+    ResultSetExtractor<Customer> customerResultSetExtractor = rs -> {
+        Customer customer = new Customer();
+        customer.setUserId(rs.getInt("userId"));
+        return customer;
+    };
+
+    ResultSetExtractor<Asset> assetResultExtractor = rs -> {
+        Asset asset = new Asset();
+        asset.setAssetId(rs.getInt("assetId"));
+        asset.setAssetNaam(rs.getString("naam"));
+        asset.setAssetAfkorting(rs.getString("afkorting"));
+        asset.setSaldo(rs.getDouble("saldo"));
+
+        return asset;
+    };
+
+    private Optional<Customer> getCustomer(int transactionId, String sql) {
+        Customer customer = null;
+        try {
+            customer = jdbcTemplate.query(sql, customerResultSetExtractor, transactionId);
+        } catch (DataAccessException exception) {
+            logger.info("No customer was found found");
+        }
+        return Optional.of(customer);
     }
+
+    private Optional<Customer> findBuyerByTransaction(int transactionId) {
+        String sql = "SELECT userid FROM " +
+                "transactie JOIN bankrekening on " +
+                "bankrekening.iban = transactie.debitiban WHERE" +
+                " transactieId = ?";
+        Optional<Customer> customer =  getCustomer(transactionId, sql);
+        if (customer.isPresent()) {
+             return customerDao.findCustomerById( customer.get().getUserId());
+        }
+        else return customer;
+    }
+
+    private Optional<Customer> findSellerByTransaction(int transactionId) {
+        String sql = "SELECT userid FROM transactie JOIN bankrekening on bankrekening.iban = transactie.creditiban WHERE transactieId = ?";
+        Optional<Customer> customer =  getCustomer(transactionId, sql);
+        if (customer.isPresent()) {
+            return customerDao.findCustomerById( customer.get().getUserId());
+        }
+        else return customer;
+    }
+    private Optional<Asset> findAssetByTransaction(int transactionId) {
+        String sql = "SELECT assetId FROM transactie JOIN bankrekening on " +
+                "bankrekening.iban = transactie.creditiban OR bankrekening" +
+                ".iban = transactie.debitiban WHERE" +
+                " transactieId = ?";
+        Asset asset = new Asset();
+        try {
+            asset = jdbcTemplate.query(sql, assetResultExtractor, transactionId);
+        } catch (DataAccessException exception) {
+            logger.info("no assets where found found");
+        }
+        return Optional.of(asset);
+    }
+
+    @Override
+    public List<Transaction> findBuyTransactionsByUser(int userId) {
+        return jdbcTemplate.query
+                ("SELECT * FROM " +
+                                "transactie JOIN bankrekening on " +
+                                "bankrekening.iban = transactie.debitiban WHERE userId = ?",
+                        rowMapper, userId);
+    }
+
+    @Override
+    public List<Transaction> findSellTransactionsByUser(int userId) {
+        return jdbcTemplate.query
+                ("SELECT * FROM " +
+                                "transactie JOIN bankrekening on " +
+                                "bankrekening.iban = transactie.creditiban " +
+                                "WHERE userId = ?",
+                        rowMapper, userId);
+    }
+
+    @Override
+    public Optional<Transaction> findTransactionById(int transactionId) {
+        String Sql = "select * from transactie t where t.transactieId = ?";
+        Transaction transaction = new Transaction();
+        try {
+            transaction = jdbcTemplate.queryForObject(Sql, rowMapper, transactionId);
+            transaction.setBuyer(findBuyerByTransaction(transactionId).orElse(null));
+            transaction.setSeller(findSellerByTransaction(transactionId).orElse(null));
+            transaction.setAsset(findAssetByTransaction(transactionId).orElse(null));
+        } catch (DataAccessException exception) {
+            logger.info("Transaction was not found");
+        }
+        return Optional.of(transaction);
+    }
+
     @Override
     public void createTransaction(Transaction transaction) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -83,7 +195,8 @@ public class TransactionDaoJdbc implements TransactionDao {
         int newKey = Objects.requireNonNull(keyHolder.getKey()).intValue();
         transaction.setTransactionId(newKey);
     }
-// we moeten nog nadenken over wat er precies moet gebeuren bij een update
+
+    // we moeten nog nadenken over wat er precies moet gebeuren bij een update
 // van de transactie. Is dat alleen het aanpassen van de hoeveelheid crypto's?
     @Override
     public void update(Transaction transaction, int transactionId) {
@@ -95,41 +208,5 @@ public class TransactionDaoJdbc implements TransactionDao {
     @Override
     public void deleteTransaction(int transactionId) {
         jdbcTemplate.update("DELETE FROM transactie WHERE transactieId = ?",transactionId);
-    }
-
-    // ik krijg onderstaande methode niet aan de praat. Hier moet ik hulp
-    // vragen van de docent.
-    @Override
-    public List<TransactionDTO> findTransactionsByUser(int userId) {
-        List<TransactionDTO> transactions = jdbcTemplate.query("SELECT * FROM " +
-                        "transactie JOIN bankrekening on " +
-                        "bankrekening.iban = transactie.debitiban WHERE userId = ?",
-                new TransactionDTORowMapper(), userId);
-        return transactions;
-    }
-
-    @Override
-    public List<TransactionDTO> findTransactionsByUser(Customer user) {
-        return jdbcTemplate.query("SELECT * FROM " +
-                        "transactie JOIN bankrekening on " +
-                        "bankrekening.iban = transactie.debitiban OR " +
-                        "bankrekening.iban = transactie.creditiban WHERE" +
-                        " userId = ?",
-                new TransactionDTORowMapper(), user.getUserId());
-    }
-    // ik krijg onderstaande methode niet aan de praat. Hier moet ik hulp
-    // vragen van de docent.
-    @Override
-    public Optional<TransactionDTO> findTransactionById(int transactionId) {
-//        TransactionDTO transaction =
-//                jdbcTemplate.query("select * from transactie where " +
-//                                "transactieId = ?",
-//                        new TransactionDTORowMapper(),transactionId);
-//        if (transaction.getTransactionId()) {
-//            return Optional.of(transaction.);
-//        } else {
-//            return Optional.empty();
-//        }
-        return null;
     }
 }
