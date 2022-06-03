@@ -1,5 +1,6 @@
 package com.example.cryptus.service;
 
+import org.iban4j.Iban;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,26 +15,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BsnServiceTest {
 
-    String bsn1;
-    String bsn2;
-    String bsn3;
-    String bsn4;
-    String bsn5;
-    String bsn6;
-    String bsn7;
-    String bsn8;
-    String bsn9;
-    String bsn10;
-    String bsn11;
-    String bsn12;
-    String bsn13;
-    String bsn14;
-    String bsn15;
-    String bsn16;
-    List<String> bsns;
-    List<String> bsns2;
-    BsnService bsnService;
-    IbanService ibanService;
+    private String bsn1;
+    private String bsn2;
+    private String bsn3;
+    private String bsn4;
+    private String bsn5;
+    private String bsn6;
+    private String bsn7;
+    private String bsn8;
+    private String bsn9;
+    private String bsn10;
+    private String bsn11;
+    private String bsn12;
+    private String bsn13;
+    private String bsn14;
+    private String bsn15;
+    private String bsn16;
+    private List<String> bsns;
+    private List<String> bsns2;
+    private BsnService bsnService;
+    private IbanService ibanService;
 
     @BeforeAll
     void setup(){

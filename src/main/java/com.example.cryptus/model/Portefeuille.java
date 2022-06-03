@@ -1,14 +1,19 @@
 package com.example.cryptus.model;
 
+
+import com.example.cryptus.dto.PortefeuilleDTO;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Portefeuille {
+public class Portefeuille implements Serializable {
 
-    int portefeuilleId;
+    private int portefeuilleId;
     private List<Asset> assets;
     private Customer owner;
+
 
 
     public Portefeuille(int portefeuilleId, Customer owner, List<Asset> assets) {
@@ -22,8 +27,12 @@ public class Portefeuille {
     }
 
     public Portefeuille() {
-        this(null);
+        this(new Customer());
         this.assets = new ArrayList<>();
+    }
+
+    public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
+        this(portefeuilleDTO.getPortefeuilleId(), portefeuilleDTO.getOwner(), portefeuilleDTO.getAssets());
     }
 
     public double berekenWaarde(){

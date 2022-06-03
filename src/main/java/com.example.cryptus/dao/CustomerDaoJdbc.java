@@ -93,6 +93,51 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     }
 
+    public Optional<Customer> findBuyerByTransactionId( int transactionId) {
+        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
+                " transactie t on b.iban = t.debitiban and b.userId = u.userId and "+
+                " u.userId = klant.userId where t.transactieId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+    }
+
+    public Optional<Customer> findSellerByTransactionId( int transactionId) {
+        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
+                " transactie t on b.iban = t.creditiban and b.userId = u" +
+                ".userId and "+
+                " u.userId = klant.userId where t.transactieId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+    }
+
+    @Override
+    public Optional<Customer> findCustomerByIban(String iban) {
+        String sql ="select * from klant JOIN user JOIN bankrekening on " +
+                "user.userId = klant.userId AND " +
+                "user.userid = bankrekening.userId where " +
+                "bankrekening.iban = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,iban);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+
+    }
 
     private PreparedStatement insertUserStatement(Customer customer, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT into user (voornaam, tussenvoegsel, achternaam, gebruikersnaam, wachtwoord) values (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -188,7 +233,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId) {
-        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId where p.portefeuilleID = ?";
+        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId join klant k on k.userId = user.userId  where p.portefeuilleID = ?";
         Customer customer = null;
 
         try{

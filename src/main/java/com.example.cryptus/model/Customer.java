@@ -4,13 +4,12 @@ import com.example.cryptus.dao.transfer.RegisterDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.Date;
 
 public class Customer extends User {
 
     //Daan: I made a logger
-    private final Logger logger = LoggerFactory.getLogger(Customer.class);
+    private final transient Logger logger = LoggerFactory.getLogger(Customer.class);
 
     private Date birthDate;
     private String BSN;
@@ -35,27 +34,28 @@ public class Customer extends User {
             super();
     }
 
-
-
     public Customer() {
             super();
     }
 
+    public Customer(int userId, Address address) {
+        super(userId);
+        this.address = address;
+    }
 
     public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password) {
         super(userId, firstName, preposition, lastName, userName, password);
     }
 
-    //Daan: I made this no-args constructor
+    //Daan: constructor for registerDto
     public Customer(RegisterDto registerDto) {
-        super();
-        //logger.info("Customer created with no-arg constructor");
-    }
-
-    //Daan: I made this constructor for registration
-    public Customer(String firstName, String preposition, String lastName, java.util.Date birthDate, String bsn,
-                    Address address, String phone, String email, String password) {
-        super();
+        super(registerDto.getFirstName(), registerDto.getPreposition(), registerDto.getLastName(),
+                registerDto.getUsername(), registerDto.getPassword(), registerDto.getBankAccount());
+        this.birthDate = registerDto.getBirthDate();
+        this.BSN = registerDto.getBSN();
+        this.address = registerDto.getAddress();
+        this.phone = registerDto.getPhone();
+        this.email = registerDto.getEmail();
     }
 
     //Daan: I made getter and setter for Address
@@ -115,7 +115,7 @@ public class Customer extends User {
         super.setPassword(password);
     }
 
-    public Date getBirthDate() {
+    public java.util.Date getBirthDate() {
         return birthDate;
     }
 
