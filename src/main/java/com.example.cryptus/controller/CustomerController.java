@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import static org.mindrot.jbcrypt.BCrypt.gensalt;
 import static org.mindrot.jbcrypt.BCrypt.hashpw;
 
@@ -88,15 +90,15 @@ public class CustomerController {
 
 
     @PostMapping(value = "/login")
-    @ResponseBody String login(@RequestBody Account account) throws NoSuchAlgorithmException {
+    ResponseEntity<?> login(@RequestBody Account account) throws NoSuchAlgorithmException {
         Optional<Customer> expectedCustomer =
                 customerDaoJdbc.findCustomerByUsernamePassword(account.getGebruikersnaam());
         Customer dbCustomer = expectedCustomer.get();
         String customer = account.getWachtwoord();
         if(BCrypt.checkpw(customer, dbCustomer.getPassword())){
-            return "Hello " + dbCustomer.getFirstName() + ", login successful!";
+            return ResponseEntity.ok(new Token(UUID.randomUUID()));
         }
-        else return "Wrong username password combination";
+        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username password combination");
     }
 
     @PostMapping("/save")
@@ -107,5 +109,9 @@ public class CustomerController {
 
 
 
+
+}
+
+record Token(UUID token){
 
 }

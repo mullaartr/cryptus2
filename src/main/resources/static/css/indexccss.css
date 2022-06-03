@@ -1,0 +1,96 @@
+h1{
+    font-size: 6rem;
+  text-align: center;
+height:4vh;
+line-height: 4vh;
+  color: #fcedd8;
+  background: #e1732a;
+     font-family: 'Niconne', cursive;
+  font-weight: 50;
+text-shadow: 5px 5px 0px #eb452b, 
+            10px 10px 0px #efa032, 
+            15px 15px 0px #46b59b, 
+            20px 20px 0px #017e7f, 
+            25px 25px 0px #052939, 
+            30px 30px 0px #c11a2b, 
+            35px 35px 0px #c11a2b, 
+            40px 40px 0px #c11a2b, 
+            45px 45px 0px #c11a2b;
+}
+
+p{
+text-align: center;
+font-family: "Helvetica";
+font-size:0.6rem;
+}
+
+a{
+color: #d52e3f;
+text-decoration: none;
+font-family: 'Niconne', cursive;
+font-size: 1.2rem;
+
+}
+
+
+body {
+    margin: 0px;
+    background-color: #e1732a;
+    color: #f7f7f7;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#main {
+    width: 600px;
+    height: 260px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    padding-left: 10px;
+    margin-top: 100px;
+    border-top: 3px double #f1f1f1;
+    border-bottom: 3px double #f1f1f1;
+    padding-top: 20px;
+}
+
+#main table {
+    font-family: "Comic Sans MS", cursive;
+}
+
+/* css code for textbox */
+#main .tb {
+    height: 28px;
+    width: 239px;
+    border: 1px solid #27a465;
+    color: #e1732a;
+    font-weight: bold;
+    border-left: 5px solid #f7f7f7;
+    opacity: 0.9;
+}
+
+/* css code for button*/
+#main .btn {
+    width: 80px;
+    height: 32px;
+    outline: none;
+    font-weight: bold;
+    border: 0px solid #27a465;
+    text-shadow: 0px 0.5px 0.5px #fff;
+    border-radius: 2px;
+    font-weight: 600;
+    color: #b76b25;
+    letter-spacing: 1px;
+    font-size: 14px;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    transition: 1s;
+}
+
+#main .btn:hover {
+    background-color: #e1771a;
+    outline: none;
+    border-radius: 2px;
+    color: #f1f1f1;
+    border: 1px solid #f1f1f1;
+}
+
