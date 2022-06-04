@@ -1,5 +1,6 @@
 package com.example.cryptus.repository;
 import com.example.cryptus.dao.CustomerDao;
+import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
@@ -118,8 +119,11 @@ public class CustomerRepository  {
 
     private final CustomerDao customerDao;
 
-    public CustomerRepository(CustomerDao customerDao) {
+    private final PortefeuilleDAO portefeuilleDAO;
+
+    public CustomerRepository(CustomerDao customerDao, PortefeuilleDAO portefeuilleDAO) {
         this.customerDao = customerDao;
+        this.portefeuilleDAO = portefeuilleDAO;
         Logger logger = LogManager.getLogger(CustomerRepository.class);
         logger.info("New CustomerRepository");
     }
@@ -167,6 +171,8 @@ public class CustomerRepository  {
         }
 
     }
+
+
 
     public Optional<Customer> findCustomerByUsernamePassword(String username) {
         Optional<Customer> customerOptional = customerDao.findCustomerByUsernamePassword(username);

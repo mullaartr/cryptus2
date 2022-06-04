@@ -4,6 +4,7 @@ import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.dao.PortefeuilleDAOJdbc;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
+import com.example.cryptus.service.KoersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,9 +30,8 @@ public class CryptusApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 
-		for (int i = 0; i < 1; i++) { // iets dergelijks
-			System.out.println();
-		}
+		KoersService koersService = new KoersService();
+		koersService.coinAPI();
 	}
 
 }

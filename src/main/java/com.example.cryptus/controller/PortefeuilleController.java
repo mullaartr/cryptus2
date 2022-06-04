@@ -66,12 +66,12 @@ public class PortefeuilleController {
     @PostMapping(value = "/save")
     public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO) throws Exception {
         // owner moet geauthenticeerd en opgehaald worden aan de hand van de token
-        String currentUserName = "";
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             currentUserName = authentication.getName();
         }
-
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
         portefeuille.setOwner(customerService.findCustomerByUsernamePassword(currentUserName).orElse(null));
         portefeuilleService.storePortefeuille(portefeuille);

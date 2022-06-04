@@ -9,10 +9,12 @@ import java.util.Optional;
 public interface PortefeuilleDAO {
 
     Optional<Portefeuille> findPortefeuilleById(int id);
+    Optional<Portefeuille> findPortefeuilleOf(int id);
 
     Optional<List<Portefeuille>> findPortefeuilles();
 
     void store(Portefeuille portefeuille);
+
 
 
     void update(Portefeuille portefeuille, String asset);
