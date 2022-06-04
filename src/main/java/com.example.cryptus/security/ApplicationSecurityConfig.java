@@ -46,7 +46,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 .csrf().disable()
 
                 .authorizeRequests()
+
                 .antMatchers("/", "/*", "index", "/css/*", "/js/*").permitAll()
+
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
                 .antMatchers(HttpMethod.DELETE,"/manage/**")
                     .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
@@ -76,6 +78,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID", "remember-me")
                     .logoutSuccessUrl("/login");
+
 
 
     }

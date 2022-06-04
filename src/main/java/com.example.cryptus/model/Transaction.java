@@ -109,8 +109,6 @@ public class Transaction{
         return (euroamount)*(commisionPercentage/100.00);
     }
 
-
-
     @Override
     public String toString() {
         return "Transaction{" +

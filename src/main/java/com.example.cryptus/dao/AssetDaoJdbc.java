@@ -64,6 +64,21 @@ public class AssetDaoJdbc implements AssetDao {
         }
     }
 
+    public Optional<Asset> findAssetByTransactionId( int id ) {
+        List<Asset> assets =
+                jdbcTemplate.query("select * from asset join " +
+                        "koers join transactie t on asset.assetId = koers" +
+                        ".assetb and asset.assetId = t.AssetId where t" +
+                        ".transactieId " +
+                        " = ?", new AssetRowMapper(), id);
+        if(assets.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of(assets.get(0));
+        }
+
+    }
+
  //   todo klopt mysql join?
     @Override
     public Optional<Asset> findAssetByPortefeuille(Portefeuille portefeuille) {
