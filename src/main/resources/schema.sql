@@ -1,12 +1,26 @@
+<<<<<<< HEAD
+/*
 CREATE SCHEMA  `cryptus`;
+=======
+CREATE SCHEMA `cryptus`;
+>>>>>>> 066e68f5543f2d60036e4e19eeec637bb9ce5da9
 USE `cryptus`;
+
+CREATE TABLE IF NOT EXISTS `cryptus`.`bankinstelling`
+(
+    `Key`   VARCHAR(45) NOT NULL,
+    `Value` VARCHAR(45) NOT NULL,
+
+    PRIMARY KEY (`Key`)
+);
+
 CREATE TABLE if not exists `user`
 (
-    `userId`         INT         NOT NULL AUTO_INCREMENT,
-    `voornaam`       VARCHAR(45) NOT NULL,
-    `tussenvoegsel`  VARCHAR(10) NULL,
-    `achternaam`     VARCHAR(45) NOT NULL,
-    `gebruikersnaam` VARCHAR(45) NOT NULL,
+    `userId`         INT          NOT NULL AUTO_INCREMENT,
+    `voornaam`       VARCHAR(45)  NOT NULL,
+    `tussenvoegsel`  VARCHAR(10)  NULL,
+    `achternaam`     VARCHAR(45)  NOT NULL,
+    `gebruikersnaam` VARCHAR(45)  NOT NULL,
     `wachtwoord`     VARCHAR(100) NOT NULL,
 
     PRIMARY KEY (`userId`)
@@ -145,5 +159,11 @@ CREATE TABLE if not exists `koers`
     ON UPDATE cascade
     );
 
+<<<<<<< HEAD
+
+
+*/
+=======
 -- CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
 -- GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
+>>>>>>> 066e68f5543f2d60036e4e19eeec637bb9ce5da9

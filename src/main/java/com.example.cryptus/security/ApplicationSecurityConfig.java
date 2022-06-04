@@ -45,7 +45,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 //                .csrf().disable()
                 .authorizeRequests()
+
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
                 .antMatchers(HttpMethod.DELETE,"/manage/**")
                 .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
@@ -69,12 +71,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeParameter("remember-me")
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                .clearAuthentication((true))
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "remember-me")
-                .logoutSuccessUrl("/login");
+
+                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                    .clearAuthentication((true))
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
+
+
+
+
     }
   @Override
     @Bean
