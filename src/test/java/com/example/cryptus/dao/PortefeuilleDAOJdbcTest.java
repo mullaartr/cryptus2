@@ -128,7 +128,8 @@ class PortefeuilleDAOJdbcTest {
     @Order(5)
     void deletePortefeuille(){
         portefeuilleDaoJDBCUnderTest.delete(portefeuille1.getPortefeuilleId());
-        //assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4)).isNull();
+        assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4).orElse(null)).isNull();
+
 
     }
 

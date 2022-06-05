@@ -73,7 +73,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         }catch (DataAccessException exception){
             logger.info("portefeuille was not found");
         }
-        return Optional.of(portefeuille);
+        return Optional.ofNullable(portefeuille);
     }
 
     private Optional <Map<Asset, Double>> findAssetsByPortefeuille(int id){
@@ -84,7 +84,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         }catch (DataAccessException exception){
             logger.info("no assets where found found");
         }
-        return Optional.of(assetLijst);
+        return Optional.ofNullable(assetLijst);
     }
 
     @Override
