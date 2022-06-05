@@ -89,7 +89,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
 
         UserDetails napoleonUser = User.builder()
-                .username("napo@leon.nl")
+                .username("napo@leon.nl").disabled(false)
                 .password(passwordEncoder.encode("napoleon"))
 //                .roles(ADMIN.name()) // ROLE_ADMIN
                 .authorities(ADMIN.getGrantedAuthorities())
