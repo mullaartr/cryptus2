@@ -4,7 +4,6 @@ import com.example.cryptus.dao.AssetDaoJdbc;
 import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.dao.TransactionDao;
 import com.example.cryptus.dao.TransactionDaoJdbc;
-import com.example.cryptus.dto.TransactionDTO;
 import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
@@ -31,25 +30,32 @@ public class TransactionRepository {
         this.customerDaoJdbc = customerDaoJdbc;
         this.assetDaoJdbc = assetDaoJdbc;
     }
-
-    public List<Transaction> findTransactionsByUser(Customer customer) {
+    public List<Transaction> getBuyTransactionsFromUser(int userId) {
 
         List<Transaction> result = new ArrayList<>();
-        List<TransactionDTO> transactions =
-                transactionDaoJdbc.findTransactionsByUser(customer);
+        List<Transaction> transactions =
+                transactionDaoJdbc.findBuyTransactionsByUser(userId);
 
-        for (TransactionDTO t : transactions) {
+        for (Transaction t : transactions) {
 
-            Optional<Customer> koper =
-                    customerDaoJdbc.findCustomerByIban(t.getKoperIban());
-            Optional<Customer> verkoper =
-                    customerDaoJdbc.findCustomerByIban(t.getVerkoperIban());
-            Asset asset =
-                    assetDaoJdbc.findAssetById(t.getAsset()).get();
+
+            Optional<Customer> buyer =
+                    customerDaoJdbc.findBuyerByTransactionId(t.getTransactionId() );
+            Optional<Customer> seller =
+                    customerDaoJdbc.findSellerByTransactionId(t.getTransactionId() );
+            Optional<Asset> asset =
+                    assetDaoJdbc.findAssetByTransactionId(t.getTransactionId());
+
+            if ( buyer.isEmpty() || seller.isEmpty() || asset.isEmpty() ) {
+
+                continue;
+            }
             Transaction transaction = new Transaction(
-                    t.getTransactionId(), koper.get(), verkoper.get(),
-                    asset, t.getAssetammount(), t.getEuroammount(),
-                    t.getCommisionPercentage(), t.getCreationTimestamp()
+                    t.getTransactionId(), buyer.orElse(null),
+                    seller.orElse(null),
+                    asset.orElse(null),
+                    t.getAssetamount(), t.getEuroamount(),
+                    t.getTimestamp()
             );
             result.add(transaction);
         }
@@ -60,10 +66,21 @@ public class TransactionRepository {
         transactionDaoJdbc.createTransaction(transaction);
     }
 
-    public void updateTransaction(int transactionId, int assetAmount) {
-        transactionDao.update(transactionId, assetAmount);
+    public void updateTransaction(Transaction transaction,
+                                  int transactionId) {
+        transactionDao.update(transaction,transactionId);
     }
 
-    public void deleteTransaction(Transaction transaction, int id) {
+    public void deleteTransaction(int id) {
+    }
+    public Optional<Transaction> findTransactionById(int transactionId) {
+        Optional<Transaction> opt =
+                transactionDao.findTransactionById(transactionId);
+        if(opt.isEmpty()){
+            return Optional.empty();
+
+        }else{
+            return transactionDao.findTransactionById(transactionId);
+        }
     }
 }

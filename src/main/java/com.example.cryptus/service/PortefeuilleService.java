@@ -27,7 +27,7 @@ public class PortefeuilleService {
 
 
     public Optional<Portefeuille> findPortefeuilleById(int id){
-        return  portefeuilleRepository.findPortefeuilleById(id);
+        return  portefeuilleRepository.findPortefeuilleWithCustomerById(id);
     }
 
     public void storePortefeuille(Portefeuille portefeuille){

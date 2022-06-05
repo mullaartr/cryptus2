@@ -4,19 +4,19 @@ import com.example.cryptus.dao.transfer.RegisterDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.Date;
 
 public class Customer extends User {
 
     //Daan: I made a logger
-    private final Logger logger = LoggerFactory.getLogger(Customer.class);
+    private final transient Logger logger = LoggerFactory.getLogger(Customer.class);
 
-    private java.util.Date birthDate;
+    private Date birthDate;
     private String BSN;
     private String email;
     private String phone;
     private Address address;
+
 
         @Autowired
 
@@ -29,6 +29,9 @@ public class Customer extends User {
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+    public Customer(BankAccount bankAccount){
+            super();
     }
 
     public Customer() {

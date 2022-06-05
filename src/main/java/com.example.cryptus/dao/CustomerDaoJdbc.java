@@ -38,7 +38,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
         Customer customer = new Customer(0,"","","","","",new Date(0),
                 "",new Address(0,"","",""),"","");
-        System.out.println("hello");
+        //System.out.println("hello");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -91,6 +91,35 @@ public class CustomerDaoJdbc implements CustomerDao {
 
         return Optional.ofNullable(customer);
 
+    }
+
+    public Optional<Customer> findBuyerByTransactionId( int transactionId) {
+        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
+                " transactie t on b.iban = t.debitiban and b.userId = u.userId and "+
+                " u.userId = klant.userId where t.transactieId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+    }
+
+    public Optional<Customer> findSellerByTransactionId( int transactionId) {
+        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
+                " transactie t on b.iban = t.creditiban and b.userId = u" +
+                ".userId and "+
+                " u.userId = klant.userId where t.transactieId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
     }
 
     @Override

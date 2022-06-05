@@ -45,7 +45,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/", "/*", "index", "/css/*", "/js/*").permitAll();
+        /*
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
                 .antMatchers(HttpMethod.DELETE,"/manage/**")
                     .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
@@ -75,9 +76,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID", "remember-me")
                     .logoutSuccessUrl("/login");
+
+         */
     }
 
-    @Override
+  @Override
     @Bean
     protected UserDetailsService userDetailsService() {
 //        This method should eventually retrieve users from the database
@@ -124,4 +127,5 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 adamHilversumUser
         );
     }
+
 }

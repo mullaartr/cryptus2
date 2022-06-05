@@ -30,7 +30,7 @@ VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
         '122365477', 'harry.kreeft@lumc.nl', '0647186544'),
        (5, '1960-10-13', 'Rokin', 2, '2010AP', 'Groningen', '123564564',
         'harry.kreeft@lumc.nl', '0647186543'),
-       (6, '1969-08-13', 'Justine de Gouwerhof', 3, '2010AP', 'Leiden',
+       (6, '1969-08-13',3, 'Justine de Gouwerhof', '2010AP', 'Leiden',
         '534543533', 'harry.kreeft@lumc.nl', '0647186543'),
        (7, '1969-08-13', 'Kleine houtstraat', 4, '2010AP', 'Den Haag',
         '354353453', 'harry.kreeft@lumc.nl', '0647186543'),
@@ -40,6 +40,8 @@ VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
         'harry.kreeft@lumc.nl', '0647186543'),
        (10, '1954-08-13', 'Kleine houtstraat', 7, '2010AP', 'Den Haag',
         '234232444', 'harry.kreeft@lumc.nl', '0647186543');
+
+
 
 
 INSERT INTO `bankrekening`

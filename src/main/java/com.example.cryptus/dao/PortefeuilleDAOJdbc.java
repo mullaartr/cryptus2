@@ -2,7 +2,6 @@ package com.example.cryptus.dao;
 
 import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Portefeuille;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         this.jdbcTemplate = jdbcTemplate;
         logger.info("new PortefeuilleDAOJdbc");
     }
+
 
 
     RowMapper<Portefeuille> rowMapper = (rs, rownum) ->  {
@@ -167,5 +167,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
             jdbcTemplate.update(sql, id);
             jdbcTemplate.update(sql1, id);
         }
+
     }
 

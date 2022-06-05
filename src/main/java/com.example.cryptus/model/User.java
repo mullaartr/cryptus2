@@ -6,14 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public abstract class User {
+public abstract class User implements Serializable {
 
     //Daan: I made a logger
-    private final Logger logger = LoggerFactory.getLogger(User.class);
+    private final transient Logger logger = LoggerFactory.getLogger(User.class);
 
     private int userId;
     private String firstName;
@@ -21,10 +22,10 @@ public abstract class User {
     private String lastName;
     private String userName;
     private String password;
-    List<Transaction> transactionList;
-    BankAccount bankAccount;
+    private List<Transaction> transactionList;
+    private BankAccount bankAccount;
 
-    Portefeuille portefeuille;
+    private Portefeuille portefeuille;
 
     @Autowired
     public User(int userId, String firstName, String preposition, String lastName, String userName, String password) {

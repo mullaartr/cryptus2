@@ -1,5 +1,6 @@
 package com.example.cryptus.controller;
 
+import com.example.cryptus.model.Configuration;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.service.TransactionService;
 import org.apache.logging.log4j.LogManager;
@@ -10,56 +11,73 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "transaction")
+@RequestMapping(value = "transactions")
 
 public class TransactionController {
 
     private final Logger logger = LogManager.getLogger(CustomerController.class);
 
     private final TransactionService transactionService;
+    private Configuration configuration;
 
     @Autowired
-    public TransactionController(TransactionService transactionService){
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
         logger.info("Nieuwe TransactieController");
     }
 
-    @GetMapping("")
-    @ResponseBody
-    public String showHomePageTransactions() {
-        return "Dit is de homepage van het transactiegedeelte";
+    @GetMapping("/buytransactions_list")
+    public List<Transaction> getBuyTransactionsFromUser(@RequestParam int userId) {
+        List<Transaction> lijst = transactionService.getBuyTransactionsFromUser(userId);
+        return lijst;
     }
 
-    @GetMapping("all_transactions")
-    @ResponseBody
-    public List<Transaction> getTransactionsFromUser(@RequestParam int userId) {
-        return transactionService.getTransactions(userId);
-    }
+    @PostMapping("/buytransaction_bank")
+    public ResponseEntity<Optional<Transaction>> buyFromBank
 
-    @PostMapping("create_transaction")
-    @ResponseBody
-    public ResponseEntity<Transaction> createTransaction (@RequestBody Transaction transaction) throws NoSuchAlgorithmException {
-        transactionService.createTransaction(transaction);
+            (@RequestParam int userIdKoper,
+             @RequestParam int assetId,
+             @RequestParam int assetAmount,
+             @RequestParam int portefeuilleIdSeller)
+    {
+
+        Optional<Transaction> transaction = transactionService.buyFromBank(userIdKoper,
+                assetId,
+                assetAmount, portefeuilleIdSeller);
         return ResponseEntity.ok().body(transaction);
     }
 
-    @PostMapping(value = "/update_transaction/{transactionid}/{assetammount}")
-    @ResponseBody
-    public ResponseEntity<Transaction> updateTransaction (@PathVariable ("transactionid") int transactionId,
-                                                          @PathVariable ("assetammount") int assetAmount) {
-        transactionService.updateTransaction(transactionId, assetAmount);
-        return null;
-
+    @PostMapping("/set_commission")
+    public ResponseEntity<Configuration> setCommisionPercentage(@RequestParam int percentage) throws NoSuchAlgorithmException {
+        Configuration.percentage = percentage;
+        return ResponseEntity.ok().body(configuration);
     }
 
+    @PostMapping(value = "/update_transaction/{transactionid}")
+    public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
+                                               @PathVariable("transactionid") int transactionId) {
+        Optional<Transaction> opt =
+                transactionService.updateTransaction(transaction, transactionId);
+        if (opt.isPresent())
+            return ResponseEntity.ok().body(transaction);
+        else {
+            return null;
+        }
+    }
     @DeleteMapping(value = "/delete_transaction/{transactionid}")
     @ResponseBody
-    public ResponseEntity<Transaction> deleteTransaction (@RequestBody Transaction transaction, @PathVariable("transactionid")int transactionId){
-        transactionService.deleteTransaction(transaction, transactionId);
-        return null;
+    public ResponseEntity<?> deleteTransaction(@PathVariable("transactionid") int transactionId) {
+        Optional<Transaction> opt =
+                transactionService.findTransactionById(transactionId);
+        if (opt.isPresent()) {
+            transactionService.deleteTransaction(transactionId);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
 
 }

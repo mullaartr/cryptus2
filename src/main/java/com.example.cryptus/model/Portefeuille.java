@@ -1,7 +1,6 @@
 package com.example.cryptus.model;
 
-import com.example.cryptus.dao.PortefeuilleDAO;
-import com.example.cryptus.dao.PortefeuilleDAOJdbc;
+
 import com.example.cryptus.dto.PortefeuilleDTO;
 
 import java.io.Serializable;
@@ -11,7 +10,7 @@ import java.util.Objects;
 
 public class Portefeuille implements Serializable {
 
-    int portefeuilleId;
+    private int portefeuilleId;
     private List<Asset> assets;
     private Customer owner;
 

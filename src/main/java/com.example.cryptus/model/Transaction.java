@@ -7,37 +7,37 @@ import java.time.LocalDateTime;
 public class Transaction{
     private final Logger logger = LoggerFactory.getLogger(Transaction.class);
     private int transactionId;
-    private Customer koper;
-    private Customer verkoper;
+    private Customer buyer;
+    private Customer seller;
     private Asset asset;
-    private double assetammount;
-    private double euroammount;
+    private double assetamount;
+    private double euroamount;
     private int commisionPercentage;
     private LocalDateTime timestamp;
 
     public Transaction() {
-        super();
-        this.timestamp = LocalDateTime.now();
+        this(0, null, null, null, 0.00, 0.00, LocalDateTime.now());
         logger.info("Nieuwe transactie die de no arg constructor gebruikt.");
     }
-    public Transaction(int transactionId, Customer koper, Customer verkoper,
-                       Asset asset, double assetammount, double euroammount,
-                       int commisionPercentage,
+    public Transaction(int transactionId, Customer buyer, Customer seller,
+                       Asset asset, double assetamount, double euroamount,
                        LocalDateTime creationTimestamp) {
         this.transactionId = transactionId;
-        this.koper = koper;
-        this.verkoper = verkoper;
+        this.buyer = buyer;
+        this.seller = seller;
         this.asset = asset;
-        this.assetammount = assetammount;
-        this.euroammount = euroammount;
-        this.commisionPercentage = commisionPercentage;
+        this.assetamount = assetamount;
+        this.euroamount = euroamount;
+        this.commisionPercentage = Configuration.percentage; //instelbaar maken
         this.timestamp = creationTimestamp;
         logger.info("Nieuwe transactie die de all arg constructor gebruikt.");
     }
-    public Transaction(Customer koper, Customer verkoper, Asset asset,
-                       double assetammount, double euroammount, int commisionPercentage) {
-        this (0,koper, verkoper, asset,assetammount,euroammount,
-                commisionPercentage, LocalDateTime.now());
+    public Transaction(Customer buyer, Customer seller, Asset asset,
+                       double assetamount, double euroamount) {
+
+        this(0, buyer, seller, asset, assetamount, euroamount,
+                LocalDateTime.now());
+
         logger.info("Nieuwe transactie die de arg constructor voor de DB " +
                 "gebruikt.");
     }
@@ -49,20 +49,20 @@ public class Transaction{
         this.transactionId = transactionId;
     }
 
-    public User getKoper() {
-        return koper;
+    public User getBuyer() {
+        return buyer;
     }
 
-    public void setKoper(Customer koper) {
-        this.koper = koper;
+    public void setBuyer(Customer buyer) {
+        this.buyer = buyer;
     }
 
-    public User getVerkoper() {
-        return verkoper;
+    public User getSeller() {
+        return seller;
     }
 
-    public void setVerkoper(Customer verkoper) {
-        this.verkoper = verkoper;
+    public void setSeller(Customer seller) {
+        this.seller = seller;
     }
 
     public Asset getAsset() {
@@ -73,20 +73,20 @@ public class Transaction{
         this.asset = asset;
     }
 
-    public double getAssetammount() {
-        return assetammount;
+    public double getAssetamount() {
+        return assetamount;
     }
 
-    public void setAssetammount(double assetammount) {
-        this.assetammount = assetammount;
+    public void setAssetamount(double assetamount) {
+        this.assetamount = assetamount;
     }
 
-    public double getEuroammount() {
-        return euroammount;
+    public double getEuroamount() {
+        return euroamount;
     }
 
-    public void setEuroammount(double euroammount) {
-        this.euroammount = euroammount;
+    public void setEuroamount(double euroamount) {
+        this.euroamount = euroamount;
     }
 
     public int getCommisionPercentage() {
@@ -94,9 +94,9 @@ public class Transaction{
     }
 
     public void setCommisionPercentage(int commisionPercentage) {
-        this.commisionPercentage = commisionPercentage;
+        this.commisionPercentage = commisionPercentage; // hoe kan ik dit instelbaar maken en
+        // omvormen tot iets dat je van buitenaf kunt aanpassen
     }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -106,20 +106,18 @@ public class Transaction{
     }
 
     public double calcCommission(){
-
-        double percentage = commisionPercentage;
-        return (euroammount)*(percentage/100.00);
+        return (euroamount)*(commisionPercentage/100.00);
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
                 "transactionId=" + transactionId +
-                ", koper=" + koper +
-                ", verkoper=" + verkoper +
+                ", koper=" + buyer +
+                ", verkoper=" + seller +
                 ", asset=" + asset +
-                ", assetammount=" + assetammount +
-                ", euroammount=" + euroammount +
+                ", assetammount=" + assetamount +
+                ", euroammount=" + euroamount +
                 ", commisionPercentage=" + commisionPercentage +
                 ", timestamp=" + timestamp +
                 '}';
