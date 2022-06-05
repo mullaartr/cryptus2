@@ -136,8 +136,9 @@ public class BankAccountDaoJdbc implements BankAccountDao {
 }
 
 
+/*
 
-   /* @Override
+ @Override
     public void store(BankAccount bankAccount) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertUserStatement(bankAccount, connection), keyHolder);
@@ -152,13 +153,16 @@ public class BankAccountDaoJdbc implements BankAccountDao {
 
         }
 
-    }*/
+    }
+*/
 
 
-    /*private PreparedStatement insertUserStatement(BankAccount bankAccount, Connection connection) throws SQLException {
+
+/*private PreparedStatement insertUserStatement(BankAccount bankAccount, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT into bankrekening (iban, saldo) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, bankAccount.getIban());
         ps.setDouble(2, bankAccount.getBalance());
 
-        return ps;
-    }*/
+        return ps;*/
+
+

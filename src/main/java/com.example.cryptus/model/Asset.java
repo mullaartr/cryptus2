@@ -8,23 +8,19 @@ public class Asset {
     String assetAfkorting;
     double koersEuro; //voorlopig alleen koers waarde crypto in euro; later eventueel koers is dollar toevoegen
 
-    private double saldo;
-
-    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro,  Double saldo) {
+    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
         this.koersEuro = koersEuro;
-
-        this.saldo = saldo;
     }
 
-    public Asset(String assetNaam, String assetAfkorting, double koersEuro, double saldo) {
-        this(0, assetNaam, assetAfkorting, koersEuro,  saldo);
+    public Asset(String assetNaam, String assetAfkorting, double koersEuro) {
+        this(0, assetNaam, assetAfkorting, koersEuro);
     }
 
     public Asset() {
-        this(0, null, null, 0, 0.0);
+        this(0, null, null, 0);
     }
 
 
@@ -62,26 +58,17 @@ public class Asset {
     }
 
 
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Asset asset = (Asset) o;
-        return assetId == asset.assetId && Double.compare(asset.koersEuro, koersEuro) == 0 && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting);
+        return assetId == asset.assetId && Double.compare(asset.koersEuro, koersEuro) == 0 && Objects.equals(assetNaam, asset.assetNaam) && Objects.equals(assetAfkorting, asset.assetAfkorting);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assetId, assetNaam, assetAfkorting, koersEuro, saldo);
+        return Objects.hash(assetId, assetNaam, assetAfkorting, koersEuro);
     }
 
     @Override
@@ -91,7 +78,6 @@ public class Asset {
                 ", assetNaam='" + assetNaam + '\'' +
                 ", assetAfkorting='" + assetAfkorting + '\'' +
                 ", koersEuro=" + koersEuro +
-                ", saldo=" + saldo +
                 '}';
     }
 }

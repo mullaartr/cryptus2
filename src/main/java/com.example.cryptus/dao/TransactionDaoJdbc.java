@@ -105,8 +105,6 @@ public class TransactionDaoJdbc implements TransactionDao {
         asset.setAssetId(rs.getInt("assetId"));
         asset.setAssetNaam(rs.getString("naam"));
         asset.setAssetAfkorting(rs.getString("afkorting"));
-        asset.setSaldo(rs.getDouble("saldo"));
-
         return asset;
     };
 

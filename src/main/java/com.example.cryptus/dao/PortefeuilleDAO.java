@@ -17,7 +17,7 @@ public interface PortefeuilleDAO {
 
 
 
-    void update(Portefeuille portefeuille, String asset);
+    void update(Portefeuille portefeuille, double saldo, Asset asset);
 
     void delete(int id);
 }

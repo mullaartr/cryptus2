@@ -7,10 +7,11 @@ import com.example.cryptus.model.Portefeuille;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PortefeuilleDTO  {
     private int portefeuilleId;
-    private List<Asset> assets;
+    private Map<Asset, Double> assets;
     private Customer owner; // moet eigenlijk customerDTo worden
 
 
@@ -20,16 +21,16 @@ public class PortefeuilleDTO  {
 
     public PortefeuilleDTO(Portefeuille portefeuille) {
         this.portefeuilleId = portefeuille.getPortefeuilleId();
-        this.assets = portefeuille.getAssets();
+        this.assets = portefeuille.getAssetLijst();
         portefeuille.getOwner().setPortefeuille(null);
         this.owner = portefeuille.getOwner();
     }
 
-    public List<Asset> getAssets() {
+    public Map<Asset, Double> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<Asset> assets) {
+    public void setAssets(Map<Asset, Double> assets) {
         this.assets = assets;
     }
 

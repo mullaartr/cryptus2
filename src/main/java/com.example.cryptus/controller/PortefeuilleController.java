@@ -2,6 +2,7 @@ package com.example.cryptus.controller;
 
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.dto.PortefeuilleDTO;
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.repository.PortefeuilleRepository;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -82,7 +84,12 @@ public class PortefeuilleController {
     @PatchMapping (value = "/update/{assetNaam}")
     public ResponseEntity<Portefeuille> updateSaldo(@PathVariable("assetNaam") String asset, @RequestBody PortefeuilleDTO portefeuilleDTO){
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
-        portefeuilleService.updatePortefeuille(portefeuille, asset);
+        for(Map.Entry<Asset, Double> entry: portefeuille.getAssetLijst().entrySet()){
+            if(entry.getKey().equals(asset)){
+                portefeuilleService.updatePortefeuille(portefeuille, entry.getValue(), entry.getKey());
+            }
+        }
+
         return ResponseEntity.ok().body(portefeuille);
     }
     //werkt niet: foreign key constraint

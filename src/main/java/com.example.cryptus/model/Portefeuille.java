@@ -4,31 +4,29 @@ package com.example.cryptus.model;
 import com.example.cryptus.dto.PortefeuilleDTO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Portefeuille implements Serializable {
 
     private int portefeuilleId;
-    private List<Asset> assets;
+    private Map<Asset, Double> assetLijst;
     private Customer owner;
 
 
 
-    public Portefeuille(int portefeuilleId, Customer owner, List<Asset> assets) {
+    public Portefeuille(int portefeuilleId, Customer owner, Map<Asset, Double> assetLijst) {
         this.portefeuilleId = portefeuilleId;
         this.owner = owner;
-        this.assets = assets;
+        this.assetLijst = assetLijst;
     }
 
     public Portefeuille(Customer owner) {
-        this(0,  owner, new ArrayList<Asset>());
+        this(0,  owner, new HashMap<>());
     }
 
     public Portefeuille() {
         this(new Customer());
-        this.assets = new ArrayList<>();
+        this.assetLijst = new HashMap<>();
     }
 
     public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
@@ -70,12 +68,12 @@ public class Portefeuille implements Serializable {
         return portefeuilleId;
     }
 
-    public List<Asset> getAssets() {
-        return assets;
+    public Map<Asset, Double> getAssetLijst() {
+        return assetLijst;
     }
 
-    public void setAssets(List<Asset> assets) {
-        this.assets = assets;
+    public void setAssetLijst(Map<Asset, Double> assetLijst) {
+        this.assetLijst = assetLijst;
     }
 
     @Override
@@ -83,19 +81,19 @@ public class Portefeuille implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Portefeuille that = (Portefeuille) o;
-        return portefeuilleId == that.portefeuilleId && Objects.equals(assets, that.assets);
+        return portefeuilleId == that.portefeuilleId && Objects.equals(assetLijst, that.assetLijst) && Objects.equals(owner, that.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(portefeuilleId, assets);
+        return Objects.hash(portefeuilleId, assetLijst);
     }
 
     @Override
     public String toString() {
         return "Portefeuille{" +
                 "portefeuilleId=" + portefeuilleId +
-                ", assets=" + assets +
+                ", assets=" + assetLijst +
                 ", owner=" + owner +
                 '}';
     }

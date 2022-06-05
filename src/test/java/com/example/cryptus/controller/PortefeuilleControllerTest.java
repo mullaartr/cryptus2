@@ -47,6 +47,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +94,7 @@ class PortefeuilleControllerTest {
         mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",
                 new Address(6,"Justine de Gouwerhof","2011GP","Haarlem")
                 ,"rogier.mullaart@gmail.com","0647185165");
-        portefeuille1 = new Portefeuille(3, mullaart, new ArrayList<>());
+        portefeuille1 = new Portefeuille(3, mullaart, new HashMap<>());
         portefeuilleDTO = new PortefeuilleDTO(portefeuille1);
     }
 

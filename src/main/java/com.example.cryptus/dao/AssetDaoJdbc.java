@@ -136,7 +136,7 @@ public class AssetDaoJdbc implements AssetDao {
             String assetNaam = resultSet.getString("naam");
             String assetAfkorting = resultSet.getString("afkorting");
             double koersEuro = resultSet.getDouble("wisselkoers");
-            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, 0.0);//moet portefeuille wel null zijn?
+            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro);//moet portefeuille wel null zijn?
             return asset;
         }
     }

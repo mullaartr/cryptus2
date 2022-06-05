@@ -3,13 +3,17 @@ package com.example.cryptus.model;
 public class Koers {
 
     private String name;
-    private int koersInDollar;
-    private int koersInEuro;
+    private double koersInDollar;
+    private double koersInEuro;
 
-    public Koers(String name, int koersInDollar, int koersInEuro) {
+    public Koers(String name, double koersInDollar, double koersInEuro) {
         this.name = name;
         this.koersInDollar = koersInDollar;
         this.koersInEuro = koersInEuro;
+    }
+
+    public Koers() {
+        this("", 0.0,0.0);
     }
 
     public String getName() {
@@ -20,19 +24,19 @@ public class Koers {
         this.name = name;
     }
 
-    public int getKoersInDollar() {
-        return koersInDollar;
-    }
-
-    public void setKoersInDollar(int koersInDollar) {
+    public void setKoersInDollar(double koersInDollar) {
         this.koersInDollar = koersInDollar;
     }
 
-    public int getKoersInEuro() {
-        return koersInEuro;
+    public void setKoersInEuro(double koersInEuro) {
+        this.koersInEuro = koersInEuro;
     }
 
-    public void setKoersInEuro(int koersInEuro) {
-        this.koersInEuro = koersInEuro;
+    public double getKoersInDollar() {
+        return koersInDollar;
+    }
+
+    public double getKoersInEuro() {
+        return koersInEuro;
     }
 }
