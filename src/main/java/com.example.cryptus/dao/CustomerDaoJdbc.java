@@ -1,15 +1,12 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.model.*;
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -18,8 +15,6 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
-
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 
 @Component
@@ -261,6 +256,23 @@ public class CustomerDaoJdbc implements CustomerDao {
             logger.info("A new customer");
         }
         return Optional.ofNullable(customer);
+
+    }
+
+    //Daan: I added this method to check if an email is already in use
+   @Override
+    public List<Customer> customerByEmail(String email) {
+        String sql="select * from klant JOIN user u on klant.userId = u.userId where klant.emailadres = ?";
+        //Customer customer = null;
+       List<Customer> customers = null;
+        try{
+
+            customers = jdbcTemplate.query(sql,rowMapper,email);
+
+        }catch (DataAccessException exception){
+            logger.info("A new customer");
+        }
+        return customers;
 
     }
 

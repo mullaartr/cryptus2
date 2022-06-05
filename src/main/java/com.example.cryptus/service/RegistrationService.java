@@ -1,5 +1,6 @@
 package com.example.cryptus.service;
 
+import com.example.cryptus.model.BankAccount;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.User;
 import com.example.cryptus.service.Exceptions.BelowEighteenException;
@@ -11,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RegistrationService {
@@ -21,25 +20,26 @@ public class RegistrationService {
     private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
     private CustomerService customerService;
     private BsnService bsnService;
+    private IbanService ibanService;
 
     @Autowired
     public RegistrationService(CustomerService customerService, BsnService bsnService, IbanService ibanService) {
         this.customerService = customerService;
         this.bsnService = bsnService;
+        this.ibanService = ibanService;
         logger.info("New RegistrationService");
     }
 
-//    //todo vind customer niet op mail
-//    public boolean isUniek(Customer customer) {
-//        Optional<Customer> existing = customerService.findCustomerByEmail(customer.getEmail());
-//        if (existing.isPresent()) {
-//            System.out.println("Gebruiker bestaat al");
-//            throw new UserAlreadyExistsException();
-//        }else  return true;
-//    }
+    public boolean isUniek(Customer customer) throws UserAlreadyExistsException {
+        List<Customer> customers = customerService.customerByEmail(customer.getEmail());
+        boolean checkUniek = customers.stream().anyMatch(c -> c.getEmail().equals(customer.getEmail()));
+        if (checkUniek){
+            System.out.println("Gebruiker bestaat al");
+            throw new UserAlreadyExistsException();
+        } else return true;
+    }
 
-
-    public boolean checkAge(Customer customer) {
+    public boolean checkAge(Customer customer) throws BelowEighteenException {
         Instant dateOfBirth = Instant.ofEpochMilli(customer.getBirthDate().getTime());
         Calendar today = Calendar.getInstance();
         today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
@@ -53,24 +53,17 @@ public class RegistrationService {
         } else return true;
     }
 
-    public boolean checkBSN(Customer customer) {
+    public boolean checkBSN(Customer customer) throws WrongBsnException {
         if(!bsnService.isBsn(customer.getBSN())) {
             System.out.println("Dit is geen bsn");
             throw new WrongBsnException();
         } else return true;
     }
 
-    public void checkRegistration(Customer customer) {
-       //if(isUniek(customer) && checkAge(customer) && checkBSN(customer)){ //uitgecomment tot isUniek()werkt;
-        if(checkAge(customer) && checkBSN(customer)){
-           //ken iban toe aan customer; hiervoor is of een methode nodig
-           //Optional<User> findUserById(customer.getUserId)
-           //of een methode in BankAccountService
-           //setUserId(customer.getUserId), waarin een iban wordt aangemaakt en een startsaldo wordt gegeven
-            customerService.storeCustomer(customer);
-
+    public void checkRegistration(Customer customer)  {
+       if(isUniek(customer) && checkAge(customer) && checkBSN(customer)){
+           customer.setBankAccount(new BankAccount(customer, ibanService.ibanGenerator(), 1000000.00));
+           customerService.storeCustomer(customer);
         }
     }
-
-
 }

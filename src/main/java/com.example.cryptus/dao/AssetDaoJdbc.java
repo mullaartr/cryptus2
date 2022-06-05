@@ -1,6 +1,7 @@
 package com.example.cryptus.dao;
 
 import com.example.cryptus.model.Asset;
+//import com.example.cryptus.model.Koers;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.List;
@@ -135,7 +135,7 @@ public class AssetDaoJdbc implements AssetDao {
             int id = resultSet.getInt("assetId");
             String assetNaam = resultSet.getString("naam");
             String assetAfkorting = resultSet.getString("afkorting");
-            double koersEuro = resultSet.getDouble("wisselkoers");
+            double koersEuro = resultSet.getDouble("wisselkoers"); //heb hier tijdelijk een double van gemaakt om de boel draaiende te houden
             Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, 0.0);//moet portefeuille wel null zijn?
             return asset;
         }

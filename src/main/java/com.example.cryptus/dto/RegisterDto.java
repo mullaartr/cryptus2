@@ -1,4 +1,4 @@
-package com.example.cryptus.dao.transfer;
+package com.example.cryptus.dto;
 
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.BankAccount;
