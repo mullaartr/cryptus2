@@ -7,11 +7,14 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.lang.ref.Cleaner;
 import java.sql.Date;
@@ -72,7 +75,7 @@ class PortefeuilleDAOJdbcTest {
         assetList1.put(asset2, 8.0);
         assetList1.put(asset3, 8.0);
         portefeuille1.setAssetLijst(assetList1);
-        //customerDaoJdbc = new CustomerDaoJdbc(new JdbcTemplate());
+
     }
 
 
@@ -98,7 +101,7 @@ class PortefeuilleDAOJdbcTest {
     void storePortefeuille(){
         portefeuilleDaoJDBCUnderTest.store(portefeuille1);
         Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(3).orElse(null);
-        portefeuille1.setOwner(customerDaoJdbcUnderTest.findCustomerByPortefeuilleId(portefeuille1.getPortefeuilleId()).orElse(null));
+        actual.setOwner(mullaart);
         Portefeuille expected = portefeuille1;
         assertThat(actual).isNotNull().isEqualTo(expected);
     }
@@ -106,17 +109,18 @@ class PortefeuilleDAOJdbcTest {
     @Test
     @Order(4)
     void updatePortefeuille() {
-       /* portefeuille1.setPortefeuilleId(4);
-        portefeuilleDaoJDBCUnderTest.store(portefeuille1);*/
+        portefeuille1.setPortefeuilleId(4);
+        portefeuilleDaoJDBCUnderTest.store(portefeuille1);
         for (Map.Entry<Asset, Double> entry: portefeuille1.getAssetLijst().entrySet()) {
             if(entry.getKey().getAssetNaam().equals("Bitcoin")){
                 entry.setValue(10.0);
                 portefeuilleDaoJDBCUnderTest.update(portefeuille1, 10, entry.getKey());
-                return;
+
             }
         }
 
         Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4).orElse(null);
+        actual.setOwner(mullaart);
         assertThat(actual).isNotNull().isEqualTo(portefeuille1);
     }
 
@@ -124,7 +128,8 @@ class PortefeuilleDAOJdbcTest {
     @Order(5)
     void deletePortefeuille(){
         portefeuilleDaoJDBCUnderTest.delete(portefeuille1.getPortefeuilleId());
-        assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4)).isEqualTo(new Portefeuille());
+        //assertThat(portefeuilleDaoJDBCUnderTest.findPortefeuilleById(4)).isNull();
+
     }
 
 

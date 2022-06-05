@@ -98,7 +98,7 @@ CREATE TABLE if not exists `portefeuille_regel`
         FOREIGN KEY (`assetId`)
             REFERENCES `Asset` (`assetId`)
             ON DELETE no action
-            ON UPDATE cascade
+            ON UPDATE no action
 );
 
 CREATE TABLE IF NOT EXISTS `cryptus`.`transactie` (
