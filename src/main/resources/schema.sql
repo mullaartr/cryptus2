@@ -137,19 +137,14 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`transactie` (
 
 CREATE TABLE if not exists `koers`
 (
-    `asseta`      INT            NOT NULL,
-    `assetb`      INT            NOT NULL,
-    `wisselkoers` DECIMAL(16, 6) NOT NULL,
-    `timestamp`   TIMESTAMP(2)   NOT NULL,
-    PRIMARY KEY (`asseta`, `assetb`, `timestamp`),
+    `assetId`   INT            NOT NULL,
+    `assetnaam`   VARCHAR(45) NOT NULL,
+    `wisselkoersEuro` DECIMAL(16, 6) NOT NULL,
+    `wisselkoersDollar`   DECIMAL(16, 6)   NOT NULL,
+    PRIMARY KEY (`assetId`),
     CONSTRAINT `verzinzelf6`
-        FOREIGN KEY (`asseta`)
+        FOREIGN KEY (`assetId`)
             REFERENCES `Asset` (`assetId`)
             ON DELETE NO ACTION
-            ON UPDATE cascade,
-    CONSTRAINT `verzinzelf8`
-        FOREIGN KEY (`assetb`)
-            REFERENCES `Asset` (`assetId`)
-            ON DELETE cascade
             ON UPDATE cascade
 );
