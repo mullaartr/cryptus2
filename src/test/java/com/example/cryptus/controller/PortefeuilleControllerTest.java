@@ -8,7 +8,7 @@ import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.security.ApplicationSecurityConfig;
 import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.PortefeuilleService;
-import com.google.gson.*;
+//import com.google.gson.*;
 import com.mysql.cj.xdevapi.JsonString;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
