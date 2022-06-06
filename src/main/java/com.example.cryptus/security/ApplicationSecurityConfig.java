@@ -41,35 +41,37 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        Whitelisting URLs
         http
-//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and()
-                .csrf().disable()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+//                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/*", "index", "/css/*", "/js/*").permitAll();
-        /*
+
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
                 .antMatchers(HttpMethod.DELETE,"/manage/**")
-                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
+                .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
                 .antMatchers(HttpMethod.POST,"/manage/**")
-                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
+                .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT,"/manage/**")
-                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
+                .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
                 .antMatchers(HttpMethod.GET, "/manage/**").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name())
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/assets", true)
-                    .passwordParameter("password")
-                    .usernameParameter("username")
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/assets", true)
+                .passwordParameter("password")
+                .usernameParameter("username")
                 .and()
                 .rememberMe()
-                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1))
-                    .key("cryptusSecureKey")
-                    .rememberMeParameter("remember-me")
+                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1))
+                .key("cryptusSecureKey")
+                .rememberMeParameter("remember-me")
                 .and()
                 .logout()
+
                     .logoutUrl("/logout")
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                     .clearAuthentication((true))
@@ -77,9 +79,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID", "remember-me")
                     .logoutSuccessUrl("/login");
 
-         */
-    }
 
+
+
+    }
   @Override
     @Bean
     protected UserDetailsService userDetailsService() {

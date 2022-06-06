@@ -14,9 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
@@ -52,17 +50,16 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return portefeuilles;
     };
 
-    ResultSetExtractor<List<Asset>> assetResultExtractor = rs -> {
-        List<Asset> assets = new ArrayList<>();
+    ResultSetExtractor <Map<Asset, Double>> assetResultExtractor = rs -> {
+        Map<Asset, Double> assetLijst = new HashMap<>();
         while (rs.next()){
             Asset asset = new Asset();
             asset.setAssetId(rs.getInt("assetId"));
             asset.setAssetNaam(rs.getString("naam"));
             asset.setAssetAfkorting(rs.getString("afkorting"));
-            asset.setSaldo(rs.getDouble("saldo"));
-            assets.add(asset);
+            assetLijst.put(asset, rs.getDouble("saldo"));
         }
-        return assets;
+        return assetLijst;
     };
 
 
@@ -72,22 +69,22 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         Portefeuille portefeuille = null;
         try{
             portefeuille = jdbcTemplate.queryForObject(Sql, rowMapper, id);
-            portefeuille.setAssets(findAssetsByPortefeuille(id).orElse(null));
+            portefeuille.setAssetLijst(findAssetsByPortefeuille(id).orElse(null));
         }catch (DataAccessException exception){
             logger.info("portefeuille was not found");
         }
-        return Optional.of(portefeuille);
+        return Optional.ofNullable(portefeuille);
     }
 
-    private Optional<List<Asset>> findAssetsByPortefeuille(int id){
+    private Optional <Map<Asset, Double>> findAssetsByPortefeuille(int id){
         String sql = "select * from portefeuille_Regel po join asset a on a.assetId = po.assetId  where po.portefeuilleId = ?";
-        List<Asset> assets = null;
+        Map<Asset, Double> assetLijst = null;
         try {
-            assets = jdbcTemplate.query(sql, assetResultExtractor, id);
+            assetLijst = jdbcTemplate.query(sql, assetResultExtractor, id);
         }catch (DataAccessException exception){
             logger.info("no assets where found found");
         }
-        return Optional.of(assets);
+        return Optional.ofNullable(assetLijst);
     }
 
     @Override
@@ -98,8 +95,8 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         try {
             portefeuilles = jdbcTemplate.query(sql, portefeuilleResultExtractor);
             for (int i = 0; i < portefeuilles.size(); i++) {
-                List<Asset> assets = jdbcTemplate.query(sql2, assetResultExtractor, portefeuilles.get(i).getPortefeuilleId());
-                portefeuilles.get(i).setAssets(assets);
+                Map<Asset, Double> assets = jdbcTemplate.query(sql2, assetResultExtractor, portefeuilles.get(i).getPortefeuilleId());
+                portefeuilles.get(i).setAssetLijst(assets);
             }
         } catch (DataAccessException exception){
             logger.info("portefeuille was not found");
@@ -117,11 +114,11 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return ps;
     }
 
-    private PreparedStatement insertPortefeuilleRegelStatement(Portefeuille portefeuille, Asset asset, Connection connection)throws SQLException {
+    private PreparedStatement insertPortefeuilleRegelStatement(Portefeuille portefeuille, Asset asset, double saldo, Connection connection)throws SQLException {
         PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO portefeuille_regel(portefeuilleID, SALDO, ASSETId) VALUES (?,?,?)");
         ps.setInt(1, portefeuille.getPortefeuilleId());
-        ps.setDouble(2, asset.getSaldo());
+        ps.setDouble(2, saldo);
         ps.setInt(3, asset.getAssetId());
         return ps;
     }
@@ -129,15 +126,15 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     public void store(Portefeuille portefeuille) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertPortefeuilleStatement(portefeuille, connection), keyHolder);
-        for (int i = 0; i < portefeuille.getAssets().size(); i++) {
-            storePortefeuilleRegel(portefeuille, portefeuille.getAssets().get(i));
+        for (Map.Entry<Asset, Double> entry: portefeuille.getAssetLijst().entrySet()) {
+            storePortefeuilleRegel(portefeuille, entry.getKey(), entry.getValue());
         }
         int newKey = keyHolder.getKey().intValue();
         portefeuille.setPortefeuilleId(newKey);
     }
 
-    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
-        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con));
+    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset, double saldo){
+        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, saldo, con));
     }
 
 
@@ -148,12 +145,9 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     }
 
     @Override
-    public void update(Portefeuille portefeuille, String assetNaam) {
-        Asset asset = portefeuille.getAssets().
-                stream().filter(asset1 -> asset1.getAssetNaam().equals(assetNaam)).
-                findAny().orElse(null);
+    public void update(Portefeuille portefeuille, double saldo, Asset asset) {
         String sql = "Update portefeuille_regel  SET  saldo = ? where portefeuilleId = ? and assetId = ?";
-        int update = jdbcTemplate.update(sql, asset.getSaldo(), portefeuille.getPortefeuilleId(), asset.getAssetId());
+        int update = jdbcTemplate.update(sql, saldo, portefeuille.getPortefeuilleId(), asset.getAssetId());
         if (update == 1) {
             logger.info("portefeuille updated" + portefeuille.getPortefeuilleId());
         }

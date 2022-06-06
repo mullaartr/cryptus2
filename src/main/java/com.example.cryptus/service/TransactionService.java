@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Service
 public class TransactionService {
@@ -86,9 +87,9 @@ public class TransactionService {
                                     double assetAmount){
         Optional<Portefeuille> portefeuille =
                 portefeuilleRepository.findPortefeuilleById(portfeuilleId);
-        for(Asset asset: portefeuille.get().getAssets()){
-            if(asset.getAssetId() == assetId){
-                if(asset.getSaldo() >= assetAmount){
+        for(Map.Entry<Asset, Double> entry: portefeuille.orElse(null).getAssetLijst().entrySet()){
+            if(entry.getKey().getAssetId() == assetId){
+                if(entry.getValue() >= assetAmount){
                     return true;
                 }
             }

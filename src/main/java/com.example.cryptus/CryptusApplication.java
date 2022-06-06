@@ -1,23 +1,9 @@
 package com.example.cryptus;
 
-import com.example.cryptus.dao.CustomerDaoJdbc;
-import com.example.cryptus.dao.PortefeuilleDAOJdbc;
-import com.example.cryptus.dao.TransactionDaoJdbc;
-import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.Portefeuille;
-import com.example.cryptus.model.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.cryptus.service.CoinGeckoAPIService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
-
-import javax.annotation.sql.DataSourceDefinition;
-import javax.annotation.sql.DataSourceDefinitions;
 
 @SpringBootApplication
 public class CryptusApplication implements CommandLineRunner {
@@ -30,7 +16,10 @@ public class CryptusApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		System.out.println();
+
+		CoinGeckoAPIService koersService = new CoinGeckoAPIService();
+		koersService.coinAPI();
+
 	}
 }
 

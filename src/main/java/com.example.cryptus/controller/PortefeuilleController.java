@@ -2,13 +2,21 @@ package com.example.cryptus.controller;
 
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.dto.PortefeuilleDTO;
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.repository.PortefeuilleRepository;
 
+//import com.example.cryptus.security.ApplicationSecurityConfig;
+import com.example.cryptus.security.ApplicationSecurityConfig;
+import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.PortefeuilleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -26,11 +35,13 @@ public class PortefeuilleController {
     private PortefeuilleDTO portefeuilleDTO;
     private PortefeuilleDAO portefeuilleDAO;
     private PortefeuilleService portefeuilleService;
+    private CustomerService customerService;
     private Logger logger = LogManager.getLogger(PortefeuilleController.class);
 
     @Autowired
-    public PortefeuilleController(PortefeuilleService portefeuilleService) {
+    public PortefeuilleController(PortefeuilleService portefeuilleService, CustomerService customerService) {
         this.portefeuilleService = portefeuilleService;
+        this.customerService = customerService;
         logger.info("new PortefeuilleController");
     }
 
@@ -55,8 +66,16 @@ public class PortefeuilleController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO){
+    public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO) throws Exception {
+        // owner moet geauthenticeerd en opgehaald worden aan de hand van de token
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            currentUserName = authentication.getName();
+        }
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
+        portefeuille.setOwner(customerService.findCustomerByUsernamePassword(currentUserName).orElse(null));
         portefeuilleService.storePortefeuille(portefeuille);
         return ResponseEntity.ok().build();
 
@@ -65,7 +84,12 @@ public class PortefeuilleController {
     @PatchMapping (value = "/update/{assetNaam}")
     public ResponseEntity<Portefeuille> updateSaldo(@PathVariable("assetNaam") String asset, @RequestBody PortefeuilleDTO portefeuilleDTO){
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
-        portefeuilleService.updatePortefeuille(portefeuille, asset);
+        for(Map.Entry<Asset, Double> entry: portefeuille.getAssetLijst().entrySet()){
+            if(entry.getKey().equals(asset)){
+                portefeuilleService.updatePortefeuille(portefeuille, entry.getValue(), entry.getKey());
+            }
+        }
+
         return ResponseEntity.ok().body(portefeuille);
     }
     //werkt niet: foreign key constraint
