@@ -47,7 +47,15 @@ public class Portefeuille implements Serializable {
 
     }
 
-    public boolean heeftVoldoendeAssets(){
+    public boolean checkVoorSaldoEnPasAan(String assetNaam, Double afschrijving){
+        for (Map.Entry<Asset, Double> entry: this.assetLijst.entrySet()) {
+            if(entry.getKey().getAssetNaam().equals(assetNaam)){
+                if(entry.getValue() >= afschrijving){
+                    entry.setValue(entry.getValue() - afschrijving);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
