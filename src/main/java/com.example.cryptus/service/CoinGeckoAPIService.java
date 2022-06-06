@@ -1,4 +1,5 @@
 package com.example.cryptus.service;
+import com.example.cryptus.dto.KoersDto;
 import com.example.cryptus.model.Koers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -21,6 +22,7 @@ public class CoinGeckoAPIService{
     private final Logger logger = LogManager.getLogger(CoinGeckoAPIService.class);
 
     private Map<String, Map<String, Double>> koersenPrimitief;
+
 
     private Set<Koers> koersen;
 
@@ -67,12 +69,12 @@ public class CoinGeckoAPIService{
         Set<Koers> koersenSet = new HashSet<>();
         for (Map.Entry<String, Map<String, Double>> entry: koersen.entrySet()) {
             Koers koers = new Koers();
-            koers.setName(entry.getKey());
+            koers.setNaam(entry.getKey());
             for (Map.Entry <String, Double> entry2: entry.getValue().entrySet()) {
                 if(entry2.getKey().equals("eur")){
                     koers.setKoersInEuro(entry2.getValue());
                 } else {
-                    koers.setKoersInDollar(entry2.getValue());
+                    koers.setKoersInDollars(entry2.getValue());
                 }
             }
             koersenSet.add(koers);

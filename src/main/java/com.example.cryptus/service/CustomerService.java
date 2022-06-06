@@ -9,6 +9,7 @@ import com.example.cryptus.repository.CustomerRepository;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -70,5 +71,11 @@ public class CustomerService {
 
     public Optional<Customer> findCustomerByEmail(String email){
         return customerRepository.findCustomerByEmail(email);
+    }
+
+    //Daan: added this to check registration
+    public List<Customer> customerByEmail(String email){
+        List<Customer> customers = customerRepository.customerByEmail(email);
+        return customers;
     }
 }

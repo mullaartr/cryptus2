@@ -2,7 +2,6 @@ package com.example.cryptus.repository;
 import com.example.cryptus.dao.CustomerDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -212,6 +211,18 @@ public class CustomerRepository  {
 
     }
 
+    //Daan: I added this method to check if an email is already in use
+    //todo werkt nog niet
+    public List<Customer> customerByEmail(String email) {
+        List<Customer> customers =customerDao.customerByEmail(email);
+//        if(customers.isEmpty()){
+//            return null;// customers;//return niets
+//        }
+//        else{
+            return customers; //customerDao.customerByEmail(email);//return customers, ga ze niet nog een keer ophalen
+        //}
+    }
+
     public List<Customer> list(){
         return customerDao.list();
     }
@@ -221,7 +232,5 @@ public class CustomerRepository  {
     public String nextFirstName() {
         return firstNames[randomizer.nextInt(firstNames.length)];
     }
-
-
 
 }

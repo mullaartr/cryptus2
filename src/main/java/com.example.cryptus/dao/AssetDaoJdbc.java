@@ -1,6 +1,7 @@
 package com.example.cryptus.dao;
 
 import com.example.cryptus.model.Asset;
+//import com.example.cryptus.model.Koers;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.List;

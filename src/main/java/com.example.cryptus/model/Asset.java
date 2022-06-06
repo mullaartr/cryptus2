@@ -1,12 +1,15 @@
 package com.example.cryptus.model;
 
+//import com.example.cryptus.model.Koers;
+
 import java.util.Objects;
 
 public class Asset {
     int assetId;
     String assetNaam;
     String assetAfkorting;
-    double koersEuro; //voorlopig alleen koers waarde crypto in euro; later eventueel koers is dollar toevoegen
+    double koersEuro; //heb hier tijdelijk een double van gemaakt om de boel draaiende te houden
+
 
     public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro) {
         this.assetId = assetId;
@@ -21,9 +24,8 @@ public class Asset {
 
     public Asset() {
         this(0, null, null, 0);
+
     }
-
-
 
     public int getAssetId() {
         return assetId;
@@ -58,6 +60,7 @@ public class Asset {
     }
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,6 +68,7 @@ public class Asset {
         Asset asset = (Asset) o;
         return assetId == asset.assetId && Double.compare(asset.koersEuro, koersEuro) == 0 && Objects.equals(assetNaam, asset.assetNaam) && Objects.equals(assetAfkorting, asset.assetAfkorting);
     }
+
 
     @Override
     public int hashCode() {

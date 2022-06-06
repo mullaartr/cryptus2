@@ -1,7 +1,6 @@
 package com.example.cryptus.model;
 
 
-import com.example.cryptus.dao.transfer.RegisterDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public abstract class User implements Serializable {
 
