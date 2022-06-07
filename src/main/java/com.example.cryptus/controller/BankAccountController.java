@@ -3,6 +3,7 @@ package com.example.cryptus.controller;
 import com.example.cryptus.dao.BankAccountDaoJdbc;
 import com.example.cryptus.model.BankAccount;
 import com.example.cryptus.model.Customer;
+import com.example.cryptus.repository.BankAccountRepository;
 import com.example.cryptus.service.BankAccountService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +19,10 @@ import java.util.Optional;
 public class BankAccountController {
 
     private Customer customer;
+    private BankAccount bankAccount;
     private BankAccountDaoJdbc bankAccountDaoJdbc;
     private BankAccountService bankAccountService;
+    private BankAccountRepository bankAccountRepository;
 
 
     private final Logger logger = LogManager.getLogger(BankAccountDaoJdbc.class);
@@ -28,6 +31,42 @@ public class BankAccountController {
     public BankAccountController(BankAccountDaoJdbc bankAccountDaoJdbc, BankAccountService bankAccountService) {
         this.bankAccountDaoJdbc = bankAccountDaoJdbc;
         this.bankAccountService = bankAccountService;
+
+    }
+
+    @PatchMapping(value = "/deposit")
+    @ResponseBody
+    public ResponseEntity<?> addFunds(@RequestParam double amount, @RequestParam int id){
+        bankAccountService.addFunds(amount,id);
+        //return new ResponseEntity<BankAccount>(HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Funds were added Successfully");
+
+    }
+
+    @PatchMapping(value = "/withdraw")
+    @ResponseBody
+    public ResponseEntity<?> withdrawFunds(@RequestParam double amount, @RequestParam int id){
+
+        Optional<BankAccount> lookUpAccount =
+                bankAccountDaoJdbc.findBankAccountByUserId(id);
+        BankAccount foundAccount = lookUpAccount.get();
+        if(foundAccount.hasSufficientFunds(amount))
+            bankAccountService.withdrawFunds(amount, id);
+        else{
+             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No sufficient funds");
+        }
+
+        return new ResponseEntity<BankAccount>(HttpStatus.ACCEPTED);
+
+    }
+
+
+
+    @PatchMapping(value = "/update")
+    @ResponseBody
+    public ResponseEntity<BankAccount> update(@RequestBody BankAccount bankAccount){
+        bankAccountService.update(bankAccount);
+        return new ResponseEntity<BankAccount>(HttpStatus.ACCEPTED);
 
     }
 
@@ -42,7 +81,8 @@ public class BankAccountController {
     }
 
     @PostMapping(value = "/create")
-    @ResponseBody public ResponseEntity<BankAccount> createBankAccount(@RequestBody BankAccount bankAccount){
+    @ResponseBody
+    public ResponseEntity<BankAccount> createBankAccount(@RequestBody BankAccount bankAccount){
 
         bankAccountService.store(bankAccount);
         return new ResponseEntity<BankAccount>(HttpStatus.CREATED);

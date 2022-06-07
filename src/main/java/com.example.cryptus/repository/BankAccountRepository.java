@@ -49,12 +49,12 @@ public class BankAccountRepository {
         bankAccountDao.delete(userId);
     }
 
-    public Optional<BankAccount> addFunds(double amount, int id){
-        return  bankAccountDao.addFunds(amount, id);
+    public void addFunds(double amount, int id){
+        bankAccountDao.addFunds(amount, id);
 
     }
-    public Optional<BankAccount> withdrawFunds(double amount, int id){
-        return bankAccountDao.withdrawFunds(amount, id);
+    public void withdrawFunds(double amount, int id){
+        bankAccountDao.withdrawFunds(amount, id);
 
     }
 

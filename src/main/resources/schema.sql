@@ -1,9 +1,9 @@
-<<<<<<< HEAD
+
 /*
 CREATE SCHEMA  `cryptus`;
 =======
 CREATE SCHEMA `cryptus`;
->>>>>>> 066e68f5543f2d60036e4e19eeec637bb9ce5da9
+
 USE `cryptus`;
 
 CREATE TABLE IF NOT EXISTS `cryptus`.`bankinstelling`
@@ -159,11 +159,11 @@ CREATE TABLE if not exists `koers`
     ON UPDATE cascade
     );
 
-<<<<<<< HEAD
+
 
 
 */
-=======
+
 -- CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
 -- GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
->>>>>>> 066e68f5543f2d60036e4e19eeec637bb9ce5da9
+

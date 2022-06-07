@@ -19,68 +19,7 @@
 
   <script type="module">
     function login() {
-      // var uname = document.getElementById("email").value;
-      // var pwd = document.getElementById("pwd1").value;
-      // var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      // if (uname == '') {
-      //   alert("please enter user name.");
-      // }
-      // else if (pwd == '') {
-      //   alert("enter the password");
-      // }
-      // else if (!filter.test(uname)) {
-      //   alert("Enter valid email id.");
-      // }
-      // else if (pwd.length < 6 || pwd.length > 25) {
-      //   alert("Password min length is 6 and max length is 15.");
-      // }
-      // else {
-      //   // fetch 
-      // //   let userName = document.querySelector('#gebruikersnaam').value
-      // // let password = document.querySelector('#wachtwoord').value
-      // console.log(userName)
-      // // JS Object -> to a string version
-      // let data = {
-      //   gebruikersnaam: uname,
-      //   wachtwoord: pwd
-      // }
 
-      // //let token = localStorage.setItem ('token',json.waarde) for a token
-      // fetch('localhost:8080/login',
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'content-Type': 'application/json',
-      //       //'Authorization': 'Bearer ${token}'
-
-      //     },
-      //     body: JSON.stringify(data)
-
-      //   })
-
-      //   .then((response) => { // callback
-      //     console.log(response)
-      //     if (response.status === 200) {
-      //       return response.json()
-
-      //     }
-
-
-      //   }).then(json => {
-      //     console.log(json)
-      //     // select element uit de DOM
-      //     const p = document.querySelector('#antwoord')
-
-      //     p.innerHTML = json.waarde
-      //     alert('Thank You for Login & You are Redirecting to Cryptus Website');
-
-
-      //     window.location.href = "Haircut.html" // redirect after loggin in
-
-      //     //localStorage.setItem ('token',json.waarde) for a token
-      //   })
-        
-      // }
     }
     //Reset Inputfield code.
     function clearFunc() {
@@ -101,8 +40,8 @@
     <div class="login">
       <table cellspacing="2" align="center" cellpadding="8" border="0">
         <tr>
-          <td>Enter User Name :</td>
-          <td><input type="text" placeholder="Enter user name here" id="email" class="tb" /></td>
+          <td>Enter Email address:</td>
+          <td><input type="text" placeholder="Enter email address here" id="email" class="tb" /></td>
         </tr>
         <tr>
           <td>Enter Password :</td>
@@ -152,7 +91,9 @@
       else if (pwd.length < 6 || pwd.length > 25) {
         alert("Password min length is 6 and max length is 15.");
       }
+
       else {
+
         // fetch 
       //   let userName = document.querySelector('#gebruikersnaam').value
       // let password = document.querySelector('#wachtwoord').value
@@ -161,7 +102,10 @@
       let data = {
         gebruikersnaam: uname,
         wachtwoord: pwd
+
       }
+
+
 
       //let token = localStorage.setItem ('token',json.waarde) for a token
       fetch('http://localhost:8080/klant/login',
@@ -187,6 +131,7 @@
         }).then(json => {
           if(json === undefined) {
             console.log('not logged in')
+            alert('Wrong password username combinaton');
           }else {
             console.log(json)
             // select element uit de DOM

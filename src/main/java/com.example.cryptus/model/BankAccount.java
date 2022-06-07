@@ -1,5 +1,7 @@
 package com.example.cryptus.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -13,6 +15,7 @@ private int userId;
 public static double MINIMUM_BALANCE = 0.0;
 
 
+    @Autowired
     public BankAccount(String iban, double balance, int userId) {
         this.iban = iban;
         this.balance = balance;
@@ -102,6 +105,14 @@ public static double MINIMUM_BALANCE = 0.0;
         }
 
         return amount;
+    }
+    public boolean hasSufficientFunds(double amount){
+        if( balance > amount){
+            return  true;
+        }else
+
+        return false ;
+
     }
 
 
