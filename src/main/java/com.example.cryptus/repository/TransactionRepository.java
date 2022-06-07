@@ -46,7 +46,7 @@ public class TransactionRepository {
             Optional<Asset> asset =
                     assetDaoJdbc.findAssetByTransactionId(t.getTransactionId());
 
-            if ( buyer.isEmpty() || seller.isEmpty() || asset.isEmpty() ) {
+            if (buyer.isEmpty() || seller.isEmpty() || asset.isEmpty()) {
 
                 continue;
             }
@@ -55,8 +55,9 @@ public class TransactionRepository {
                     seller.orElse(null),
                     asset.orElse(null),
                     t.getAssetamount(), t.getEuroamount(),
-                    t.getTimestamp()
-            );
+                    t.getFeePercentage(),
+                    t.getTimestamp());
+
             result.add(transaction);
         }
         return result;

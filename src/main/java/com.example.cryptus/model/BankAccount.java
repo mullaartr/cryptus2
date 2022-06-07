@@ -30,6 +30,15 @@ public static double MINIMUM_BALANCE = 0.0;
     public BankAccount() {
     }
 
+    //Daan: generated this constructor for registration
+
+
+    public BankAccount(Customer accountHolder, String iban, double balance) {
+        this.accountHolder = accountHolder;
+        this.iban = iban;
+        this.balance = balance;
+    }
+
     public BankAccount(double balance) {
         this.balance = balance;
     }

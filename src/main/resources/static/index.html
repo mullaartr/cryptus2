@@ -17,84 +17,84 @@
 <body>
 
 
-  <script type="module">
-    function login() {
+<script type="module">
+  function login() {
 
-    }
-    //Reset Inputfield code.
-    function clearFunc() {
-      document.getElementById("gebruikersnaam").value = "";
-      document.getElementById("wachtwoord").value = "";
-    }
+  }
+  //Reset Inputfield code.
+  function clearFunc() {
+    document.getElementById("gebruikersnaam").value = "";
+    document.getElementById("wachtwoord").value = "";
+  }
 
-  </script>
-
-
+</script>
 
 
-  <!-- Main div code -->
-  <div id="main">
-    <div class="h-tag">
-    </div>
-    <!-- Login box -->
-    <div class="login">
-      <table cellspacing="2" align="center" cellpadding="8" border="0">
-        <tr>
-          <td>Enter Email address:</td>
-          <td><input type="text" placeholder="Enter email address here" id="email" class="tb" /></td>
-        </tr>
-        <tr>
-          <td>Enter Password :</td>
-          <td><input type="password" placeholder="Enter Password here" id="pwd1" class="tb" /></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <input type="submit" value="Reset" onclick="clearFunc()" class="btn" />
-            <input type="submit" id="btnLogin" value="Login" class="btn" />
-            <input type="submit" value="Register" class="btn" onclick="register()" />
 
-            <!-- <a href="Haircut.html"> <input type="submit" value="Register"   ></a> -->
 
-          </td>
-        </tr>
-      </table>
-    </div>
-    <!-- login box div ending here.. -->
+<!-- Main div code -->
+<div id="main">
+  <div class="h-tag">
   </div>
-  <!-- Main div ending here... -->
+  <!-- Login box -->
+  <div class="login">
+    <table cellspacing="2" align="center" cellpadding="8" border="0">
+      <tr>
+        <td>Enter Email address:</td>
+        <td><input type="text" placeholder="Enter email address here" id="email" class="tb" /></td>
+      </tr>
+      <tr>
+        <td>Enter Password :</td>
+        <td><input type="password" placeholder="Enter Password here" id="pwd1" class="tb" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type="submit" value="Reset" onclick="clearFunc()" class="btn" />
+          <input type="submit" id="btnLogin" value="Login" class="btn" />
+          <input type="submit" value="Register" class="btn" onclick="register()" />
 
-  <script>
-    function register() {
-      window.location.href = "Haircut.html"
+          <!-- <a href="Haircut.html"> <input type="submit" value="Register"   ></a> -->
 
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!-- login box div ending here.. -->
+</div>
+<!-- Main div ending here... -->
+
+<script>
+  function register() {
+    window.location.href = "Haircut.html"
+
+  }
+
+
+</script>
+
+<script>
+
+  document.querySelector('#btnLogin').addEventListener('click', (e) => {
+    var uname = document.getElementById("email").value;
+    var pwd = document.getElementById("pwd1").value;
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (uname == '') {
+      alert("please enter user name.");
+    }
+    else if (pwd == '') {
+      alert("enter the password");
+    }
+    else if (!filter.test(uname)) {
+      alert("Enter valid email id.");
+    }
+    else if (pwd.length < 6 || pwd.length > 25) {
+      alert("Password min length is 6 and max length is 15.");
     }
 
+    else {
 
-  </script>
-
-  <script>
-
-    document.querySelector('#btnLogin').addEventListener('click', (e) => {
-      var uname = document.getElementById("email").value;
-      var pwd = document.getElementById("pwd1").value;
-      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      if (uname == '') {
-        alert("please enter user name.");
-      }
-      else if (pwd == '') {
-        alert("enter the password");
-      }
-      else if (!filter.test(uname)) {
-        alert("Enter valid email id.");
-      }
-      else if (pwd.length < 6 || pwd.length > 25) {
-        alert("Password min length is 6 and max length is 15.");
-      }
-
-      else {
-
-        // fetch 
+      // fetch
       //   let userName = document.querySelector('#gebruikersnaam').value
       // let password = document.querySelector('#wachtwoord').value
 
@@ -109,63 +109,63 @@
 
       //let token = localStorage.setItem ('token',json.waarde) for a token
       fetch('http://localhost:8080/klant/login',
-        {
-          method: 'POST',
-          headers: {
-            'content-Type': 'application/json',
-            //'Authorization': 'Bearer ${token}'
+              {
+                method: 'POST',
+                headers: {
+                  'content-Type': 'application/json',
+                  //'Authorization': 'Bearer ${token}'
 
-          },
-          body: JSON.stringify(data)
+                },
+                body: JSON.stringify(data)
 
-        })
+              })
 
-        .then((response) => { // callback
-          console.log(response)
-          if (response.status === 200) {
-            return response.json()
+              .then((response) => { // callback
+                console.log(response)
+                if (response.status === 200) {
+                  return response.json()
 
-          }
-
-
-        }).then(json => {
-          if(json === undefined) {
-            console.log('not logged in')
-            alert('Wrong password username combinaton');
-          }else {
-            console.log(json)
-            // select element uit de DOM
-            // const p = document.querySelector('#antwoord')
-
-            // p.innerHTML = json.waarde
-            alert('Thank You for Login & You are Redirecting to Cryptus Website');
+                }
 
 
-            window.location.href = "Haircut.html" // redirect after loggin in
-          }
+              }).then(json => {
+        if(json === undefined) {
+          console.log('not logged in')
+          alert('Wrong password username combinaton');
+        }else {
+          console.log(json)
+          // select element uit de DOM
+          // const p = document.querySelector('#antwoord')
+
+          // p.innerHTML = json.waarde
+          alert('Thank You for Login & You are Redirecting to Cryptus Website');
 
 
-          //localStorage.setItem ('token',json.waarde) for a token
-        })
-        
-      }
-
-      
-    })
+          window.location.href = "Haircut.html" // redirect after loggin in
+        }
 
 
+        //localStorage.setItem ('token',json.waarde) for a token
+      })
+
+    }
 
 
-    console.log('Voor de request')
+  })
 
 
 
 
-    console.log('Na request')
+  console.log('Voor de request')
 
 
 
-  </script>
+
+  console.log('Na request')
+
+
+
+</script>
 
 
 </body>

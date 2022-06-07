@@ -1,5 +1,6 @@
 package com.example.cryptus.service;
 
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.repository.CustomerRepository;
 import com.example.cryptus.repository.PortefeuilleRepository;
@@ -35,8 +36,8 @@ public class PortefeuilleService {
     }
 
 
-    public void updatePortefeuille(Portefeuille portefeuille, String asset){
-        portefeuilleRepository.updatePortefeuille(portefeuille, asset);
+    public void updatePortefeuille(Portefeuille portefeuille, double saldo, Asset asset){
+        portefeuilleRepository.updatePortefeuille(portefeuille, saldo, asset);
     }
 
     public void deletePortefeuille(int id){

@@ -1,15 +1,12 @@
 package com.example.cryptus.model;
 
-import com.example.cryptus.dao.transfer.RegisterDto;
+import com.example.cryptus.dto.RegisterDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Date;
 
 public class Customer extends User {
-
-    //Daan: I made a logger
-    private final transient Logger logger = LoggerFactory.getLogger(Customer.class);
 
     private Date birthDate;
     private String BSN;
@@ -34,9 +31,6 @@ public class Customer extends User {
             super();
     }
 
-    public Customer() {
-            super();
-    }
 
     public Customer(int userId, Address address) {
         super(userId);
@@ -56,6 +50,11 @@ public class Customer extends User {
         this.address = registerDto.getAddress();
         this.phone = registerDto.getPhone();
         this.email = registerDto.getEmail();
+    }
+
+    //Daan: no-args constructor
+    public Customer() {
+
     }
 
     //Daan: I made getter and setter for Address

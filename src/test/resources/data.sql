@@ -1,6 +1,9 @@
 USE `cryptus`;
 /*SET FOREIGN_KEY_CHECKS=0;*/
 
+INSERT INTO `bankinstelling`
+VALUES ('percentage', '15');
+
 INSERT INTO `user`
 VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345'),
@@ -30,7 +33,7 @@ VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
         '122365477', 'harry.kreeft@lumc.nl', '0647186544'),
        (5, '1960-10-13', 'Rokin', 2, '2010AP', 'Groningen', '123564564',
         'harry.kreeft@lumc.nl', '0647186543'),
-       (6, '1969-08-13',3, 'Justine de Gouwerhof', '2010AP', 'Leiden',
+       (6, '1969-08-13', 'Justine de Gouwerhof', 3, '2010AP', 'Leiden',
         '534543533', 'harry.kreeft@lumc.nl', '0647186543'),
        (7, '1969-08-13', 'Kleine houtstraat', 4, '2010AP', 'Den Haag',
         '354353453', 'harry.kreeft@lumc.nl', '0647186543'),

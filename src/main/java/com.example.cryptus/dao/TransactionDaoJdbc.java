@@ -44,18 +44,20 @@ public class TransactionDaoJdbc implements TransactionDao {
     private PreparedStatement insertTransactionStatement(Transaction transaction, Connection connection) throws SQLException {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
-                            "transactie (datumtijd, kosten, percentage, creditiban, debitiban,euroammount, debitPortefeuilleID,creditportefeuilleID1,AssetId, assetammount) VALUES (?,?,?,?,?,?,?,?,?,?) ",
+                            "transactie (datumtijd, kosten, creditiban, " +
+                            "debitiban,euroammount, debitPortefeuilleID," +
+                            "debitassetId,creditportefeuilleID,creditassetId, " +
+                            "assetammount) " +
+                            "VALUES (?,?,?,?,?,?,?,?,?,?) ",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, transaction.getTimestamp().toString());
             ps.setDouble(2, transaction.calcCommission());
-            ps.setInt(3, transaction.getCommisionPercentage());
-            ps.setString(4, transaction.getSeller().getBankAccount().getIban());
-            ps.setString(5, transaction.getBuyer().getBankAccount().getIban());
-            ps.setDouble(6, transaction.getEuroamount());
-            ps.setInt(7,
-                    transaction.getBuyer().getPortefeuille().getPortefeuilleId());
-            ps.setInt(8,
-                    transaction.getSeller().getPortefeuille().getPortefeuilleId());
+            ps.setString(3, transaction.getSeller().getBankAccount().getIban());
+            ps.setString(4, transaction.getBuyer().getBankAccount().getIban());
+            ps.setDouble(5, transaction.getEuroamount());
+            ps.setInt(6, transaction.getBuyer().getPortefeuille().getPortefeuilleId());
+            ps.setInt(7, transaction.getAsset().getAssetId());
+            ps.setInt(8, transaction.getSeller().getPortefeuille().getPortefeuilleId());
             ps.setInt(9, transaction.getAsset().getAssetId());
             ps.setDouble(10, transaction.getAssetamount());
             return ps;
@@ -73,7 +75,7 @@ public class TransactionDaoJdbc implements TransactionDao {
         transaction.setSeller(null);
         transaction.setAsset(null);
         transaction.setTimestamp(rs.getObject("datumtijd", LocalDateTime.class));
-        transaction.setCommisionPercentage(rs.getInt("percentage"));
+        transaction.setFeePercentage(rs.getInt("percentage"));
         transaction.setEuroamount(rs.getDouble("euroammount"));
         transaction.setAssetamount(rs.getDouble("assetammount"));
         transaction.setTransactionId(rs.getInt("transactieId"));
@@ -105,8 +107,6 @@ public class TransactionDaoJdbc implements TransactionDao {
         asset.setAssetId(rs.getInt("assetId"));
         asset.setAssetNaam(rs.getString("naam"));
         asset.setAssetAfkorting(rs.getString("afkorting"));
-        asset.setSaldo(rs.getDouble("saldo"));
-
         return asset;
     };
 
@@ -120,6 +120,7 @@ public class TransactionDaoJdbc implements TransactionDao {
         return Optional.of(customer);
     }
 
+    //navragen bij Michel hoe hij dit precies bedacht had
     private Optional<Customer> findBuyerByTransaction(int transactionId) {
         String sql = "SELECT userid FROM " +
                 "transactie JOIN bankrekening on " +
@@ -132,16 +133,17 @@ public class TransactionDaoJdbc implements TransactionDao {
         else return customer;
     }
 
+    //navragen bij Michel hoe hij dit precies bedacht had
     private Optional<Customer> findSellerByTransaction(int transactionId) {
         String sql = "SELECT userid FROM transactie JOIN bankrekening on bankrekening.iban = transactie.creditiban WHERE transactieId = ?";
         Optional<Customer> customer =  getCustomer(transactionId, sql);
         if (customer.isPresent()) {
-            return customerDao.findCustomerById( customer.get().getUserId());
+            return customerDao.findCustomerById(customer.get().getUserId());
         }
         else return customer;
     }
     private Optional<Asset> findAssetByTransaction(int transactionId) {
-        String sql = "SELECT assetId FROM transactie JOIN bankrekening on " +
+        String sql = "SELECT debitassetId FROM transactie JOIN bankrekening on " +
                 "bankrekening.iban = transactie.creditiban OR bankrekening" +
                 ".iban = transactie.debitiban WHERE" +
                 " transactieId = ?";

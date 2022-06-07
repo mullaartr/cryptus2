@@ -2,7 +2,8 @@ package com.example.cryptus.controller;
 
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.cryptus.service.ApplicationUser;
+import com.example.cryptus.service.FakeApplicationUserDaoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -76,6 +77,12 @@ public class CustomerManagementController {
                     "067373837463")
     );
 
+    private final FakeApplicationUserDaoService fakeApplicationUserDaoService;
+
+    public CustomerManagementController(FakeApplicationUserDaoService fakeApplicationUserDaoService) {
+        this.fakeApplicationUserDaoService = fakeApplicationUserDaoService;
+    }
+
 //    hasRole("ROLE_") hasAnyRole("ROLE_") hasAuthority("permission") hasAnyAuthority("permission")
 
     @GetMapping(path = "/allcustomers")
@@ -100,5 +107,19 @@ public class CustomerManagementController {
     public void updateCustomer(@PathVariable("{customerId}") Integer customerId, @RequestBody Customer customer){
         System.out.println("updateCustomer");
         System.out.println(String.format("%s %s", customerId, customer));
+    }
+
+    @PostMapping(path = "/lockAccount/{username}")
+    public void lockAccount(@PathVariable("username") String username) {
+        System.out.println("lockAccountCustomer");
+        fakeApplicationUserDaoService.selectApplicationUserByUsername(username).get().setAccountNonLocked(false);
+        System.out.println(fakeApplicationUserDaoService
+                .selectApplicationUserByUsername(username).get().isAccountNonLocked());
+    }
+
+    @PostMapping(path = "/unlockAccount/{username}")
+    public void unlockAccount(@PathVariable("username") String username) {
+        System.out.println("unlockAccountCustomer");
+        fakeApplicationUserDaoService.selectApplicationUserByUsername(username).get().setAccountNonLocked(true);
     }
 }

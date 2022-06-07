@@ -1,4 +1,4 @@
-package com.example.cryptus.controller;
+/*package com.example.cryptus.controller;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.model.Customer;
@@ -16,4 +16,4 @@ public class KlantenMakerController {
 
 
 
-}
+}*/

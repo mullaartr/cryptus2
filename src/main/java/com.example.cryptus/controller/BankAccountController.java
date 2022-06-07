@@ -28,8 +28,8 @@ public class BankAccountController {
     private final Logger logger = LogManager.getLogger(BankAccountDaoJdbc.class);
 
     @Autowired
-    public BankAccountController(BankAccountDaoJdbc bankAccountDaoJdbc, BankAccountService bankAccountService) {
-        this.bankAccountDaoJdbc = bankAccountDaoJdbc;
+    public BankAccountController( BankAccountService bankAccountService) {
+
         this.bankAccountService = bankAccountService;
 
     }

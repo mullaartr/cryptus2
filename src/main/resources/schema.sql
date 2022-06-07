@@ -1,9 +1,13 @@
 
+
 /*
 CREATE SCHEMA  `cryptus`;
 =======
 CREATE SCHEMA `cryptus`;
 
+=======
+CREATE SCHEMA  `cryptus`;
+>>>>>>> d4c464efaba4b5a0e4d7f5680b96a6b7822aeaf4
 USE `cryptus`;
 
 CREATE TABLE IF NOT EXISTS `cryptus`.`bankinstelling`
@@ -24,7 +28,7 @@ CREATE TABLE if not exists `user`
     `wachtwoord`     VARCHAR(100) NOT NULL,
 
     PRIMARY KEY (`userId`)
-    );
+);
 CREATE TABLE if not exists `klant`
 (
     `userId`        INT         NOT NULL,
@@ -38,11 +42,11 @@ CREATE TABLE if not exists `klant`
     `telefoon`      VARCHAR(10) NOT NULL,
     PRIMARY KEY (`userId`),
     CONSTRAINT `verzinzelf`
-    FOREIGN KEY (`userId`)
-    REFERENCES `user` (`userId`)
-    ON DELETE restrict
-    ON UPDATE cascade
-    );
+        FOREIGN KEY (`userId`)
+            REFERENCES `user` (`userId`)
+            ON DELETE restrict
+            ON UPDATE cascade
+);
 
 CREATE TABLE if not exists `beheerder`
 (
@@ -50,11 +54,11 @@ CREATE TABLE if not exists `beheerder`
     `personeelsnummer` INT NOT NULL,
     PRIMARY KEY (`userId`),
     CONSTRAINT `verzinzelf1`
-    FOREIGN KEY (`userId`)
-    REFERENCES `user` (`userId`)
-    ON DELETE restrict
-    ON UPDATE cascade
-    );
+        FOREIGN KEY (`userId`)
+            REFERENCES `user` (`userId`)
+            ON DELETE restrict
+            ON UPDATE cascade
+);
 CREATE TABLE if not exists `bankrekening`
 (
     `iban`   VARCHAR(45)    NOT NULL,
@@ -62,19 +66,19 @@ CREATE TABLE if not exists `bankrekening`
     `userId` INT            NOT NULL,
     PRIMARY KEY (`iban`),
     CONSTRAINT `verzinzelf2`
-    FOREIGN KEY (`userId`)
-    REFERENCES `user` (`userId`)
-    ON DELETE cascade
-    ON UPDATE cascade
-    );
+        FOREIGN KEY (`userId`)
+            REFERENCES `user` (`userId`)
+            ON DELETE cascade
+            ON UPDATE cascade
+);
 
-CREATE TABLE if not exists `Asset`
+CREATE TABLE if not exists `asset`
 (
     `assetId`   INT         NOT NULL AUTO_INCREMENT,
     `naam`      VARCHAR(45) NOT NULL,
     `afkorting` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`assetId`)
-    );
+);
 
 CREATE TABLE if not exists `portefeuille`
 (
@@ -82,11 +86,11 @@ CREATE TABLE if not exists `portefeuille`
     `userId`         INT NOT NULL,
     PRIMARY KEY (`portefeuilleID`),
     CONSTRAINT `user_portefeuille`
-    FOREIGN KEY (`userId`)
-    REFERENCES `user` (`userId`)
-    ON DELETE CASCADE
-    ON UPDATE cascade
-    );
+        FOREIGN KEY (`userId`)
+            REFERENCES `user` (`userId`)
+            ON DELETE CASCADE
+            ON UPDATE cascade
+);
 
 CREATE TABLE if not exists `portefeuille_regel`
 (
@@ -95,23 +99,23 @@ CREATE TABLE if not exists `portefeuille_regel`
     `saldo`          DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`portefeuilleID`, `assetId`),
     CONSTRAINT `verzinzelf4`
-    FOREIGN KEY (`portefeuilleID`)
-    REFERENCES `portefeuille` (`portefeuilleID`)
-    ON DELETE cascade
-    ON UPDATE cascade,
+        FOREIGN KEY (`portefeuilleID`)
+            REFERENCES `portefeuille` (`portefeuilleID`)
+            ON DELETE cascade
+            ON UPDATE cascade,
     CONSTRAINT `verzinzelf5`
-    FOREIGN KEY (`assetId`)
-    REFERENCES `Asset` (`assetId`)
-    ON DELETE no action
-    ON UPDATE cascade
-    );
+        FOREIGN KEY (`assetId`)
+            REFERENCES `Asset` (`assetId`)
+            ON DELETE no action
+            ON UPDATE no action
+);
 
 CREATE TABLE IF NOT EXISTS `cryptus`.`transactie` (
-    `transactieId` INT NOT NULL AUTO_INCREMENT,
-    `datumtijd` TIMESTAMP(2) NOT NULL,
-    `kosten` DECIMAL(2) NOT NULL,
-    `creditiban` VARCHAR(45) NOT NULL,
-    `debitiban` VARCHAR(45) NOT NULL,
+ `transactieId` INT NOT NULL AUTO_INCREMENT,
+`datumtijd` TIMESTAMP(2) NOT NULL,
+ `kosten` DECIMAL(2) NOT NULL,
+`creditiban` VARCHAR(45) NOT NULL,
+  `debitiban` VARCHAR(45) NOT NULL,
     `euroammount` DECIMAL(6,2) NOT NULL,
     `debitportefeuilleID` INT NOT NULL,
     `debitassetId` INT NOT NULL,
@@ -142,12 +146,13 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`transactie` (
 
 CREATE TABLE if not exists `koers`
 (
-    `asseta`      INT            NOT NULL,
-    `assetb`      INT            NOT NULL,
-    `wisselkoers` DECIMAL(16, 6) NOT NULL,
-    `timestamp`   TIMESTAMP(2)   NOT NULL,
-    PRIMARY KEY (`asseta`, `assetb`, `timestamp`),
+    `assetId`   INT            NOT NULL,
+    `assetnaam`   VARCHAR(45) NOT NULL,
+    `wisselkoersEuro` DECIMAL(16, 6) NOT NULL,
+    `wisselkoersDollar`   DECIMAL(16, 6)   NOT NULL,
+    PRIMARY KEY (`assetId`),
     CONSTRAINT `verzinzelf6`
+<<<<<<< HEAD
     FOREIGN KEY (`asseta`)
     REFERENCES `Asset` (`assetId`)
     ON DELETE NO ACTION
@@ -166,4 +171,11 @@ CREATE TABLE if not exists `koers`
 
 -- CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
 -- GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
+
+
+        FOREIGN KEY (`assetId`)
+            REFERENCES `Asset` (`assetId`)
+            ON DELETE NO ACTION
+            ON UPDATE cascade
+);
 
