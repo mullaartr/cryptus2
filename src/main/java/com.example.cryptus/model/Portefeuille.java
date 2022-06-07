@@ -59,6 +59,17 @@ public class Portefeuille implements Serializable {
         return false;
     }
 
+//    public boolean hasEnoughAssets(String assetNaam, double assetAmount){
+//        for(Asset asset: this.getAssets()){
+//            if(asset.getAssetNaam() == assetNaam){
+//                if(asset.getSaldo() >= assetAmount){
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+
 
     public void setOwner(Customer owner) {
         this.owner = owner;

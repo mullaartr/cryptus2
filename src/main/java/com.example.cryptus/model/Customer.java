@@ -31,6 +31,7 @@ public class Customer extends User {
             super();
     }
 
+
     public Customer(int userId, Address address) {
         super(userId);
         this.address = address;

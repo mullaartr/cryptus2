@@ -19,7 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class KlantenMakerService {
 
     private CustomerDaoJdbc customerDaoJdbc = new CustomerDaoJdbc(new JdbcTemplate());
-    private CustomerRepository customerRepository = new CustomerRepository(customerDaoJdbc);
+    //private CustomerRepository customerRepository =
+      //      new CustomerRepository(customerDaoJdbc);
     private ArrayList<String> namenLijst;
     private ArrayList<String> plaatsenLijst;
 
@@ -119,28 +120,28 @@ public class KlantenMakerService {
 
 
 
-    private void maakKlantenlijst(int lijstGrootte) throws NoSuchAlgorithmException {
-        for (int teller = 0; teller < lijstGrootte; teller++) {
-            int id = 0;
-            id++;
-            String voornaam = customerRepository.nextFirstName();
-            String[] naam = randomnaam().split(",");
-            String tussenvoegsel = naam[0];
-            String achternaam = naam[1];
-            LocalDate vroegsteDatum = LocalDate.of(1920, 1, 1);
-            LocalDate laatsteDatum = LocalDate.now();
-            String randomWW = randomWachtwoord(8);
-            String userName = maakUsername(voornaam, achternaam);
-            bsnGenerator();
-            String BSN = BSNNummers.get(teller);
-            String plaatsnaam = kiesRandomplaats();
-            int huisnummer = (int) (Math.random() * 40 + 1);
-            String postcode = genereerPostcode();
-            //Customer klant = new Customer(id, voornaam, tussenvoegsel, achternaam, maakDatum(vroegsteDatum, laatsteDatum),  );
-
-
-        }
-    }
+//    private void maakKlantenlijst(int lijstGrootte) throws NoSuchAlgorithmException {
+//        for (int teller = 0; teller < lijstGrootte; teller++) {
+//            int id = 0;
+//            id++;
+//            String voornaam = customerRepository.nextFirstName();
+//            String[] naam = randomnaam().split(",");
+//            String tussenvoegsel = naam[0];
+//            String achternaam = naam[1];
+//            LocalDate vroegsteDatum = LocalDate.of(1920, 1, 1);
+//            LocalDate laatsteDatum = LocalDate.now();
+//            String randomWW = randomWachtwoord(8);
+//            String userName = maakUsername(voornaam, achternaam);
+//            bsnGenerator();
+//            String BSN = BSNNummers.get(teller);
+//            String plaatsnaam = kiesRandomplaats();
+//            int huisnummer = (int) (Math.random() * 40 + 1);
+//            String postcode = genereerPostcode();
+//            //Customer klant = new Customer(id, voornaam, tussenvoegsel, achternaam, maakDatum(vroegsteDatum, laatsteDatum),  );
+//
+//
+//        }
+//    }
 
 
 }

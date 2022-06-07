@@ -1,7 +1,8 @@
 package com.example.cryptus.controller;
 
-import com.example.cryptus.model.Configuration;
+import com.example.cryptus.model.BankConfig;
 import com.example.cryptus.model.Transaction;
+import com.example.cryptus.service.BankConfigService;
 import com.example.cryptus.service.TransactionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,6 @@ public class TransactionController {
     private final Logger logger = LogManager.getLogger(CustomerController.class);
 
     private final TransactionService transactionService;
-    private Configuration configuration;
 
     @Autowired
     public TransactionController(TransactionService transactionService) {
@@ -41,20 +41,15 @@ public class TransactionController {
             (@RequestParam int userIdKoper,
              @RequestParam int assetId,
              @RequestParam int assetAmount,
-             @RequestParam int portefeuilleIdSeller)
-    {
-
-        Optional<Transaction> transaction = transactionService.buyFromBank(userIdKoper,
-                assetId,
-                assetAmount, portefeuilleIdSeller);
-        return ResponseEntity.ok().body(transaction);
+             @RequestParam int portefeuilleIdSeller) {
+        return null;
     }
 
-    @PostMapping("/set_commission")
-    public ResponseEntity<Configuration> setCommisionPercentage(@RequestParam int percentage) throws NoSuchAlgorithmException {
-        Configuration.percentage = percentage;
-        return ResponseEntity.ok().body(configuration);
-    }
+//        Optional<Transaction> transaction = transactionService.buyFromBank(userIdKoper,
+//                assetId,
+//                assetAmount, portefeuilleIdSeller);
+//        return ResponseEntity.ok().body(transaction);
+
 
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,

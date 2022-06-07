@@ -63,7 +63,7 @@ CREATE TABLE if not exists `bankrekening`
             ON UPDATE cascade
 );
 
-CREATE TABLE if not exists `Asset`
+CREATE TABLE if not exists `asset`
 (
     `assetId`   INT         NOT NULL AUTO_INCREMENT,
     `naam`      VARCHAR(45) NOT NULL,

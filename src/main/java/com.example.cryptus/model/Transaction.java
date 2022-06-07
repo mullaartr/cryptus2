@@ -12,15 +12,16 @@ public class Transaction{
     private Asset asset;
     private double assetamount;
     private double euroamount;
-    private int commisionPercentage;
+    private double feePercentage;
     private LocalDateTime timestamp;
 
     public Transaction() {
-        this(0, null, null, null, 0.00, 0.00, LocalDateTime.now());
+        this(0, null, null, null, 0.00, 0.00, 0.00, LocalDateTime.now());
         logger.info("Nieuwe transactie die de no arg constructor gebruikt.");
     }
     public Transaction(int transactionId, Customer buyer, Customer seller,
                        Asset asset, double assetamount, double euroamount,
+                       double feePercentage,
                        LocalDateTime creationTimestamp) {
         this.transactionId = transactionId;
         this.buyer = buyer;
@@ -28,14 +29,14 @@ public class Transaction{
         this.asset = asset;
         this.assetamount = assetamount;
         this.euroamount = euroamount;
-        this.commisionPercentage = Configuration.percentage; //instelbaar maken
+        this.feePercentage = feePercentage;
         this.timestamp = creationTimestamp;
         logger.info("Nieuwe transactie die de all arg constructor gebruikt.");
     }
     public Transaction(Customer buyer, Customer seller, Asset asset,
-                       double assetamount, double euroamount) {
+                       double assetamount, double euroamount,double feePercentage) {
 
-        this(0, buyer, seller, asset, assetamount, euroamount,
+        this(0, buyer, seller, asset, assetamount, euroamount, feePercentage,
                 LocalDateTime.now());
 
         logger.info("Nieuwe transactie die de arg constructor voor de DB " +
@@ -89,13 +90,12 @@ public class Transaction{
         this.euroamount = euroamount;
     }
 
-    public int getCommisionPercentage() {
-        return commisionPercentage;
+    public double getFeePercentage() {
+        return feePercentage;
     }
 
-    public void setCommisionPercentage(int commisionPercentage) {
-        this.commisionPercentage = commisionPercentage; // hoe kan ik dit instelbaar maken en
-        // omvormen tot iets dat je van buitenaf kunt aanpassen
+    public void setFeePercentage(double feePercentage) {
+        this.feePercentage = feePercentage;
     }
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -106,7 +106,7 @@ public class Transaction{
     }
 
     public double calcCommission(){
-        return (euroamount)*(commisionPercentage/100.00);
+        return (euroamount)*(feePercentage /100.00);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class Transaction{
                 ", asset=" + asset +
                 ", assetammount=" + assetamount +
                 ", euroammount=" + euroamount +
-                ", commisionPercentage=" + commisionPercentage +
+                ", commisionPercentage=" + feePercentage +
                 ", timestamp=" + timestamp +
                 '}';
     }

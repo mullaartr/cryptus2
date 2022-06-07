@@ -1,6 +1,9 @@
 USE `cryptus`;
 /*SET FOREIGN_KEY_CHECKS=0;*/
 
+INSERT INTO `bankinstelling`
+VALUES ('percentage', '15');
+
 INSERT INTO `user`
 VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345'),
