@@ -9,24 +9,24 @@ import java.util.*;
 public class Portefeuille implements Serializable {
 
     private int portefeuilleId;
-    private Map<Asset, Double> assetLijst;
+    private List<Asset> assetLijst;
     private Customer owner;
 
 
 
-    public Portefeuille(int portefeuilleId, Customer owner, Map<Asset, Double> assetLijst) {
+    public Portefeuille(int portefeuilleId, Customer owner, List<Asset> assetLijst) {
         this.portefeuilleId = portefeuilleId;
         this.owner = owner;
         this.assetLijst = assetLijst;
     }
 
     public Portefeuille(Customer owner) {
-        this(0,  owner, new HashMap<>());
+        this(0,  owner, new ArrayList<>());
     }
 
     public Portefeuille() {
         this(new Customer());
-        this.assetLijst = new HashMap<>();
+        this.assetLijst = new ArrayList<>();
     }
 
     public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
@@ -47,28 +47,18 @@ public class Portefeuille implements Serializable {
 
     }
 
-    public boolean checkVoorSaldoEnPasAan(String assetNaam, Double afschrijving){
-        for (Map.Entry<Asset, Double> entry: this.assetLijst.entrySet()) {
-            if(entry.getKey().getAssetNaam().equals(assetNaam)){
-                if(entry.getValue() >= afschrijving){
-                    entry.setValue(entry.getValue() - afschrijving);
+
+
+    public boolean hasEnoughAssets(String assetNaam, double assetAmount){
+        for(Asset asset: this.getAssetLijst()){
+            if(asset.getAssetNaam() == assetNaam){
+                if(asset.getSaldo() >= assetAmount){
                     return true;
                 }
             }
         }
         return false;
     }
-
-//    public boolean hasEnoughAssets(String assetNaam, double assetAmount){
-//        for(Asset asset: this.getAssets()){
-//            if(asset.getAssetNaam() == assetNaam){
-//                if(asset.getSaldo() >= assetAmount){
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
 
 
     public void setOwner(Customer owner) {
@@ -87,11 +77,11 @@ public class Portefeuille implements Serializable {
         return portefeuilleId;
     }
 
-    public Map<Asset, Double> getAssetLijst() {
+    public List<Asset> getAssetLijst() {
         return assetLijst;
     }
 
-    public void setAssetLijst(Map<Asset, Double> assetLijst) {
+    public void setAssetLijst(List<Asset> assetLijst) {
         this.assetLijst = assetLijst;
     }
 
@@ -100,7 +90,7 @@ public class Portefeuille implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Portefeuille that = (Portefeuille) o;
-        return portefeuilleId == that.portefeuilleId && Objects.equals(assetLijst, that.assetLijst) && Objects.equals(owner, that.owner);
+        return portefeuilleId == that.portefeuilleId && Objects.equals(assetLijst, that.assetLijst);
     }
 
     @Override
@@ -112,8 +102,7 @@ public class Portefeuille implements Serializable {
     public String toString() {
         return "Portefeuille{" +
                 "portefeuilleId=" + portefeuilleId +
-                ", assets=" + assetLijst +
-                ", owner=" + owner +
+                ", assetLijst=" + assetLijst +
                 '}';
     }
 }

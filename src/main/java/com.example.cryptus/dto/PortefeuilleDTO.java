@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class PortefeuilleDTO  {
     private int portefeuilleId;
-    private Map<Asset, Double> assets;
+    private List<Asset> assets;
     private Customer owner; // moet eigenlijk customerDTo worden
 
 
@@ -26,11 +26,11 @@ public class PortefeuilleDTO  {
         this.owner = portefeuille.getOwner();
     }
 
-    public Map<Asset, Double> getAssets() {
+    public List<Asset> getAssets() {
         return assets;
     }
 
-    public void setAssets(Map<Asset, Double> assets) {
+    public void setAssets(List<Asset> assets) {
         this.assets = assets;
     }
 

@@ -49,7 +49,7 @@ public class TransactionService {
         // ophaal met het bijbehorende saldo en de methode hasenoughassets
         // toepas.
 
-        if (portefeuille.checkVoorSaldoEnPasAan(assetNaam,assetAmount)) {
+        if (portefeuille.hasEnoughAssets(assetNaam,assetAmount)) {
 
             // 1.Schrijf het amount van assets af van de portefeuille van de
             // seller -> sebastiaan

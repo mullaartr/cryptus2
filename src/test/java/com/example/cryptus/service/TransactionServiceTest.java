@@ -25,7 +25,7 @@ class TransactionServiceTest {
             Mockito.mock(PortefeuilleRepository.class);
 
     TransactionService transactionServiceUnderTest =
-            new TransactionService(mockTransRepo, mockCustRepo, mockPortRepo);
+            new TransactionService(mockTransRepo, mockCustRepo);
     static Customer testCustomer = new Customer(1, "Rogier", "", "Mullaart",
             "mullaar", "12345");
 
@@ -33,7 +33,7 @@ class TransactionServiceTest {
     public static void testSetup() {
 
         Mockito.when(mockTransRepo.getBuyTransactionsFromUser(testCustomer.getUserId())).thenReturn((List<Transaction>) new Transaction());
-        new TransactionService(mockTransRepo, mockCustRepo, mockPortRepo);
+        new TransactionService(mockTransRepo, mockCustRepo);
 
     }
 //    @Test

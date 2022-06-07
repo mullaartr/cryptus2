@@ -23,7 +23,6 @@ public class CoinGeckoAPIService{
 
     private Map<String, Map<String, Double>> koersenPrimitief;
 
-
     private Set<Koers> koersen;
 
     public CoinGeckoAPIService() {

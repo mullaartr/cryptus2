@@ -17,8 +17,7 @@ public class CryptusApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 
-		CoinGeckoAPIService koersService = new CoinGeckoAPIService();
-		koersService.coinAPI();
+
 
 	}
 }

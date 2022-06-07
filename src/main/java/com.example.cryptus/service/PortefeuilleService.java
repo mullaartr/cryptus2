@@ -36,8 +36,8 @@ public class PortefeuilleService {
     }
 
 
-    public void updatePortefeuille(Portefeuille portefeuille, double saldo, Asset asset){
-        portefeuilleRepository.updatePortefeuille(portefeuille, saldo, asset);
+    public void updatePortefeuille(Portefeuille portefeuille, Asset asset){
+        portefeuilleRepository.updatePortefeuille(portefeuille, asset);
     }
 
     public void deletePortefeuille(int id){

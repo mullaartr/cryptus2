@@ -73,8 +73,8 @@ public class PortefeuilleRepository {
         return Optional.of(portefeuille);
     }
 
-    public void updatePortefeuille(Portefeuille portefeuille, double saldo, Asset asset){
-        portefeuilleDAO.update(portefeuille, saldo, asset);
+    public void updatePortefeuille(Portefeuille portefeuille, Asset asset){
+        portefeuilleDAO.update(portefeuille, asset);
     }
 
     public void deletePortefeuille(int id){
