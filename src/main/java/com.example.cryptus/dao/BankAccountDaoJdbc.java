@@ -2,6 +2,7 @@ package com.example.cryptus.dao;
 
 
 import com.example.cryptus.model.BankAccount;
+import com.example.cryptus.model.Customer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -65,30 +66,42 @@ public class BankAccountDaoJdbc implements BankAccountDao {
     }
 
     @Override
-    public Optional<BankAccount> addFunds(double amount, int id) {
-        String sql = "update bankrekening set saldo = saldo + ? Where userId = ?";
-        BankAccount bankAccount = null;
-        try {
-            bankAccount = jdbcTemplate.queryForObject(sql, rowMapper, amount, id);
-        } catch (DataAccessException exception) {
-            logger.info("BankAccount was not found");
-        }
+    public void addFunds(double amount, int id) {
+        String sql = "UPDATE bankrekening set saldo = saldo + ? Where userId = ?";
 
-        return Optional.ofNullable(bankAccount);
+
+        try {
+
+            int update = jdbcTemplate.update(sql, amount, id);
+            if (update == 1) {
+                logger.info("Funds added" );
+
+            }
+        } catch (DataAccessException exception) {
+
+            logger.info("BankAccount was not found");
+
+        }
 
     }
 
+
+
     @Override
-    public Optional<BankAccount> withdrawFunds(double amount, int id) {
+    public void withdrawFunds(double amount, int id) {
         String sql = "update bankrekening set saldo = saldo - ? Where userId = ?";
-        BankAccount bankAccount = null;
+
         try {
-            bankAccount = jdbcTemplate.queryForObject(sql, rowMapper, amount, id);
+            int update = jdbcTemplate.update(sql, amount, id);
+            if (update == 1) {
+                logger.info("Withdraw was successful" );
+
+            }
         } catch (DataAccessException exception) {
             logger.info("BankAccount was not found");
         }
 
-        return Optional.ofNullable(bankAccount);
+
 
     }
 
@@ -117,14 +130,14 @@ public class BankAccountDaoJdbc implements BankAccountDao {
 
     @Override
     public void update(BankAccount bankAccount) {
-        String sql = "UPDATE bankrekening SET saldo = ? WHERE iban = ?";
-        int update = jdbcTemplate.update(sql, bankAccount.getBalance());
+
+        String sql = "UPDATE bankrekening SET  saldo =? WHERE userId = ?";
+        int update = jdbcTemplate.update(sql, bankAccount.getBalance(),bankAccount.getUserId());
 
         if (update == 1) {
-            logger.info("BankAccount updated" + bankAccount.getIban());
+            logger.info("BankAccount updated" );
 
         }
-
     }
 
     @Override

@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface BankAccountDao {
 
     Optional<BankAccount> findBankAccountByUserId(int id);
-    Optional<BankAccount> addFunds(double amount, int id);
-    Optional<BankAccount> withdrawFunds(double amount, int id);
+    void addFunds(double amount, int id);
+    void withdrawFunds(double amount, int id);
 
     void store(BankAccount bankAccount);
 

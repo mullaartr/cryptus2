@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 public class BankAccountService {
 
+
     private final Logger logger =  LogManager.getLogger(BankAccountService.class);
     private BankAccountRepository  bankAccountRepository;
 
@@ -48,12 +49,23 @@ public class BankAccountService {
         bankAccountRepository.delete(userId);
     }
 
-    Optional<BankAccount> addFunds(double amount, int id){
-        return  bankAccountRepository.addFunds(amount, id);
+    public void addFunds(double amount, int id){
+        if(amount <= 0){
+            System.out.println("Amount must be greater than Zero");
+        }else{
+            bankAccountRepository.addFunds(amount, id);
+
+        }
 
     }
-    Optional<BankAccount> withdrawFunds(double amount, int id){
-        return bankAccountRepository.withdrawFunds(amount, id);
+    public void withdrawFunds(double amount, int id){
+
+
+        bankAccountRepository.withdrawFunds(amount, id);
+
+
+
+
 
     }
 }

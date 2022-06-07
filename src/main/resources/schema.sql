@@ -1,4 +1,13 @@
+
+
+/*
 CREATE SCHEMA  `cryptus`;
+=======
+CREATE SCHEMA `cryptus`;
+
+=======
+CREATE SCHEMA  `cryptus`;
+>>>>>>> d4c464efaba4b5a0e4d7f5680b96a6b7822aeaf4
 USE `cryptus`;
 
 CREATE TABLE IF NOT EXISTS `cryptus`.`bankinstelling`
@@ -143,8 +152,30 @@ CREATE TABLE if not exists `koers`
     `wisselkoersDollar`   DECIMAL(16, 6)   NOT NULL,
     PRIMARY KEY (`assetId`),
     CONSTRAINT `verzinzelf6`
+<<<<<<< HEAD
+    FOREIGN KEY (`asseta`)
+    REFERENCES `Asset` (`assetId`)
+    ON DELETE NO ACTION
+    ON UPDATE cascade,
+    CONSTRAINT `verzinzelf8`
+    FOREIGN KEY (`assetb`)
+    REFERENCES `Asset` (`assetId`)
+    ON DELETE cascade
+    ON UPDATE cascade
+    );
+
+
+
+
+*/
+
+-- CREATE USER 'userCryptus'@'localhost' IDENTIFIED BY '12345';
+-- GRANT ALL PRIVILEGES ON cryptus.* TO 'userCryptus'@'localhost';
+
+
         FOREIGN KEY (`assetId`)
             REFERENCES `Asset` (`assetId`)
             ON DELETE NO ACTION
             ON UPDATE cascade
 );
+
