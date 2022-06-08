@@ -54,6 +54,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/portefeuille").permitAll()
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
 //                .antMatchers(HttpMethod.DELETE,"/manage/**")
 //                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
