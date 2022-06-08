@@ -3,6 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="css/indexccss.css">
+
   <style>
     img {
       display: block;
@@ -66,7 +67,7 @@
 
 <script>
   function register() {
-    window.location.href = "Haircut.html"
+    window.location.href = "Register.html"
 
   }
 
@@ -107,13 +108,13 @@
 
 
 
-      //let token = localStorage.setItem ('token',json.waarde) for a token
+      //let token = localStorage.setItem ('token',json.waarde)
       fetch('http://localhost:8080/klant/login',
               {
                 method: 'POST',
                 headers: {
                   'content-Type': 'application/json',
-                  //'Authorization': 'Bearer ${token}'
+                  'Authorization': 'Bearer ${eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuYXBvQGxlb24ubmwiLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiY3VzdG9tZXI6cmVhZCJ9LHsiYXV0aG9yaXR5IjoicG9ydGVmZXVpbGxlOnJlYWQifSx7ImF1dGhvcml0eSI6InBvcnRlZmV1aWxsZTp3cml0ZSJ9LHsiYXV0aG9yaXR5IjoiY3VzdG9tZXI6d3JpdGUifSx7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifSx7ImF1dGhvcml0eSI6InRyYW5zYWN0aW9uOndyaXRlIn0seyJhdXRob3JpdHkiOiJ0cmFuc2FjdGlvbjpyZWFkIn1dLCJpYXQiOjE2NTQ2MDMxNzMsImV4cCI6MTY1NTQxNjgwMH0.a-h_UPhCcUiVAvof9y0ZrwuvYnjuoHXS7zkZq50nfvC67ww7EboY5JfUmh4defmf7S33uFc-H6msHvUCAPlV3w}'
 
                 },
                 body: JSON.stringify(data)

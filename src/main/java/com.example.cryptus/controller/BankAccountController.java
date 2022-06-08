@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -29,17 +30,24 @@ public class BankAccountController {
 
     @Autowired
     public BankAccountController( BankAccountService bankAccountService) {
-
         this.bankAccountService = bankAccountService;
 
     }
-
     @PatchMapping(value = "/deposit")
     @ResponseBody
     public ResponseEntity<?> addFunds(@RequestParam double amount, @RequestParam int id){
-        bankAccountService.addFunds(amount,id);
-        //return new ResponseEntity<BankAccount>(HttpStatus.ACCEPTED);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Funds were added Successfully");
+
+        if(amount <= 0){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Amount must be bigger than 0");
+
+        }
+        else{
+            bankAccountService.addFunds(amount,id);
+            //return new ResponseEntity<BankAccount>(HttpStatus.ACCEPTED);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Funds were added Successfully");
+
+        }
+
 
     }
 
@@ -48,7 +56,7 @@ public class BankAccountController {
     public ResponseEntity<?> withdrawFunds(@RequestParam double amount, @RequestParam int id){
 
         Optional<BankAccount> lookUpAccount =
-                bankAccountDaoJdbc.findBankAccountByUserId(id);
+                bankAccountService.findBankaccountByUserId(id);
         BankAccount foundAccount = lookUpAccount.get();
         if(foundAccount.hasSufficientFunds(amount))
             bankAccountService.withdrawFunds(amount, id);
@@ -80,7 +88,7 @@ public class BankAccountController {
         return bankAccountService.findBankaccountByUserId(id);
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/create" , consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<BankAccount> createBankAccount(@RequestBody BankAccount bankAccount){
 
