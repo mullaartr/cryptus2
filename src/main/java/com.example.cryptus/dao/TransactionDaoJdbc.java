@@ -26,21 +26,18 @@ import java.util.Optional;
 
 @Component
 public class TransactionDaoJdbc implements TransactionDao {
-
     private final Logger logger =
             LoggerFactory.getLogger(TransactionDaoJdbc.class);
     private final JdbcTemplate jdbcTemplate;
     private final CustomerDao customerDao;
-
     @Autowired
     public TransactionDaoJdbc(JdbcTemplate jdbcTemplate,
                               CustomerDaoJdbc customerDao ) {
         super();
         this.jdbcTemplate = jdbcTemplate;
         this.customerDao = customerDao;
-        logger.info("Nieuwe TransactionDaoJdbc");
+        logger.info("Nieuwe transactionDaoJdbc");
     }
-
     private PreparedStatement insertTransactionStatement(Transaction transaction, Connection connection) throws SQLException {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
@@ -68,20 +65,18 @@ public class TransactionDaoJdbc implements TransactionDao {
         }
         return null;
     }
-
     RowMapper<Transaction> rowMapper = (rs, rownum) -> {
         Transaction transaction = new Transaction();
+        transaction.setTransactionId(rs.getInt("transactieId"));
         transaction.setBuyer(null);
         transaction.setSeller(null);
         transaction.setAsset(null);
         transaction.setTimestamp(rs.getObject("datumtijd", LocalDateTime.class));
-        transaction.setFeePercentage(rs.getInt("percentage"));
+        //transaction.setFeePercentage(rs.getInt("percentage"));
         transaction.setEuroamount(rs.getDouble("euroammount"));
         transaction.setAssetamount(rs.getDouble("assetammount"));
-        transaction.setTransactionId(rs.getInt("transactieId"));
         return transaction;
     };
-
     ResultSetExtractor<List<Transaction>> transactionResultExtractor = rs -> {
         List<Transaction> transactions = new ArrayList<>();
         while (rs.next()) {
@@ -95,13 +90,11 @@ public class TransactionDaoJdbc implements TransactionDao {
         }
         return transactions;
     };
-
     ResultSetExtractor<Customer> customerResultSetExtractor = rs -> {
         Customer customer = new Customer();
         customer.setUserId(rs.getInt("userId"));
         return customer;
     };
-
     ResultSetExtractor<Asset> assetResultExtractor = rs -> {
         Asset asset = new Asset();
         asset.setAssetId(rs.getInt("assetId"));
@@ -109,7 +102,6 @@ public class TransactionDaoJdbc implements TransactionDao {
         asset.setAssetAfkorting(rs.getString("afkorting"));
         return asset;
     };
-
     private Optional<Customer> getCustomer(int transactionId, String sql) {
         Customer customer = null;
         try {
@@ -119,8 +111,6 @@ public class TransactionDaoJdbc implements TransactionDao {
         }
         return Optional.of(customer);
     }
-
-    //navragen bij Michel hoe hij dit precies bedacht had
     private Optional<Customer> findBuyerByTransaction(int transactionId) {
         String sql = "SELECT userid FROM " +
                 "transactie JOIN bankrekening on " +
@@ -128,12 +118,10 @@ public class TransactionDaoJdbc implements TransactionDao {
                 " transactieId = ?";
         Optional<Customer> customer =  getCustomer(transactionId, sql);
         if (customer.isPresent()) {
-             return customerDao.findCustomerById( customer.get().getUserId());
+             return customerDao.findCustomerById(customer.get().getUserId());
         }
         else return customer;
     }
-
-    //navragen bij Michel hoe hij dit precies bedacht had
     private Optional<Customer> findSellerByTransaction(int transactionId) {
         String sql = "SELECT userid FROM transactie JOIN bankrekening on bankrekening.iban = transactie.creditiban WHERE transactieId = ?";
         Optional<Customer> customer =  getCustomer(transactionId, sql);
@@ -174,7 +162,6 @@ public class TransactionDaoJdbc implements TransactionDao {
                                 "WHERE userId = ?",
                         rowMapper, userId);
     }
-
     @Override
     public Optional<Transaction> findTransactionById(int transactionId) {
         String Sql = "select * from transactie t where t.transactieId = ?";
@@ -189,7 +176,6 @@ public class TransactionDaoJdbc implements TransactionDao {
         }
         return Optional.of(transaction);
     }
-
     @Override
     public void createTransaction(Transaction transaction) {
         KeyHolder keyHolder = new GeneratedKeyHolder();

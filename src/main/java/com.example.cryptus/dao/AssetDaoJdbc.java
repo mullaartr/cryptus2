@@ -1,7 +1,5 @@
 package com.example.cryptus.dao;
-
 import com.example.cryptus.model.Asset;
-//import com.example.cryptus.model.Koers;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +53,7 @@ public class AssetDaoJdbc implements AssetDao {
     public Optional<Asset> findAssetById(int id) {
         List<Asset> assets =
                 jdbcTemplate.query("select * from asset join " +
-                        "koers on asset.assetId = koers.assetb where assetId " +
+                        "koers on asset.assetId = koers.assetId where assetId " +
                         " = ?", new AssetRowMapper(), id);
         if(assets.size() == 0) {
             return Optional.empty();
@@ -64,13 +62,13 @@ public class AssetDaoJdbc implements AssetDao {
         }
     }
 
-    public Optional<Asset> findAssetByTransactionId( int id ) {
+    public Optional<Asset> findAssetByTransactionId(int id) {
         List<Asset> assets =
                 jdbcTemplate.query("select * from asset join " +
                         "koers join transactie t on asset.assetId = koers" +
-                        ".assetb and asset.assetId = t.AssetId where t" +
+                        ".assetId and asset.assetId = t.debitassetId where t" +
                         ".transactieId " +
-                        " = ?", new AssetRowMapper(), id);
+                        " = ?", new AssetRowMapper(),id);
         if(assets.size() == 0) {
             return Optional.empty();
         } else {
@@ -84,9 +82,9 @@ public class AssetDaoJdbc implements AssetDao {
     public Optional<Asset> findAssetByPortefeuille(Portefeuille portefeuille) {
         List<Asset> assets =
                 jdbcTemplate.query("SELECT assetId, naam, afkorting, " +
-                                "portefeuilleID, wisselkoers " +
+                                "portefeuilleID, wisselkoersEuro " +
                         "FROM Asset A JOIN portefeuille_regel on portefeuille_regel.assetId = A.assetId " +
-                                "join koers K on A.assetid = K.assetb " +
+                                "join koers K on A.assetid = K.assetId " +
                                 "where portefeuilleID = ?"
                         ,
                         new AssetRowMapper(), portefeuille.getPortefeuilleId());
@@ -112,7 +110,7 @@ public class AssetDaoJdbc implements AssetDao {
     @Override
     public void update(Asset asset, int id) {
         String sql = "UPDATE asset A SET A.naam = ?, A.afkorting = ?, " +
-                "cryptus.koers.wisselkoers" +
+                "cryptus.koers.wisselkoersEuro" +
                 " = ?" +
  //       " JOIN koers K ON A.assetid = K.asseta" +
                 " WHERE assetId = ?";

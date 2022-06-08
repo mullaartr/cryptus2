@@ -154,7 +154,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         }
     }
 
-
         @Override
         public void delete (int id){
         String sql = "DELETE FROM portefeuille WHERE portefeuilleId = ?";

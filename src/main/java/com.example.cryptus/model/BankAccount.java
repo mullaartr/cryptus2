@@ -7,12 +7,12 @@ import java.util.Objects;
 
 public class BankAccount {
 
-private Customer accountHolder;
-private String iban;
-private double balance;
-private int userId;
+    private Customer accountHolder;
+    private String iban;
+    private double balance;
+    private int userId;
 
-public static double MINIMUM_BALANCE = 0.0;
+    public static double MINIMUM_BALANCE = 0.0;
 
 
     @Autowired
@@ -44,7 +44,7 @@ public static double MINIMUM_BALANCE = 0.0;
     }
 
     public BankAccount(Customer accountHolder) {
-        this(accountHolder.getBankAccount().getIban(),accountHolder.getBankAccount().getBalance(), accountHolder.getUserId());
+        this(accountHolder.getBankAccount().getIban(), accountHolder.getBankAccount().getBalance(), accountHolder.getUserId());
     }
 
     public Customer getAccountHolder() {
@@ -88,16 +88,15 @@ public static double MINIMUM_BALANCE = 0.0;
     }
 
 
-
     @Override
     public int hashCode() {
         return Objects.hash(getUserId(), getBalance());
     }
 
-    public double addFunds(double amount){
-        if(amount > MINIMUM_BALANCE)
+    public double addFunds(double amount) {
+        if (amount > MINIMUM_BALANCE)
             balance += amount;
-        else{
+        else {
             throw new RuntimeException("Amount must be bigger than Zero");
 
         }
@@ -105,8 +104,8 @@ public static double MINIMUM_BALANCE = 0.0;
         return amount;
     }
 
-    public double withdrawFunds(double amount){
-        if(balance - amount >= MINIMUM_BALANCE)
+    public double withdrawFunds(double amount) {
+        if (balance - amount >= MINIMUM_BALANCE)
             balance -= amount;
         else {
             throw new RuntimeException("Balance cant go below Zero");
@@ -124,10 +123,18 @@ public static double MINIMUM_BALANCE = 0.0;
 
     }
 
-
-
-
-
-
+    public boolean hasEnoughBalance(double euroAmount) {
+        if (this.getBalance() >= euroAmount) ;
+        {
+            return true;
+        }
+    }
 }
+
+
+
+
+
+
+
 
