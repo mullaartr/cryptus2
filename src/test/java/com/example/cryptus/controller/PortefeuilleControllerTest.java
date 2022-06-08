@@ -83,7 +83,7 @@ class PortefeuilleControllerTest {
         mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",
                 new Address(6,"Justine de Gouwerhof","2011GP","Haarlem")
                 ,"rogier.mullaart@gmail.com","0647185165");
-        portefeuille1 = new Portefeuille(3, mullaart, new HashMap<>());
+        portefeuille1 = new Portefeuille(3, mullaart, new ArrayList<>());
         portefeuilleDTO = new PortefeuilleDTO(portefeuille1);
     }
 

@@ -50,14 +50,15 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return portefeuilles;
     };
 
-    ResultSetExtractor <Map<Asset, Double>> assetResultExtractor = rs -> {
-        Map<Asset, Double> assetLijst = new HashMap<>();
+    ResultSetExtractor <List<Asset>> assetResultExtractor = rs -> {
+        List<Asset> assetLijst = new ArrayList<>();
         while (rs.next()){
             Asset asset = new Asset();
             asset.setAssetId(rs.getInt("assetId"));
             asset.setAssetNaam(rs.getString("naam"));
             asset.setAssetAfkorting(rs.getString("afkorting"));
-            assetLijst.put(asset, rs.getDouble("saldo"));
+            asset.setSaldo (rs.getDouble("saldo"));
+            assetLijst.add(asset);
         }
         return assetLijst;
     };
@@ -76,9 +77,9 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return Optional.ofNullable(portefeuille);
     }
 
-    private Optional <Map<Asset, Double>> findAssetsByPortefeuille(int id){
+    private Optional <List<Asset>> findAssetsByPortefeuille(int id){
         String sql = "select * from portefeuille_Regel po join asset a on a.assetId = po.assetId  where po.portefeuilleId = ?";
-        Map<Asset, Double> assetLijst = null;
+        List<Asset> assetLijst = null;
         try {
             assetLijst = jdbcTemplate.query(sql, assetResultExtractor, id);
         }catch (DataAccessException exception){
@@ -95,7 +96,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         try {
             portefeuilles = jdbcTemplate.query(sql, portefeuilleResultExtractor);
             for (int i = 0; i < portefeuilles.size(); i++) {
-                Map<Asset, Double> assets = jdbcTemplate.query(sql2, assetResultExtractor, portefeuilles.get(i).getPortefeuilleId());
+                List<Asset> assets = jdbcTemplate.query(sql2, assetResultExtractor, portefeuilles.get(i).getPortefeuilleId());
                 portefeuilles.get(i).setAssetLijst(assets);
             }
         } catch (DataAccessException exception){
@@ -114,11 +115,11 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return ps;
     }
 
-    private PreparedStatement insertPortefeuilleRegelStatement(Portefeuille portefeuille, Asset asset, double saldo, Connection connection)throws SQLException {
+    private PreparedStatement insertPortefeuilleRegelStatement(Portefeuille portefeuille, Asset asset, Connection connection)throws SQLException {
         PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO portefeuille_regel(portefeuilleID, SALDO, ASSETId) VALUES (?,?,?)");
         ps.setInt(1, portefeuille.getPortefeuilleId());
-        ps.setDouble(2, saldo);
+        ps.setDouble(2, asset.getSaldo());
         ps.setInt(3, asset.getAssetId());
         return ps;
     }
@@ -126,15 +127,15 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     public void store(Portefeuille portefeuille) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertPortefeuilleStatement(portefeuille, connection), keyHolder);
-        for (Map.Entry<Asset, Double> entry: portefeuille.getAssetLijst().entrySet()) {
-            storePortefeuilleRegel(portefeuille, entry.getKey(), entry.getValue());
+        for (int i = 0; i < portefeuille.getAssetLijst().size(); i++) {
+            storePortefeuilleRegel(portefeuille, portefeuille.getAssetLijst().get(i));
         }
         int newKey = keyHolder.getKey().intValue();
         portefeuille.setPortefeuilleId(newKey);
     }
 
-    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset, double saldo){
-        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, saldo, con));
+    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
+        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con));
     }
 
 
@@ -145,9 +146,9 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     }
 
     @Override
-    public void update(Portefeuille portefeuille, double saldo, Asset asset) {
+    public void update(Portefeuille portefeuille, Asset asset) {
         String sql = "Update portefeuille_regel  SET  saldo = ? where portefeuilleId = ? and assetId = ?";
-        int update = jdbcTemplate.update(sql, saldo, portefeuille.getPortefeuilleId(), asset.getAssetId());
+        int update = jdbcTemplate.update(sql, asset.getSaldo(), portefeuille.getPortefeuilleId(), asset.getAssetId());
         if (update == 1) {
             logger.info("portefeuille updated" + portefeuille.getPortefeuilleId());
         }
