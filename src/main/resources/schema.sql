@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`bankrekening`
     `userId` INT            NOT NULL,
     INDEX `verzinzelf2_idx` (`userId` ASC) VISIBLE,
     PRIMARY KEY (`iban`),
+    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
     CONSTRAINT `bankrekening_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
@@ -72,9 +73,9 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`bankrekening`
             ON UPDATE NO ACTION
 );
 -- -----------------------------------------------------
--- Table `cryptus`.`Asset`
+-- Table `cryptus`.`asset`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cryptus`.`Asset`
+CREATE TABLE IF NOT EXISTS `cryptus`.`asset`
 (
     `assetId`   INT         NOT NULL AUTO_INCREMENT,
     `naam`      VARCHAR(45) NOT NULL,
@@ -114,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
             ON UPDATE CASCADE,
     CONSTRAINT `portefeuilleregel_asset`
         FOREIGN KEY (`assetId`)
-            REFERENCES `cryptus`.`Asset` (`assetId`)
+            REFERENCES `cryptus`.`asset` (`assetId`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
@@ -175,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
     INDEX `verzinzelf6_idx` (`assetId` ASC) VISIBLE,
     CONSTRAINT `koers_asset`
         FOREIGN KEY (`assetId`)
-            REFERENCES `cryptus`.`Asset` (`assetId`)
+            REFERENCES `cryptus`.`asset` (`assetId`)
             ON DELETE CASCADE
             ON UPDATE CASCADE
 );
