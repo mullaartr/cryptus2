@@ -165,7 +165,7 @@ public class CustomerDaoJdbc implements CustomerDao {
             }
 
 
-        return customer.getUserId();
+        return newKey;
     }
 
     @Override

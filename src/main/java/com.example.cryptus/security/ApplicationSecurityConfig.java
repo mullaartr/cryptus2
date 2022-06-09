@@ -61,6 +61,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/portefeuille").permitAll()
                 .antMatchers("/customer/**").permitAll()
+                .antMatchers("/users/register").permitAll()
 //                .hasRole(CUSTOMER.name())
 //                .antMatchers(HttpMethod.DELETE,"/manage/**")
 //                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())

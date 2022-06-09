@@ -30,10 +30,8 @@ public class CustomerService {
     }
 
     public int storeCustomer(Customer customer) {
-        customerRepository.storeCustomer(customer);
-
-
-        return customer.getUserId();
+        int key = customerRepository.storeCustomer(customer);
+        return key;
     }
 
 

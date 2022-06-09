@@ -70,7 +70,8 @@ public class RegistrationService {
        if(isUniek(customer) && checkAge(customer) && checkBSN(customer)){
            customer.setBankAccount(new BankAccount(customer, ibanService.ibanGenerator(), 1000000.00));
            customerService.storeCustomer(customer);
-           portefeuilleService.storePortefeuille(new Portefeuille(customer));
+           int key = customer.getUserId();
+           portefeuilleService.storePortefeuille(new Portefeuille());
            bankAccountService.store(new BankAccount(customer));
         }
     }

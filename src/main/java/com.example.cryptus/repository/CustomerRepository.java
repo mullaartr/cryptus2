@@ -149,9 +149,8 @@ public class CustomerRepository  {
         }
 
         public int storeCustomer (Customer customer){
-            customerDao.storeCustomer(customer);
-
-            return customer.getUserId();
+            int key = customerDao.storeCustomer(customer);
+            return key;
         }
 
 
