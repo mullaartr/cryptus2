@@ -6,6 +6,9 @@ public class Address {
     private String postcode;
     private String city;
 
+    public Address() {
+    }
+
     public Address(int houseNumber, String street, String postcode, String city) {
         this.houseNumber = houseNumber;
         Street = street;

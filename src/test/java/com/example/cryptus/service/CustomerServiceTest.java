@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CustomerServiceTest {
     private CustomerRepository mockRepository;
@@ -35,7 +37,6 @@ class CustomerServiceTest {
 
     @Test
     void storeCustomer() {
-        //Customer testCustomer = new Customer(3,"Huub","gg","mekky", Date.valueOf("2015-03-31"), "", "",0,"","","",0,"","","");
         Customer testCustomer = new Customer(3,"John","gg","mekky","'","",
                 Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
         serviceUnderTest.storeCustomer(testCustomer);
@@ -49,14 +50,14 @@ class CustomerServiceTest {
     @Test
     void update() {
         Customer actual = new Customer(11,"John","gg","mekky","'","",
-                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
-
-        Customer expected = new Customer(11,"John","gg","mekky","'","",
-                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","");
+                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","122");
         actual.setLastName("James");
-        System.out.println(actual);
+        serviceUnderTest.update(actual);
+        Customer expected = new Customer(11,"John","gg","James","'","",
+                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","122");
 
-        assertThat(actual).isNotNull().isEqualTo(expected);
+
+        assertThat(actual.getLastName()).isEqualTo(expected.getLastName());
 
 
 
@@ -114,9 +115,18 @@ class CustomerServiceTest {
         CustomerService serviceUnderTest = new CustomerService(mockRepository);
         List<Customer> actual = serviceUnderTest.list();
         List <Customer> expected = new ArrayList<>();
-        assertThat(actual).isNotNull();
+        assertThat(actual).isNotNull().isEqualTo(expected);
 
 
+    }
+
+    @Test
+    @DisplayName("Testing find customer by email method")
+    void findCustomerByEmail() {
+        Mockito.when(mockRepository.findCustomerByEmail("email")).thenReturn(Optional.of(customer));
+        Optional<Customer> actual = serviceUnderTest.findCustomerByEmail("email");
+        Optional<Customer> expected = Optional.of(customer);
+        assertThat(actual).isNotNull().isEqualTo(expected);
     }
 
 

@@ -1,20 +1,23 @@
 package com.example.cryptus.dto;
 
 
+import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
 import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Component
-public class CustomerDTOConvertor {
+public class CustomerConvertor {
 
 
 
-    public CustomerDTO entityToDTO(Customer customer){
+    public  CustomerDTO entityToDTO(Customer customer){
         CustomerDTO customerDTO = new CustomerDTO();
+        Address address = customer.getAddress();
 
         customerDTO.setUserId(customer.getUserId());
         customerDTO.setFirstName(customer.getFirstName());
@@ -36,8 +39,9 @@ public class CustomerDTOConvertor {
         return customer.stream().map(C -> entityToDTO(C)).collect(Collectors.toList());
     }
 
-    public Customer dtoToEntity(CustomerDTO customerDTO){
+    public  Customer dtoToEntity(CustomerDTO customerDTO){
         Customer customer = new Customer();
+        Address address = customer.getAddress();
 
         customer.setUserId(customerDTO.getUserId());
         customer.setFirstName(customerDTO.getFirstName());
@@ -56,7 +60,6 @@ public class CustomerDTOConvertor {
 
         return customerDTO.stream().map(c -> dtoToEntity(c)).collect(Collectors.toList());
     }
-
 
 
 

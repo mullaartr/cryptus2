@@ -33,6 +33,7 @@ public class CustomerDaoJdbc implements CustomerDao {
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
         Customer customer = new Customer(0,"","","","","",new Date(0),
                 "",new Address(0,"","",""),"","");
+        Address address = customer.getAddress();
         //System.out.println("hello");
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
@@ -42,10 +43,10 @@ public class CustomerDaoJdbc implements CustomerDao {
         customer.setPassword(rs.getString("wachtwoord"));
         customer.setBirthDate(rs.getDate("geboortedatum"));
 
-        customer.setStreet(rs.getString("straat"));
-        customer.setHouseNumber(rs.getInt("huisnummer"));
-        customer.setPostcode(rs.getString("postcode"));
-        customer.setCity(rs.getString("woonplaats"));
+        address.setStreet(rs.getString("straat"));
+        address.setHouseNumber(rs.getInt("huisnummer"));
+        address.setPostcode(rs.getString("postcode"));
+        address.setCity(rs.getString("woonplaats"));
         customer.setBSN(rs.getString("BSN"));
         customer.setEmail(rs.getString("emailadres"));
         customer.setPhone(rs.getString("telefoon"));
@@ -148,16 +149,18 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
     public void storeCustomer(Customer customer){
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(connection -> insertUserStatement(customer, connection), keyHolder);
-            int newKey = keyHolder.getKey().intValue();
-            String sql = "INSERT into klant(userId, geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon) " +
-                    "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            int insert = jdbcTemplate.update(sql,newKey, customer.getBirthDate(), customer.getStreet(), customer.getHouseNumber(), customer.getPostcode(),
-                    customer.getCity(), customer.getBSN(), customer.getEmail(), customer.getPhone());
 
-            if (insert == 1) {
-                logger.info("New customer created" + customer.getLastName());
+        Address address = customer.getAddress();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> insertUserStatement(customer, connection), keyHolder);
+        int newKey = keyHolder.getKey().intValue();
+        String sql = "INSERT into klant(userId, geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int insert = jdbcTemplate.update(sql,newKey, customer.getBirthDate(), address.getStreet(), address.getHouseNumber(), address.getPostcode(),
+                address.getCity(), customer.getBSN(), customer.getEmail(), customer.getPhone());
+
+        if (insert == 1) {
+            logger.info("New customer created" + customer.getLastName());
 
             }
 
@@ -173,6 +176,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public void update(Customer customer) {
+        Address address = new Address();
         String sql = "UPDATE user " +
                 "SET voornaam = ?, tussenvoegsel = ?, achternaam = ?, gebruikersnaam = ?, wachtwoord = ?  WHERE userId = ?" ;
         int update2 = jdbcTemplate.update(sql,customer.getFirstName(), customer.getPreposition(), customer.getLastName(), customer.getUserName(),
@@ -180,7 +184,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         String sql1 =  "UPDATE klant " +
                 "SET geboortedatum = ?, straat = ?, huisnummer = ?, postcode = ?, woonplaats = ?, bsn = ?, emailadres = ?," +
                 " telefoon = ?, geboorteDatum = ?, BSN =?  WHERE userId = ?" ;
-        int update = jdbcTemplate.update(sql1,customer.getBirthDate(),customer.getStreet(),customer.getHouseNumber(), customer.getPostcode(),customer.getCity(),
+        int update = jdbcTemplate.update(sql1,customer.getBirthDate(),address.getStreet(),address.getHouseNumber(), address.getPostcode(),address.getCity(),
                 customer.getBSN(),customer.getEmail(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
         if(update ==1 && update2 == 1){
             logger.info("Customer updated" + customer.getUserId());
@@ -212,11 +216,11 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Optional<Customer> findCustomerByUsernamePassword(String username) {
-        String sql ="select * from user where gebruikersnaam = ?";
+        String sql ="select * from user JOIN klant k on user.userId = k.userId where user.gebruikersnaam = ?";
         Customer customer = null;
         try{
 
-            customer = jdbcTemplate.queryForObject(sql,userRowMapper,username);
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,username);
 
         }catch (DataAccessException exception){
             logger.info("Customer was not found");

@@ -5,6 +5,7 @@ import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -118,9 +119,13 @@ public class CustomerRepository  {
 
     private CustomerDao customerDao;
     private PortefeuilleDAO portefeuilleDAO;
+    @Autowired
+    public CustomerRepository(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
 
-   public CustomerRepository(CustomerDao customerDao,
-                PortefeuilleDAO portefeuilleDAO)
+    public CustomerRepository(CustomerDao customerDao,
+                              PortefeuilleDAO portefeuilleDAO)
         {
             this.customerDao = customerDao;
             this.portefeuilleDAO = portefeuilleDAO;
@@ -134,10 +139,11 @@ public class CustomerRepository  {
             if (customerOptional.isEmpty()) {
                 return Optional.empty();
             } else {
-                Portefeuille portefeuille1 = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
-                Customer customer1 = customerOptional.orElse(null);
-                customer1.setPortefeuille(portefeuille1);
-                return Optional.of(customer1);
+//                Portefeuille portefeuille1 = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+//                Customer customer1 = customerOptional.orElse(null);
+//                customer1.setPortefeuille(portefeuille1);
+//                return Optional.of(customer1);
+                return customerDao.findCustomerById(id);
             }
 
         }

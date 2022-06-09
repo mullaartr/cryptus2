@@ -1,8 +1,6 @@
 package com.example.cryptus.model;
 
 import com.example.cryptus.dto.RegisterDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Date;
 
@@ -118,30 +116,6 @@ public class Customer extends User {
         return birthDate;
     }
 
-    public String getStreet() {
-        return address.getStreet();
-    }
-
-    public void setStreet(String street) {
-        address.setStreet(street);
-    }
-
-    public int getHouseNumber() {
-        return address.getHouseNumber();
-    }
-
-    public String getPostcode() {
-        return address.getPostcode();
-    }
-
-    public void setPostcode(String postcode) {
-        address.setPostcode(postcode);
-    }
-
-    public void setHouseNumber(int houseNumber) {
-        address.setHouseNumber(houseNumber);
-    }
-
     public String getEmail() {
         return email;
     }
@@ -168,14 +142,6 @@ public class Customer extends User {
 
     public void setBSN(String BSN) {
         this.BSN = BSN;
-    }
-
-    public String getCity() {
-        return address.getCity();
-    }
-
-    public void setCity(String city) {
-        address.setCity(city);
     }
 
     @Override
