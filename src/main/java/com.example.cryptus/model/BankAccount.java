@@ -27,16 +27,14 @@ public class BankAccount {
         this.MINIMUM_BALANCE = MINIMUM_BALANCE;
     }
 
-    public BankAccount() {
-    }
-
-    //Daan: generated this constructor for registration
-
-
+    //Daan: I created this constructor for the RegistrationService
     public BankAccount(Customer accountHolder, String iban, double balance) {
         this.accountHolder = accountHolder;
         this.iban = iban;
         this.balance = balance;
+    }
+
+    public BankAccount() {
     }
 
     public BankAccount(double balance) {

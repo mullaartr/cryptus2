@@ -138,7 +138,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con));
     }
 
-
     public Optional<Portefeuille> findPortefeuilleOf(int userId) {
         int portefeuilleId = jdbcTemplate.queryForObject("select " +
                 "portefeuilleId from portefeuille where userId = ?", Integer.class, userId);

@@ -2,6 +2,7 @@ package com.example.cryptus.service;
 
 import com.example.cryptus.model.BankAccount;
 import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Portefeuille;
 import com.example.cryptus.model.User;
 import com.example.cryptus.service.Exceptions.BelowEighteenException;
 import com.example.cryptus.service.Exceptions.UserAlreadyExistsException;
@@ -21,12 +22,17 @@ public class RegistrationService {
     private CustomerService customerService;
     private BsnService bsnService;
     private IbanService ibanService;
+    private PortefeuilleService portefeuilleService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    public RegistrationService(CustomerService customerService, BsnService bsnService, IbanService ibanService) {
+    public RegistrationService(CustomerService customerService, BsnService bsnService, IbanService ibanService,
+                               PortefeuilleService portefeuilleService, BankAccountService bankAccountService) {
         this.customerService = customerService;
         this.bsnService = bsnService;
         this.ibanService = ibanService;
+        this.portefeuilleService = portefeuilleService;
+        this.bankAccountService = bankAccountService;
         logger.info("New RegistrationService");
     }
 
@@ -64,6 +70,8 @@ public class RegistrationService {
        if(isUniek(customer) && checkAge(customer) && checkBSN(customer)){
            customer.setBankAccount(new BankAccount(customer, ibanService.ibanGenerator(), 1000000.00));
            customerService.storeCustomer(customer);
+           portefeuilleService.storePortefeuille(new Portefeuille(customer));
+           bankAccountService.store(new BankAccount(customer));
         }
     }
 }
