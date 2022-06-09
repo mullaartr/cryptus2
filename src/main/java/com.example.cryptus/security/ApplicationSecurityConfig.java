@@ -43,7 +43,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        Whitelisting URLs
-/*        http
+        http
 //                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .and()
                 .csrf().disable()
@@ -55,6 +55,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/*.html", "/Assets/*", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/customer/**").hasRole(CUSTOMER.name())
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/portefeuille").permitAll()
+                .antMatchers("/customer/**").permitAll()
+//                .hasRole(CUSTOMER.name())
 //                .antMatchers(HttpMethod.DELETE,"/manage/**")
 //                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
 //                .antMatchers(HttpMethod.POST,"/manage/**")
@@ -63,7 +67,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .hasAuthority(PORTEFEUILLE_WRITE.getPermission())
 //                .antMatchers(HttpMethod.GET, "/manage/**").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name())
                 .anyRequest()
-                .authenticated();*/
+                .authenticated();
     }
 
     @Override

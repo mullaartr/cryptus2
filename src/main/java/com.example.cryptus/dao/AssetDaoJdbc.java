@@ -1,11 +1,10 @@
 package com.example.cryptus.dao;
-
 import com.example.cryptus.model.Asset;
-//import com.example.cryptus.model.Koers;
 import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -29,10 +28,6 @@ public class AssetDaoJdbc implements AssetDao {
         logger.info("New AssetDaoJdbc");
     }
 
-    //hoe een koers opslaan?
-
-    //todo wat te doen met koers? wel een attribuut van Asset, maar staat niet in database asset tabel
-    //onderstaand SQL statement mogelijke nog niet correct - database nog niet draaiend
     private PreparedStatement insertAssetStatement(Asset asset, Connection connection) throws SQLException {
         PreparedStatement ps =  connection.prepareStatement(
                 "insert into Cryptus.Asset (naam, afkorting) values (?,?)",
@@ -43,6 +38,33 @@ public class AssetDaoJdbc implements AssetDao {
     }
 
     @Override
+    public Optional<Asset> findAssetByAssetNaam(String naam) {
+        String sql = "select * from asset a where a.naam = ?";
+        Asset asset = null;
+        try {
+            asset = jdbcTemplate.queryForObject(sql, assetRowMapper, naam);
+        } catch (DataAccessException exception) {
+            logger.info("Asset not found");
+        }
+        return Optional.of(asset);
+    }
+
+    RowMapper<Asset> assetRowMapper = (rs, rownum) -> {
+        Asset asset = new Asset();
+        asset.setAssetId(rs.getInt("assetId"));
+        asset.setAssetNaam(rs.getString("naam"));
+        asset.setAssetAfkorting(rs.getString("afkorting"));
+        //asset.setSaldo(rs.getDouble("saldo")); //bestaat nog niet in DB
+        //asset.setKoers(rs.get); // wat hier te doen met Koers?
+        return asset;
+    };
+
+    @Override
+    public List<Asset> findAllAssets() {
+        return null;
+    }
+
+    @Override
     public void store(Asset asset) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertAssetStatement(asset, connection), keyHolder);
@@ -50,50 +72,71 @@ public class AssetDaoJdbc implements AssetDao {
         asset.setAssetId(newKey);
     }
 
-    //onderstaand SQL statement mogelijke nog niet correct - database nog niet draaiend
     @Override
-    public Optional<Asset> findAssetById(int id) {
-        List<Asset> assets =
-                jdbcTemplate.query("select * from asset join " +
-                        "koers on asset.assetId = koers.assetb where assetId " +
-                        " = ?", new AssetRowMapper(), id);
-        if(assets.size() == 0) {
-            return Optional.empty();
-        } else {
-            return Optional.of(assets.get(0));
-        }
+    public void delete(String naam) {
+
     }
 
+//    @Override
+//    public Optional<Asset> findAssetById(int id) {
+//        List<Asset> assets =
+//                jdbcTemplate.query("select * from asset join " +
+//                        "koers on asset.assetId = koers.assetId where assetId " +
+//                        " = ?", new AssetRowMapper(), id);
+//        if(assets.size() == 0) {
+//            return Optional.empty();
+//        } else {
+//            return Optional.of(assets.get(0));
+//        }
+//    }
+
+
+//    public void delete(String naam) {
+//        jdbcTemplate.update("DELETE FROM asset WHERE assetId = ?");
+//    }
+
+//    //onderstaand SQL statement mogelijke nog niet correct - database nog niet draaiend
+//    @Override
+//    public Optional<Asset> findAssetById(int id) {
+//        List<Asset> assets =
+//                jdbcTemplate.query("select * from asset join " +
+//                        "koers on asset.assetId = koers.assetb where assetId " +
+//                        " = ?", new AssetRowMapper(), id);
+//        if(assets.size() == 0) {
+//            return Optional.empty();
+//        } else {
+//            return Optional.of(assets.get(0));
+//        }
+//    }
     public Optional<Asset> findAssetByTransactionId( int id ) {
         List<Asset> assets =
                 jdbcTemplate.query("select * from asset join " +
                         "koers join transactie t on asset.assetId = koers" +
-                        ".assetb and asset.assetId = t.AssetId where t" +
+                        ".assetId and asset.assetId = t.debitassetId where t" +
                         ".transactieId " +
-                        " = ?", new AssetRowMapper(), id);
+                        " = ?", new AssetRowMapper(),id);
         if(assets.size() == 0) {
             return Optional.empty();
         } else {
             return Optional.of(assets.get(0));
         }
-
     }
 
- //   todo klopt mysql join?
-    @Override
-    public Optional<Asset> findAssetByPortefeuille(Portefeuille portefeuille) {
-        List<Asset> assets =
-                jdbcTemplate.query("SELECT assetId, naam, afkorting, " +
-                                "portefeuilleID, wisselkoers " +
-                        "FROM Asset A JOIN portefeuille_regel on portefeuille_regel.assetId = A.assetId " +
-                                "join koers K on A.assetid = K.assetb " +
-                                "where portefeuilleID = ?"
-                        ,
-                        new AssetRowMapper(), portefeuille.getPortefeuilleId());
-        if(assets.size() != 1) {
-            return Optional.empty();
-        } else return Optional.of(assets.get(0));
-    }
+// //   todo klopt mysql join?
+//    @Override
+//    public Optional<Asset> findAssetByPortefeuille(Portefeuille portefeuille) {
+//        List<Asset> assets =
+//                jdbcTemplate.query("SELECT assetId, naam, afkorting, " +
+//                                "portefeuilleID, wisselkoersEuro " +
+//                        "FROM Asset A JOIN portefeuille_regel on portefeuille_regel.assetId = A.assetId " +
+//                                "join koers K on A.assetid = K.assetId " +
+//                                "where portefeuilleID = ?"
+//                        ,
+//                        new AssetRowMapper(), portefeuille.getPortefeuilleId());
+//        if(assets.size() != 1) {
+//            return Optional.empty();
+//        } else return Optional.of(assets.get(0));
+//    }
 
     //todo wat te doen met koers? wel een attribuut van Asset, maar staat niet in database asset tabel
     //onderstaand SQL statement mogelijke nog niet correct - database nog niet draaiend
@@ -106,28 +149,23 @@ public class AssetDaoJdbc implements AssetDao {
         return ps;
     }*/
 
-
-
-    //update koers: set meest recente koers met een join
-    @Override
-    public void update(Asset asset, int id) {
-        String sql = "UPDATE asset A SET A.naam = ?, A.afkorting = ?, " +
-                "cryptus.koers.wisselkoers" +
-                " = ?" +
- //       " JOIN koers K ON A.assetid = K.asseta" +
-                " WHERE assetId = ?";
-        int update = jdbcTemplate.update(sql, asset.getAssetNaam(), asset.getAssetAfkorting(), asset.getKoersEuro());
-        if(update==1) {
-            logger.info("Asset updated" + asset.getAssetId());
-        }
-    }
-
-    @Override
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM asset WHERE assetId = ?");
-    }
-
     //todo wat te doen met koers? wel een attribuut van Asset, maar staat niet in database asset tabel
+// //   portefeuilleId meegeven ipv Portefeuille
+//    @Override
+//    public Optional<Asset> findAssetByPortefeuille(Portefeuille portefeuille) {
+//        List<Asset> assets =
+//                jdbcTemplate.query("SELECT assetId, naam, afkorting, " +
+//                                "portefeuilleID, wisselkoers " +
+//                        "FROM Asset A JOIN portefeuille_regel on portefeuille_regel.assetId = A.assetId " +
+//                                "join koers K on A.assetid = K.assetb " +
+//                                "where portefeuilleID = ?"
+//                        ,
+//                        new AssetRowMapper(), portefeuille.getPortefeuilleId());
+//        if(assets.size() != 1) {
+//            return Optional.empty();
+//        } else return Optional.of(assets.get(0));
+//    }
+
     private static class AssetRowMapper implements RowMapper<Asset> {
 
         @Override
@@ -135,8 +173,8 @@ public class AssetDaoJdbc implements AssetDao {
             int id = resultSet.getInt("assetId");
             String assetNaam = resultSet.getString("naam");
             String assetAfkorting = resultSet.getString("afkorting");
-            double koersEuro = resultSet.getDouble("wisselkoers");
-            Asset asset = new Asset (id,assetNaam, assetAfkorting, koersEuro, 0.0);//moet portefeuille wel null zijn?
+            //Koers koersEuro = resultSet.getDouble("wisselkoers");
+            Asset asset = new Asset (id,assetNaam, assetAfkorting, null);//moet portefeuille wel null zijn?
             return asset;
         }
     }

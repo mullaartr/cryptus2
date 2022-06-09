@@ -49,7 +49,7 @@ public class Portefeuille implements Serializable {
 
     public boolean hasEnoughAssets(String assetNaam, double assetAmount){
         for(Asset asset: this.getAssetLijst()){
-            if(asset.getAssetNaam() == assetNaam){
+            if(asset.getAssetNaam().equals(assetNaam)){
                 if(asset.getSaldo() >= assetAmount){
                     return true;
                 }

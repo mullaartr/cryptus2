@@ -27,7 +27,7 @@ public class AdminController {
         return bankConfigService.getPercentage();
     }
 
-    @PostMapping("/set_commission")
+    @PostMapping("/set_percentage")
     public ResponseEntity<?> setCommisionPercentage(@RequestParam int percentage) throws NoSuchAlgorithmException {
         bankConfigService.updatePercentage(percentage);
         return ResponseEntity.ok().build();

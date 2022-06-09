@@ -11,25 +11,30 @@ public class CustomerDTO {
     private String firstName;
     private String preposition;
     private String lastName;
-    private String userName;
     private Date birthDate;
     private String BSN;
     private String email;
     private String phone;
     private Address address;
 
-    public CustomerDTO(int userId, String firstName, String preposition, String lastName,
-                       String userName, Date birthDate, String BSN, String email, String phone, Address address) {
+
+
+
+
+    public CustomerDTO(int userId, String firstName, String preposition, String lastName
+            , Date birthDate, String BSN, String email, String phone, Address address) {
         this.userId = userId;
         this.firstName = firstName;
         this.preposition = preposition;
         this.lastName = lastName;
-        this.userName = userName;
         this.birthDate = birthDate;
         this.BSN = BSN;
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+
+    public CustomerDTO() {
     }
 
     public int getUserId() {
@@ -64,13 +69,6 @@ public class CustomerDTO {
         this.lastName = lastName;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public Date getBirthDate() {
         return birthDate;

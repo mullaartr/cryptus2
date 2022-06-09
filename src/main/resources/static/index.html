@@ -3,6 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="css/indexccss.css">
+
   <style>
     img {
       display: block;
@@ -66,7 +67,7 @@
 
 <script>
   function register() {
-    window.location.href = "Haircut.html"
+    window.location.href = "Register.html"
 
   }
 
@@ -106,13 +107,14 @@
       }
 
 
-
-      //let token = localStorage.setItem ('token',json.waarde) for a token
+      //var bearer = 'Bearer ' + bearer_token;
+      //let token = localStorage.setItem ('token',json.waarde)
       fetch('http://localhost:8080/klant/login',
               {
                 method: 'POST',
                 headers: {
-                  'content-Type': 'application/json',
+                 // 'Authorization': bearer,
+                  'content-Type': 'application/json'
                   //'Authorization': 'Bearer ${token}'
 
                 },
@@ -131,7 +133,7 @@
               }).then(json => {
         if(json === undefined) {
           console.log('not logged in')
-          alert('Wrong password username combinaton');
+          alert('Wrong password username combination');
         }else {
           console.log(json)
           // select element uit de DOM
@@ -145,7 +147,7 @@
         }
 
 
-        //localStorage.setItem ('token',json.waarde) for a token
+        //localStorage.setItem ('token',json.waarde)
       })
 
     }

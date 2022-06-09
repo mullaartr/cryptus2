@@ -2,21 +2,19 @@ package com.example.cryptus.dao;
 
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.Portefeuille;
+
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-
 import java.sql.Date;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -24,29 +22,30 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerDaoJdbcTest {
 
     private CustomerDaoJdbc customerDaoJdbcUnderTest;
-    private CustomerDaoJdbc customerDaoJdbc;
-    Customer customer1;
+    private CustomerDao daoUnderTest;
+    Customer customer;
+
 
     @Autowired
-    public CustomerDaoJdbcTest(CustomerDaoJdbc customerDaoJdbcUnderTest) {
+    public CustomerDaoJdbcTest(CustomerDao customerDao) {
         super();
-        customerDaoJdbcUnderTest = customerDaoJdbcUnderTest;
-    }
+        this.daoUnderTest = customerDao;
 
+    }
     @BeforeAll
-    void setup(){
-/*
-        customer1 = new Customer(12, "Klaas", "", "Fransen", "frans", "12345", Date.valueOf("1969-08-13"),"534543533",new Address(3,"Justine de Gouwerhof","2010AP","Leiden"),"harry.kreeft@lumc.nl","0647186543");
-*/
-        customerDaoJdbc = new CustomerDaoJdbc(new JdbcTemplate());
+    void init(){
+
+        customer = new Customer(28,"John","gg","mekky","password","username",Date.valueOf("2015-03-31"),"bsn",
+                new Address(10,"street","10690","Utrecht"),"seb@seb.com","1234567891");
 
     }
+
 
     @Test
     void findCustomerById() {
-        Optional<Customer> customer = customerDaoJdbcUnderTest.findCustomerById(2);
-        Customer actual = customer.get();
-        Customer expected = customer1;
+        Optional<Customer> oc = daoUnderTest.findCustomerById(1);
+        Customer actual = oc.orElse(null);
+        Customer expected = customer;
         assertThat(actual).isEqualTo(expected);
     }
 

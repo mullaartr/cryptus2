@@ -1,33 +1,42 @@
 package com.example.cryptus.model;
 
-//import com.example.cryptus.model.Koers;
+import com.example.cryptus.model.Koers;
 
 import java.util.Objects;
 
 public class Asset {
-    private int assetId;
-    private String assetNaam;
-    private String assetAfkorting;
-    private double koersEuro;//heb hier tijdelijk een double van gemaakt om de boel draaiende te houden
+    int assetId;
+    String assetNaam;
+    String assetAfkorting;
+    Koers koers; //van koers
+    double saldo; // van portefeuille_regel
 
-    private double saldo;
 
-
-    public Asset(int assetId, String assetNaam, String assetAfkorting, double koersEuro, double saldo) {
+    public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
-        this.koersEuro = koersEuro;
+        this.koers = koers;
         this.saldo = saldo;
     }
 
-    public Asset(String assetNaam, String assetAfkorting, double koersEuro) {
-        this(0, assetNaam, assetAfkorting, koersEuro, 0.0);
+    public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers) {
+        this.assetId = assetId;
+        this.assetNaam = assetNaam;
+        this.assetAfkorting = assetAfkorting;
+        this.koers = koers;
+    }
+
+    public Asset(String assetNaam, String assetAfkorting, Koers koers, double saldo) {
+        this(0, assetNaam, assetAfkorting, koers, saldo);
+    }
+
+    public Asset(String assetNaam) {
+        this(0, assetNaam, null, null, 0.0);
     }
 
     public Asset() {
-        this(0, null, null, 0, 0.0);
-
+        this(0, null, null, null, 0.0);
     }
 
     public int getAssetId() {
@@ -54,12 +63,12 @@ public class Asset {
         this.assetAfkorting = assetAfkorting;
     }
 
-    public double getKoersEuro() {
-        return koersEuro;
+    public Koers getKoers() {
+        return koers;
     }
 
-    public void setKoersEuro(double koersEuro) {
-        this.koersEuro = koersEuro;
+    public void setKoers(Koers koers) {
+        this.koers = koers;
     }
 
     public double getSaldo() {
@@ -75,13 +84,13 @@ public class Asset {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Asset asset = (Asset) o;
-        return assetId == asset.assetId && Double.compare(asset.koersEuro, koersEuro) == 0 && Double.compare(asset.saldo, saldo) == 0 && Objects.equals(assetNaam, asset.assetNaam) && Objects.equals(assetAfkorting, asset.assetAfkorting);
+        return assetId == asset.assetId && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting) && koers.equals(asset.koers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assetId, assetNaam, assetAfkorting, koersEuro, saldo);
-    };
+        return Objects.hash(assetId, assetNaam, assetAfkorting, koers, saldo);
+    }
 
     @Override
     public String toString() {
@@ -89,7 +98,7 @@ public class Asset {
                 "assetId=" + assetId +
                 ", assetNaam='" + assetNaam + '\'' +
                 ", assetAfkorting='" + assetAfkorting + '\'' +
-                ", koersEuro=" + koersEuro +
+                ", koers=" + koers +
                 ", saldo=" + saldo +
                 '}';
     }

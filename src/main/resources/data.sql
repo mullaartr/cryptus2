@@ -17,10 +17,11 @@ VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2
        (10, 'Joris', NULL, 'Pietersen', 'piet', '12345'),
        (11, 'Rogier', NULL, 'Mullaart', 'admin', 'admin');
 
+INSERT INTO `account`
+VALUES ('admin', 1,1);
 
 INSERT INTO `beheerder`
 VALUES (11, 123456789);
-
 
 INSERT INTO `klant`
 VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
@@ -44,13 +45,9 @@ VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
        (10, '1954-08-13', 'Kleine houtstraat', 7, '2010AP', 'Den Haag',
         '234232444', 'harry.kreeft@lumc.nl', '0647186543');
 
-
-
-
 INSERT INTO `bankrekening`
 VALUES ('1234567891', 250.50, 1),
        ('9876543211', 350.00, 2);
-
 
 INSERT INTO `asset`
 VALUES (1, 'Bitcoin', 'BTC'),
@@ -58,18 +55,13 @@ VALUES (1, 'Bitcoin', 'BTC'),
        (3, 'Dodgecoin', 'DGC'),
        (4, 'Euro', 'EUR');
 
-
-
 INSERT INTO `portefeuille`
 VALUES (1, 1),
        (2, 2);
 
-
 INSERT INTO `portefeuille_regel`
 VALUES (1, 1, 25.000000),
        (2, 2, 25.000000);
-
-
 
 INSERT INTO `transactie`
 VALUES (1, '2022-05-19 01:14:07.00', 5.00, '1234567891',  '9876543211', 300,  2,  2,
@@ -77,11 +69,10 @@ VALUES (1, '2022-05-19 01:14:07.00', 5.00, '1234567891',  '9876543211', 300,  2,
        (2, '2022-05-19 01:14:07.00', 6.00, '9876543211', '1234567891', 300, 1, 1,
         20, 2, 2);
 
-
 INSERT INTO `koers`
-VALUES (1, 'bitcoin', 30000.000000, 0.0),
-       (2, 'ethereum', 1500.000000, 0.0 ),
-       (3, 'dogecoin', 250.000000, 0.0);
+VALUES (1, '2022-05-19 13:14:07' ,'bitcoin', 30000.000000, 29000.000000),
+       (1, '2022-05-19 14:14:07','bitcoin', 29000.000000, 28000.000000 ),
+       (1, '2022-05-19 15:14:07','bitcoin', 30000.000000, 27000.000000);
 
 /*SET FOREIGN_KEY_CHECKS=1;*/
 

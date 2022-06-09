@@ -2,19 +2,20 @@ package com.example.cryptus.controller;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.dto.CustomerDTO;
+import com.example.cryptus.dto.CustomerConvertor;
 import com.example.cryptus.model.Account;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.User;
-import com.example.cryptus.repository.CustomerRepository;
 import com.example.cryptus.service.CustomerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -30,34 +31,47 @@ import static org.mindrot.jbcrypt.BCrypt.hashpw;
 public class CustomerController {
 
 
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     Account customerAccount = new Account("password");
-    User user;
 
 
     private CustomerService customerService;
-    CustomerRepository customerRepository;
-    CustomerDTO customerDTO;
-    private CustomerDaoJdbc customerDaoJdbc;
+
+    CustomerConvertor customerConvertor;
+
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerDaoJdbc customerDaoJdbc) {
-        this.customerService = customerService;
-        this.customerDaoJdbc = customerDaoJdbc;
-        logger.info("New customerController");
+
+    public CustomerController(CustomerService customerService, CustomerConvertor customerConvertor) {
+
+
+
+            this.customerService = customerService;
+            this.customerConvertor = customerConvertor;
+            logger.info("New customerController");
+        }
+
+
+    @GetMapping
+    public Customer getCurrentUser(){
+        var username =
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // username
+        // dao actie find by username
+        return customerService.customerByEmail(username.toString()).get(0);
     }
 
-    @GetMapping(value = "/gebruiker")
-    @ResponseBody public Object gebruiker(){
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @GetMapping(value = "/list")
+    public List<Customer> customerList(){
+        return customerService.list();
+
     }
 
 
     @GetMapping(value = "/KlantLijst")
-    public List<Customer> list(){
-        return customerService.list();
+    public List <CustomerDTO> list(){
+        List<Customer> findAll = customerService.list();
+        return customerConvertor.entityToDTO(findAll);
     }
 
     @GetMapping(value = "/{id}")
@@ -67,7 +81,8 @@ public class CustomerController {
 
     @GetMapping("/findByLastname")
     @ResponseBody Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
-        return  customerService.findCustomerByName(name);
+        return customerService.findCustomerByName(name);
+
     }
     @DeleteMapping(value = "/delete")
     @ResponseBody public void deleteCustomer(@PathVariable("id")int id){
@@ -78,19 +93,26 @@ public class CustomerController {
 
     @GetMapping("/findByUsernamePassword")
     @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username) {
+//        Optional<Customer> expectedCustomer =
+//                customerService.findCustomerByUsernamePassword(username);
+//        Customer dbCustomer = expectedCustomer.get();
+//        customerConvertor.entityToDTO(dbCustomer);
+//
+//
+//        return Optional.of(dbCustomer);
         return customerService.findCustomerByUsernamePassword(username);
 
     }
 
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/create",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
+    ResponseEntity<?> createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
         if (customer instanceof Customer) {
             customer.setPassword(hashpw(customer.getPassword(), gensalt(12) + customerAccount.getPEPPER()));
             customerService.storeCustomer(customer);
         }
-        return new ResponseEntity<Customer>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User was successfully created");
     }
 
 
@@ -98,7 +120,7 @@ public class CustomerController {
     @PostMapping(value = "/login")
     ResponseEntity<?> login(@RequestBody Account account) throws NoSuchAlgorithmException {
         Optional<Customer> expectedCustomer =
-                customerDaoJdbc.findCustomerByUsernamePassword(account.getGebruikersnaam());
+                customerService.findCustomerByUsernamePassword(account.getGebruikersnaam());
         Customer dbCustomer = expectedCustomer.get();
         String customer = account.getWachtwoord();
         if(BCrypt.checkpw(customer, dbCustomer.getPassword())){
