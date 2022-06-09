@@ -29,10 +29,11 @@ public class CustomerService {
         logger.info("New CustomerService");
     }
 
-    public void storeCustomer(Customer customer) {
+    public int storeCustomer(Customer customer) {
         customerRepository.storeCustomer(customer);
 
 
+        return customer.getUserId();
     }
 
 

@@ -11,7 +11,7 @@
       margin-right: auto;
     }
   </style>
-  <img src="Cryptus finale logo.png" alt="Cryptus for all " style="width:140px;height:180px;">
+  <img src="images/Cryptus%20finale%20logo.png" alt="Cryptus for all " style="width:140px;height:180px;">
   <h1 style="text-align:center">Cryptus</h1>
 </head>
 
@@ -101,15 +101,16 @@
 
       // JS Object -> to a string version
       let data = {
-        gebruikersnaam: uname,
-        wachtwoord: pwd
+        username: uname,
+        password: pwd
 
       }
 
+      console.log( data );
 
       //var bearer = 'Bearer ' + bearer_token;
       //let token = localStorage.setItem ('token',json.waarde)
-      fetch('http://localhost:8080/klant/login',
+      fetch('http://localhost:8080/login',
               {
                 method: 'POST',
                 headers: {

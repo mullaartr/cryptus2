@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/login")
+@RequestMapping(path = "/loginzozozoz")
 public class LoginController {
     private final LoginCustomerService loginCustomerService;
     private CustomerService customerService;

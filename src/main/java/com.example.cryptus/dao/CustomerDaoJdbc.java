@@ -32,7 +32,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
         Customer customer = new Customer(0,"","","","","",new Date(0),
-                "",new Address(0,"","",""),"","");
+                "",new Address(),"","");
         Address address = customer.getAddress();
         //System.out.println("hello");
         customer.setUserId(rs.getInt("userId"));
@@ -63,7 +63,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
     RowMapper<Customer> userRowMapper = (rs, rowNum) -> {
-        Customer user = new Customer(0, "", "", "", "", "");
+        Customer user = new Customer();
 
         user.setUserId(rs.getInt("userId"));
         user.setFirstName(rs.getString("voornaam"));
@@ -148,7 +148,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
 
-    public void storeCustomer(Customer customer){
+    public int storeCustomer(Customer customer){
 
         Address address = customer.getAddress();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -165,6 +165,7 @@ public class CustomerDaoJdbc implements CustomerDao {
             }
 
 
+        return customer.getUserId();
     }
 
     @Override
