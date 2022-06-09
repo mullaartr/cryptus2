@@ -2,7 +2,6 @@ package com.example.cryptus.repository;
 import com.example.cryptus.dao.CustomerDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

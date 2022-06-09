@@ -50,6 +50,11 @@ public class Customer extends User {
         this.email = registerDto.getEmail();
     }
 
+    //Daan: for registration
+    public Customer(int userId) {
+        super(userId);
+    }
+
     //Daan: no-args constructor
     public Customer() {
 

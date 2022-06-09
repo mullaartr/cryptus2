@@ -66,8 +66,8 @@ public class RegistrationService {
         } else return true;
     }
 
-    public void checkRegistration(Customer customer)  {
-        if(isUniek(customer) && checkAge(customer) && checkBSN(customer)){
+    public void checkRegistration(Customer customer) {
+        if (isUniek(customer) && checkAge(customer) && checkBSN(customer)) {
             customer.setBankAccount(new BankAccount(customer, ibanService.ibanGenerator(), 1000000.00));
             int key = customerService.storeCustomer(customer);
             customer.setUserId(key);

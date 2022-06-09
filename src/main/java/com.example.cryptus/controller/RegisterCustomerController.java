@@ -49,5 +49,4 @@ public class RegisterCustomerController {
         registrationService.checkRegistration(customer);
         return ResponseEntity.ok().body(registerDto);
     }
-
 }

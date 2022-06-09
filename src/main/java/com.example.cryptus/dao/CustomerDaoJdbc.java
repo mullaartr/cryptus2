@@ -163,8 +163,6 @@ public class CustomerDaoJdbc implements CustomerDao {
             logger.info("New customer created" + customer.getLastName());
 
             }
-
-
         return newKey;
     }
 
