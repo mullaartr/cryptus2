@@ -13,6 +13,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
@@ -46,6 +47,11 @@ public class CustomerController {
         this.customerService = customerService;
         this.customerDaoJdbc = customerDaoJdbc;
         logger.info("New customerController");
+    }
+
+    @GetMapping(value = "/gebruiker")
+    @ResponseBody public Object gebruiker(){
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 
