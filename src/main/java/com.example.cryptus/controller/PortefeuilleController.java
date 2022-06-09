@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "portefeuille", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "portefeuille")
 public class PortefeuilleController {
 
     private PortefeuilleDTO portefeuilleDTO;
@@ -65,13 +65,13 @@ public class PortefeuilleController {
             System.out.println(portefeuilleDTO + "blablabla");
         // owner moet geauthenticeerd en opgehaald worden aan de hand van de token
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      /*  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             currentUserName = authentication.getName();
-        }
+        }*/
         Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
-        portefeuille.setOwner(customerService.findCustomerByUsernamePassword(currentUserName).orElse(null));
+        //portefeuille.setOwner(customerService.findCustomerByUsernamePassword(currentUserName).orElse(null));
         portefeuilleService.storePortefeuille(portefeuille);
         return ResponseEntity.ok().build();
 

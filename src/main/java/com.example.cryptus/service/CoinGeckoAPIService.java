@@ -1,4 +1,5 @@
 package com.example.cryptus.service;
+import com.example.cryptus.dao.AssetDaoJdbc;
 import com.example.cryptus.dto.KoersDto;
 import com.example.cryptus.model.Koers;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,7 +26,10 @@ public class CoinGeckoAPIService{
 
     private Set<Koers> koersen;
 
-    public CoinGeckoAPIService() {
+    private AssetDaoJdbc assetDaoJdbc;
+
+    public CoinGeckoAPIService(AssetDaoJdbc assetDaoJdbc) {
+        this.assetDaoJdbc = assetDaoJdbc;
         logger.info("new koersService created");
     }
 
@@ -68,7 +72,7 @@ public class CoinGeckoAPIService{
         Set<Koers> koersenSet = new HashSet<>();
         for (Map.Entry<String, Map<String, Double>> entry: koersen.entrySet()) {
             Koers koers = new Koers();
-            koers.setNaam(entry.getKey());
+            koers.setAsset(assetDaoJdbc.findAssetByAssetNaam(entry.getKey()).orElse(null));
             for (Map.Entry <String, Double> entry2: entry.getValue().entrySet()) {
                 if(entry2.getKey().equals("eur")){
                     koers.setKoersInEuro(entry2.getValue());

@@ -23,7 +23,7 @@ public class PortefeuilleDTO  {
         this.portefeuilleId = portefeuille.getPortefeuilleId();
         this.assets = portefeuille.getAssetLijst();
         portefeuille.getOwner().setPortefeuille(null);
-        this.owner = portefeuille.getOwner();
+        //this.owner = portefeuille.getOwner();
     }
 
     public List<Asset> getAssets() {

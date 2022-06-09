@@ -12,8 +12,6 @@ public class Portefeuille implements Serializable {
     private List<Asset> assetLijst;
     private Customer owner;
 
-
-
     public Portefeuille(int portefeuilleId, Customer owner, List<Asset> assetLijst) {
         this.portefeuilleId = portefeuilleId;
         this.owner = owner;
