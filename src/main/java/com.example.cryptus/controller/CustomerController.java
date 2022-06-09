@@ -13,6 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -39,12 +44,24 @@ public class CustomerController {
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerConvertor customerConvertor) {
-        this.customerService = customerService;
-        this.customerConvertor = customerConvertor;
-        logger.info("New customerController");
-    }
 
+    public CustomerController(CustomerService customerService, CustomerConvertor customerConvertor) {
+
+
+
+            this.customerService = customerService;
+            this.customerConvertor = customerConvertor;
+            logger.info("New customerController");
+        }
+
+
+    @GetMapping
+    public Customer getCurrentUser(){
+        var username =
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // username
+        // dao actie find by username
+        return customerService.customerByEmail(username.toString()).get(0);
+    }
 
     @GetMapping(value = "/list")
     public List<Customer> customerList(){

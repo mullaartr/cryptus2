@@ -32,7 +32,9 @@ public class BankConfigDaoJDBC implements BankConfigDao {
         bankConfig.setPercentage(rs.getDouble("value"));
         return bankConfig;
     };
-
+// hieronder klopt iets niet. Het invoegen van een waarde moet wel precies op
+// de plek gebeuren waar ik dat wil en dat is dus bijvoorbeeld op de
+// adminAttribute waarde "percentage". Dat gebeurt nu volgens mij nog niet.
     private PreparedStatement insertConfigurationStatement(BankConfig bankConfig,
                                                            Connection connection) throws SQLException {
         try {
@@ -53,14 +55,14 @@ public class BankConfigDaoJDBC implements BankConfigDao {
     @Override
     public void updatePercentage(double percentage) {
         BankConfig bankConfig = new BankConfig(percentage);
-        String sql = "UPDATE bankinstelling SET value = ? WHERE " +
+        String sql =
+                "UPDATE bankinstelling SET value =" + percentage + " WHERE " +
                 "adminAttribute ='percentage'";
 
-        double update = jdbcTemplate.update(sql, rowMapper,
-                bankConfig.getPercentage());
-        if (update == 1) {
-            logger.info("Percentage aangepast");
-        }
+        jdbcTemplate.update(sql);
+//        if (update == 1) {
+//            logger.info("Percentage aangepast");
+//        }
     }
 
     @Override

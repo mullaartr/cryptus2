@@ -31,13 +31,37 @@ public class TransactionRepository {
         this.assetDaoJdbc = assetDaoJdbc;
     }
     public List<Transaction> getBuyTransactionsFromUser(int userId) {
-
         List<Transaction> result = new ArrayList<>();
         List<Transaction> transactions =
                 transactionDaoJdbc.findBuyTransactionsByUser(userId);
+        for (Transaction t : transactions) {
+            Optional<Customer> buyer =
+                    customerDaoJdbc.findBuyerByTransactionId(t.getTransactionId() );
+            Optional<Customer> seller =
+                    customerDaoJdbc.findSellerByTransactionId(t.getTransactionId() );
+            Optional<Asset> asset =
+                    assetDaoJdbc.findAssetByTransactionId(t.getTransactionId());
+            if (buyer.isEmpty() || seller.isEmpty() || asset.isEmpty()) {
+                continue;
+            }
+            Transaction transaction = new Transaction(
+                    t.getTransactionId(), buyer.orElse(null),
+                    seller.orElse(null),
+                    asset.orElse(null),
+                    t.getAssetamount(), t.getEuroamount(),
+                    t.getFeePercentage(),
+                    t.getTimestamp());
+            result.add(transaction);
+        }
+        return result;
+    }
+    public List<Transaction> getSellTransactionsFromUser(int userId) {
+
+        List<Transaction> result = new ArrayList<>();
+        List<Transaction> transactions =
+                transactionDaoJdbc.findSellTransactionsByUser(userId);
 
         for (Transaction t : transactions) {
-
 
             Optional<Customer> buyer =
                     customerDaoJdbc.findBuyerByTransactionId(t.getTransactionId() );
@@ -51,13 +75,12 @@ public class TransactionRepository {
                 continue;
             }
             Transaction transaction = new Transaction(
-                    t.getTransactionId(), buyer.orElse(null),
-                    seller.orElse(null),
+                    t.getTransactionId(), seller.orElse(null),
+                    buyer.orElse(null),
                     asset.orElse(null),
                     t.getAssetamount(), t.getEuroamount(),
                     t.getFeePercentage(),
                     t.getTimestamp());
-
             result.add(transaction);
         }
         return result;
@@ -66,12 +89,10 @@ public class TransactionRepository {
     public void createTransaction(Transaction transaction) {
         transactionDaoJdbc.createTransaction(transaction);
     }
-
     public void updateTransaction(Transaction transaction,
                                   int transactionId) {
         transactionDao.update(transaction,transactionId);
     }
-
     public void deleteTransaction(int id) {
     }
     public Optional<Transaction> findTransactionById(int transactionId) {

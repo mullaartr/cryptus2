@@ -1,5 +1,6 @@
 package com.example.cryptus.service;
 
+import com.example.cryptus.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

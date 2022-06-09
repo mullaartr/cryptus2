@@ -1,107 +1,169 @@
 package com.example.cryptus.service;
 
-import com.example.cryptus.model.Portefeuille;
-import com.example.cryptus.model.Transaction;
-import com.example.cryptus.repository.CustomerRepository;
-import com.example.cryptus.repository.PortefeuilleRepository;
-import com.example.cryptus.repository.TransactionRepository;
+import com.example.cryptus.model.*;
+import com.example.cryptus.repository.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+
 @Service
 public class TransactionService {
 
     private final Logger logger = LogManager.getLogger(CustomerService.class);
     private TransactionRepository transactionRepository;
     private CustomerRepository customerRepository;
-
-    private Portefeuille portefeuille;
+    private PortefeuilleRepository portefeuilleRepository;
+    private BankConfigRepository bankConfigRepository;
+    private BankAccountRepository bankAccountRepository;
+    private AssetRepository assetRepository;
 
 
     public TransactionService(TransactionRepository transactionRepository,
-                              CustomerRepository customerRepository) {
+                              CustomerRepository customerRepository,
+                              PortefeuilleRepository portefeuilleRepository,
+                              BankConfigRepository bankConfigRepository,
+                              BankAccountRepository bankAccountRepository,
+                              AssetRepository assetRepository) {
         super();
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;
+        this.portefeuilleRepository = portefeuilleRepository;
+        this.bankConfigRepository = bankConfigRepository;
+        this.bankAccountRepository = bankAccountRepository;
+        this.assetRepository = assetRepository;
 
-        logger.info("Nieuwe TransactieService");
+        logger.info("Nieuwe transactieservice");
     }
 
     public List<Transaction> getBuyTransactionsFromUser(int userId) {
-        List<Transaction> transactions =
-                transactionRepository.getBuyTransactionsFromUser(userId);
-        return transactions;
+        return transactionRepository.getBuyTransactionsFromUser(userId);
     }
 
+    public List<Transaction> getSellTransactionsFromUser(int userId) {
+        return transactionRepository.getSellTransactionsFromUser(userId);
+    }
 
-    public Optional<Transaction> buyFromBank(int userIdKoper,
-                                             String assetNaam,
-                                             double assetAmount) {
+    public Optional<Transaction> buyFromBank(Customer buyer, String assetNaam, double assetAmount) {
 
-        //1.check of de verkoper (= bank = user 1) voldoende assets heeft en of
-        // hij voldoende saldo heeft.
-        // Methode heb ik geschreven en staat nu in de model klasse Portefeuille
-        // Wat ik me afvraag is hoe ik nu de portefeuille van persoon x hier
-        // ophaal met het bijbehorende saldo en de methode hasenoughassets
-        // toepas.
+        //A. ASSETGEDEELTE
 
-        if (portefeuille.hasEnoughAssets(assetNaam,assetAmount)) {
+        //1. de koper is bekend en krijg ik binnen via de controller
 
-            // 1.Schrijf het amount van assets af van de portefeuille van de
-            // seller -> sebastiaan
-            // 2. Schrijf de amount van assets bij bij de portefeuille van de
-            // koper -> sebastiaan
+        //2. seller = bank = userId 1
 
-            ///1. Ophalen koers van asset op basis van assetid; Daan
-            // schrijft deze methode
+        Optional<Customer> seller = customerRepository.findCustomerById(1);
 
-            // Waarde van de aankoop in euro's. Zie hieronder voor een eerste
-            // opzet van een methode: calcValueTransactionInEuro
-            double valueTransaction = calcValueTransactionInEuro(assetNaam,
-                    assetAmount);
+        //3. Ophalen portefeuille van de buyer en seller:
 
-            // Waarde van de commissie. Zie ook methode onder
-            double valueFee = calcFee(valueTransaction);
+        Portefeuille portefeuilleBuyer =
+                portefeuilleRepository.findPortefeuilleWithCustomerById(buyer.getUserId()).get();
 
-            // Totaal kosten. Optellen kosten aankoop + kosten commissie
+        Optional<Portefeuille> portefeuilleSeller =
+                portefeuilleRepository.findPortefeuilleWithCustomerById(seller.get().getUserId());
 
-            double totalValue = calTotal(valueTransaction, valueFee);
+        //4.check of de bank de asset überhaupt heeft en of er voldoende
+        // saldo is. Zo ja (true) ga dan door.
 
-            //check of de customer voldoende euro's heeft
+        if (portefeuilleSeller.get().hasEnoughAssets(assetNaam,
+                assetAmount)) {
 
+            // 5.Schrijf het amount van assets af van de portefeuille van de
+            // seller
 
-            //Haal de gegevens op van de koper -> via token user er uit halen
-            // Sebastiaan maakt hier een methode van die aan te roepen is
+            Asset assetSeller =
+                    portefeuilleSeller.get().getAssetLijst().stream().filter(asset1 -> asset1.getAssetNaam().equals(assetNaam)).findAny().orElse(null);
+            assetSeller.setSaldo(assetSeller.getSaldo() - assetAmount);
 
-            //Haal de gegevens op van de verkoper en dat is altijd de bank en
-            // dus userId 1
+            portefeuilleRepository.updatePortefeuille(portefeuilleSeller.get(), assetSeller);
 
-            // schrijf hoeveelheid assets af + bij -> Sebastiaan
-            // schrijf euro's af en bij de bank - > Mekky
+            // 6. Schrijf de amount van assets bij bij de portefeuille van de
+            // koper
 
-            //create transaction
-            //save transaction
+            Asset assetBuyer =
+                    portefeuilleBuyer.getAssetLijst().stream().filter(asset1 -> asset1.getAssetNaam().equals(assetNaam)).findAny().orElse(null);
+            assetBuyer.setSaldo(assetBuyer.getSaldo() - assetAmount);
 
-            //return transaction
+            portefeuilleRepository.updatePortefeuille(portefeuilleBuyer,
+                    assetBuyer);
         }
-    return null;
-}
 
+        //B. BEPALEN WAARDE EN COMMISSIE = TOTALE WAARDE
+
+        //7. Ophalen koers van asset op basis van assetid; Daan
+        // schrijft deze methode
+
+        // 8. Waarde van de aankoop in euro's. Zie hieronder voor een eerste
+        // opzet van een methode: calcValueTransactionInEuro
+        double valueTransaction = calcValueTransactionInEuro(assetNaam,
+                assetAmount);
+
+        // 9. Waarde van de commissie. Zie ook methode onder
+        double valueFee = calcFee(valueTransaction);
+
+        // 10. Totale kosten. Optellen kosten aankoop + kosten commissie
+
+        double totalValue = calTotal(valueTransaction, valueFee);
+
+        //C. AFSCHRIJVEN EN BIJSCHRIJVEN EURO'S OP BANKREKENING ETC.
+
+        //11. Ophalen bankaccount van de buyer:
+
+        Optional<BankAccount> bankAccountBuyer =
+                bankAccountRepository.findBankaccountByUserId(buyer.getUserId());
+
+        //12. Ophalen bankaccount van de seller (= bank = userId1)
+
+        Optional<BankAccount> bankAccountSeller =
+                bankAccountRepository.findBankaccountByUserId(1);
+
+        //13. check of de buyer voldoende euro's heeft
+        if (bankAccountBuyer.get().hasEnoughBalance(totalValue)) {
+
+            //14. Schrijf het aantal euro's af van de bankrekening van de buyer
+
+            bankAccountBuyer.get().withdrawFunds(totalValue);
+
+            //15. schrijf euro's af en bij de bank
+
+            bankAccountSeller.get().addFunds(totalValue);
+        }
+        //D. Transactie gedeelte
+
+        //16. Haal de Asset op doormiddel van de assetnaam -> hoe moet dit?
+        // -> Volgens mij bestaat deze methode niet in de repository en ook
+        // niet op naam. Wel op basis van ID.
+
+        Optional<Asset> assetBought = null;
+
+        //17. Haal het huidige percentage uit de DB:
+
+        double percentage = bankConfigRepository.getPercentage();
+
+        //.18.Maak een transactie met alle ingredienten (Asset mis nog!)
+
+        Transaction transaction = new Transaction(buyer, seller.get(),
+                assetBought.get(),
+                assetAmount, totalValue, percentage);
+
+        //19. Maak een transactie aan in de database
+
+        transactionRepository.createTransaction(transaction);
+
+        return Optional.of(transaction);
+    }
 
     public double calcValueTransactionInEuro(String assetNaam,double assetAmount) {
 
-        //return koers * assetAmount
+        //return koers * assetAmount -> deze methode schrijft Daan
         return 0;
     }
 
     public double calcFee(double valueInEuro) {
-        //double percentage = configurationrepository.getCommisionpercentage();
-        //return valueInEuro*(percentage/100);
-        return 0;
+        double percentage = bankConfigRepository.getPercentage();
+        return valueInEuro * (percentage / 100);
     }
 
     public double calTotal(double valueInEuro, double feeInEuro) {

@@ -8,5 +8,5 @@ public interface BankConfigDao {
 
     void updatePercentage(double percentage);
 
-    public double getPercentage();
+    double getPercentage();
 }
