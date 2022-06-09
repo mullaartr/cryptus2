@@ -11,7 +11,7 @@ public interface CustomerDao {
     Optional<Customer> findCustomerById(int id);
     Optional<Customer> findCustomerByIban(String iban);
 
-    void storeCustomer(Customer customer);
+    int storeCustomer(Customer customer);
     List<Customer> list();
     void update(Customer customer);
     void delete(int id);

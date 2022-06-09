@@ -29,9 +29,9 @@ public class CustomerService {
         logger.info("New CustomerService");
     }
 
-    public void storeCustomer(Customer customer) {
-        customerRepository.storeCustomer(customer);
-
+    public int storeCustomer(Customer customer) {
+        int key = customerRepository.storeCustomer(customer);
+        return key;
 
     }
 

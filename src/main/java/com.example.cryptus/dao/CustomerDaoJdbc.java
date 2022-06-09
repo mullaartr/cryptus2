@@ -148,7 +148,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
 
-    public void storeCustomer(Customer customer){
+    public int storeCustomer(Customer customer){
 
         Address address = customer.getAddress();
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -164,7 +164,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
             }
 
-
+        return newKey;
     }
 
     @Override
