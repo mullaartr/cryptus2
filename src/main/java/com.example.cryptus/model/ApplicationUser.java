@@ -1,8 +1,10 @@
-package com.example.cryptus.service;
+package com.example.cryptus.model;
 
 import com.example.cryptus.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Set;
@@ -71,5 +73,4 @@ public class ApplicationUser implements UserDetails {
     public void setAccountNonLocked(boolean accountNonLocked) {
         isAccountNonLocked = accountNonLocked;
     }
-
 }

@@ -34,6 +34,20 @@ public class TransactionRepository {
         List<Transaction> result = new ArrayList<>();
         List<Transaction> transactions =
                 transactionDaoJdbc.findBuyTransactionsByUser(userId);
+        fillInTransactionDetails(result, transactions);
+        return result;
+    }
+    public List<Transaction> getSellTransactionsFromUser(int userId) {
+
+        List<Transaction> result = new ArrayList<>();
+        List<Transaction> transactions =
+                transactionDaoJdbc.findSellTransactionsByUser(userId);
+
+        fillInTransactionDetails(result, transactions);
+        return result;
+    }
+
+    private void fillInTransactionDetails(List<Transaction> result, List<Transaction> transactions) {
         for (Transaction t : transactions) {
             Optional<Customer> buyer =
                     customerDaoJdbc.findBuyerByTransactionId(t.getTransactionId() );
@@ -53,38 +67,9 @@ public class TransactionRepository {
                     t.getTimestamp());
             result.add(transaction);
         }
-        return result;
     }
-    public List<Transaction> getSellTransactionsFromUser(int userId) {
 
-        List<Transaction> result = new ArrayList<>();
-        List<Transaction> transactions =
-                transactionDaoJdbc.findSellTransactionsByUser(userId);
 
-        for (Transaction t : transactions) {
-
-            Optional<Customer> buyer =
-                    customerDaoJdbc.findBuyerByTransactionId(t.getTransactionId() );
-            Optional<Customer> seller =
-                    customerDaoJdbc.findSellerByTransactionId(t.getTransactionId() );
-            Optional<Asset> asset =
-                    assetDaoJdbc.findAssetByTransactionId(t.getTransactionId());
-
-            if (buyer.isEmpty() || seller.isEmpty() || asset.isEmpty()) {
-
-                continue;
-            }
-            Transaction transaction = new Transaction(
-                    t.getTransactionId(), seller.orElse(null),
-                    buyer.orElse(null),
-                    asset.orElse(null),
-                    t.getAssetamount(), t.getEuroamount(),
-                    t.getFeePercentage(),
-                    t.getTimestamp());
-            result.add(transaction);
-        }
-        return result;
-    }
 
     public void createTransaction(Transaction transaction) {
         transactionDaoJdbc.createTransaction(transaction);

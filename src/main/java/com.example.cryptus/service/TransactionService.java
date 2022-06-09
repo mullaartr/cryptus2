@@ -19,6 +19,7 @@ public class TransactionService {
     private BankConfigRepository bankConfigRepository;
     private BankAccountRepository bankAccountRepository;
     private AssetRepository assetRepository;
+    private KoersRepository koersRepository;
 
 
     public TransactionService(TransactionRepository transactionRepository,
@@ -26,7 +27,8 @@ public class TransactionService {
                               PortefeuilleRepository portefeuilleRepository,
                               BankConfigRepository bankConfigRepository,
                               BankAccountRepository bankAccountRepository,
-                              AssetRepository assetRepository) {
+                              AssetRepository assetRepository,
+                              KoersRepository koersRepository) {
         super();
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;
@@ -34,6 +36,7 @@ public class TransactionService {
         this.bankConfigRepository = bankConfigRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.assetRepository = assetRepository;
+        this.koersRepository = koersRepository;
 
         logger.info("Nieuwe transactieservice");
     }
@@ -84,7 +87,7 @@ public class TransactionService {
 
             Asset assetBuyer =
                     portefeuilleBuyer.getAssetLijst().stream().filter(asset1 -> asset1.getAssetNaam().equals(assetNaam)).findAny().orElse(null);
-            assetBuyer.setSaldo(assetBuyer.getSaldo() - assetAmount);
+            assetBuyer.setSaldo(assetBuyer.getSaldo() + assetAmount);
 
             portefeuilleRepository.updatePortefeuille(portefeuilleBuyer,
                     assetBuyer);
@@ -92,11 +95,8 @@ public class TransactionService {
 
         //B. BEPALEN WAARDE EN COMMISSIE = TOTALE WAARDE
 
-        //7. Ophalen koers van asset op basis van assetid; Daan
-        // schrijft deze methode
+        // 8. Waarde van de aankoop in euro's.
 
-        // 8. Waarde van de aankoop in euro's. Zie hieronder voor een eerste
-        // opzet van een methode: calcValueTransactionInEuro
         double valueTransaction = calcValueTransactionInEuro(assetNaam,
                 assetAmount);
 
@@ -136,7 +136,7 @@ public class TransactionService {
         // -> Volgens mij bestaat deze methode niet in de repository en ook
         // niet op naam. Wel op basis van ID.
 
-        Optional<Asset> assetBought = null;
+        Optional<Asset> assetBought = assetRepository.findAssetByAssetNaam(assetNaam);
 
         //17. Haal het huidige percentage uit de DB:
 
@@ -155,10 +155,13 @@ public class TransactionService {
         return Optional.of(transaction);
     }
 
+// Haal de koers van het Asset op en vermenigvuldig deze met de hoeveelheid
+// assets
     public double calcValueTransactionInEuro(String assetNaam,double assetAmount) {
+        double koersAsset = koersRepository.findKoersByAssetNaam(assetNaam).get().getKoersInEuro();
+        System.out.println(koersAsset);
+        return koersAsset*assetAmount;
 
-        //return koers * assetAmount -> deze methode schrijft Daan
-        return 0;
     }
 
     public double calcFee(double valueInEuro) {
@@ -167,7 +170,7 @@ public class TransactionService {
     }
 
     public double calTotal(double valueInEuro, double feeInEuro) {
-        return valueInEuro * feeInEuro;
+        return valueInEuro + feeInEuro;
     }
 
     public Optional<Transaction> updateTransaction(Transaction transaction, int transactionId) {

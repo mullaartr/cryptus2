@@ -1,7 +1,11 @@
 package com.example.cryptus.repository;
+import com.example.cryptus.dao.BankAccountDao;
 import com.example.cryptus.dao.CustomerDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
+import com.example.cryptus.model.BankAccount;
 import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Portefeuille;
+import com.example.cryptus.model.Transaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,33 +122,48 @@ public class CustomerRepository  {
 
     private CustomerDao customerDao;
     private PortefeuilleDAO portefeuilleDAO;
-    @Autowired
+    private BankAccountDao bankaccountDAO;
+    private TransactionRepository transactionRepository;
+
     public CustomerRepository(CustomerDao customerDao) {
         this.customerDao = customerDao;
     }
 
-    public CustomerRepository(CustomerDao customerDao,
-                              PortefeuilleDAO portefeuilleDAO)
-        {
-            this.customerDao = customerDao;
-            this.portefeuilleDAO = portefeuilleDAO;
-            Logger logger = LogManager.getLogger(CustomerRepository.class);
-            logger.info("New CustomerRepository");
-        }
+    @Autowired
+    public CustomerRepository(CustomerDao customerDao, PortefeuilleDAO portefeuilleDAO,
+                              BankAccountDao bankaccountDAO,
+                              TransactionRepository transactionRepository) {
+        this.customerDao = customerDao;
+        this.portefeuilleDAO = portefeuilleDAO;
+        this.bankaccountDAO = bankaccountDAO;
+        this.transactionRepository= transactionRepository;
+        Logger logger = LogManager.getLogger(CustomerRepository.class);
+        logger.info("New CustomerRepository");
+    }
 
-
-        public Optional<Customer> findCustomerById ( int id){
+    public Optional<Customer> findCustomerById (int id){
             Optional<Customer> customerOptional = customerDao.findCustomerById(id);
             if (customerOptional.isEmpty()) {
                 return Optional.empty();
             } else {
-//                Portefeuille portefeuille1 = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
-//                Customer customer1 = customerOptional.orElse(null);
-//                customer1.setPortefeuille(portefeuille1);
-//                return Optional.of(customer1);
-                return customerDao.findCustomerById(id);
+                Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+                Customer customer = customerOptional.orElse(null);
+                customer.setPortefeuille(portefeuille);
+                assert portefeuille != null;
+                portefeuille.setOwner(customer);
+                BankAccount account =
+                        bankaccountDAO.findBankAccountByUserId(id).orElse( null );
+                assert account != null;
+                account.setAccountHolder(customer);
+                customer.setBankAccount( account );
+                List<Transaction> list  =
+                        transactionRepository.getBuyTransactionsFromUser( id );
+                List<Transaction> sellList  =
+                        transactionRepository.getSellTransactionsFromUser( id );
+                list.addAll( sellList );
+                customer.setTransactionList( list );
+                return Optional.of(customer);
             }
-
         }
 
         public int storeCustomer (Customer customer){

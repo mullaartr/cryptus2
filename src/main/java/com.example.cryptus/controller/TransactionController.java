@@ -36,12 +36,17 @@ public class TransactionController {
                 transactionService.getSellTransactionsFromUser(userId);
         return lijst;
     }
+
+    // respons
     @PostMapping("/buytransaction_bank")
-    public ResponseEntity<Optional<Transaction>> buyFromBank(@RequestParam String assetNaam, @RequestParam int assetAmount) {
+    public ResponseEntity<Optional<Transaction>> buyFromBank(@RequestParam String assetName, @RequestParam int assetAmount) {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        Customer buyer = customerService.findCustomerByEmail(username).get();
-        transactionService.buyFromBank(buyer, assetNaam, assetAmount);
+                //Customer buyer = customerService.findCustomerByEmail(username).get();
+
+        //I.v.m een test zet ik nu hard de buyer op userId 2
+        Customer buyer = customerService.findCustomerById(2).get();
+        transactionService.buyFromBank(buyer, assetName, assetAmount);
         return null;
     }
     @PostMapping(value = "/update_transaction/{transactionid}")

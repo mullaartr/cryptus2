@@ -1,6 +1,6 @@
 package com.example.cryptus.dao;
 
-import com.example.cryptus.service.ApplicationUser;
+import com.example.cryptus.model.ApplicationUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

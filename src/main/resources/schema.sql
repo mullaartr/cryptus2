@@ -3,7 +3,6 @@
 -- -----------------------------------------------------
 -- CREATE SCHEMA IF NOT EXISTS `cryptus` DEFAULT CHARACTER SET utf8 ;
 -- USE `cryptus` ;
-
 -- -----------------------------------------------------
 -- Table `cryptus`.`user`
 -- -----------------------------------------------------
@@ -66,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`bankrekening`
     INDEX `verzinzelf2_idx` (`userId` ASC) VISIBLE,
     PRIMARY KEY (`iban`),
     UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
-     CONSTRAINT `bankrekening_user`
+    CONSTRAINT `bankrekening_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
             ON DELETE NO ACTION
@@ -92,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille`
     PRIMARY KEY (`portefeuilleID`),
     INDEX `user_portefeuille_idx` (`userId` ASC) VISIBLE,
     UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
-     CONSTRAINT `portefeuille_user`
+    CONSTRAINT `portefeuille_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
             ON DELETE CASCADE
