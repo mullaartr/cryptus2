@@ -1,15 +1,16 @@
 package com.example.cryptus.model;
 
+import com.example.cryptus.dto.AssetDTO;
 import com.example.cryptus.model.Koers;
 
 import java.util.Objects;
 
 public class Asset {
-    int assetId;
-    String assetNaam;
-    String assetAfkorting;
-    Koers koers; //van koers
-    double saldo; // van portefeuille_regel
+    private int assetId;
+    private String assetNaam;
+    private String assetAfkorting;
+    private Koers koers; //van koers
+    private double saldo; // van portefeuille_regel
 
 
     public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo) {
@@ -29,6 +30,10 @@ public class Asset {
 
     public Asset(String assetNaam, String assetAfkorting, Koers koers, double saldo) {
         this(0, assetNaam, assetAfkorting, koers, saldo);
+    }
+
+    public Asset(AssetDTO assetDTO) {
+        this(0, assetDTO.getAssetNaam(), assetDTO.getAssetAfkorting(), new Koers(assetDTO.getKoersDTO()), assetDTO.getSaldo());
     }
 
     public Asset(String assetNaam) {

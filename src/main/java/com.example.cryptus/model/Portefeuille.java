@@ -5,6 +5,7 @@ import com.example.cryptus.dto.PortefeuilleDTO;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Portefeuille implements Serializable {
 
@@ -27,25 +28,9 @@ public class Portefeuille implements Serializable {
         this.assetLijst = new ArrayList<>();
     }
 
-    public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
-
-        this(portefeuilleDTO.getPortefeuilleId(), new Customer(), portefeuilleDTO.getAssets());
+    public Portefeuille(PortefeuilleDTO portefeuilleDTO, Customer customer) {
+        this(portefeuilleDTO.getPortefeuilleId(), customer, portefeuilleDTO.getAssets().stream().map(assetDTO -> new Asset(assetDTO)).collect(Collectors.toList()));
     }
-
-    public double berekenWaarde(){
-        return 0;
-    }
-
-    public double berekenAantal(){
-        return 0;
-    }
-
-
-    public void wijzigCurrency(){
-
-    }
-
-
 
     public boolean hasEnoughAssets(String assetNaam, double assetAmount){
         for(Asset asset: this.getAssetLijst()){

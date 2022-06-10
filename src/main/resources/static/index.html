@@ -109,7 +109,7 @@
       console.log( data );
 
       //var bearer = 'Bearer ' + bearer_token;
-      //let token = localStorage.setItem ('token',json.waarde)
+
       fetch('http://localhost:8080/login',
               {
                 method: 'POST',
@@ -120,18 +120,21 @@
 
                 },
                 body: JSON.stringify(data)
-
               })
 
-              .then((response) => { // callback
+              .then(response => { // callback
                 console.log(response)
                 if (response.status === 200) {
-                  return response.json()
+                  let token = response.headers.get("Authorization").split(" ")[1]
+                  console.log(token)
+                  return token
 
                 }
 
 
-              }).then(json => {
+              }
+              ).then(json => {
+
         if(json === undefined) {
           console.log('not logged in')
           alert('Wrong password username combination');
@@ -140,15 +143,18 @@
           // select element uit de DOM
           // const p = document.querySelector('#antwoord')
 
+          localStorage.setItem ('token', json)
+
           // p.innerHTML = json.waarde
           alert('Thank You for Login & You are Redirecting to Cryptus Website');
 
 
-          window.location.href = "Haircut.html" // redirect after loggin in
+
+          window.location.href = "WelkomsPagina.html" // redirect after loggin in
         }
 
 
-        //localStorage.setItem ('token',json.waarde)
+
       })
 
     }

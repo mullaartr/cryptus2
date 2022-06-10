@@ -11,6 +11,7 @@ import com.example.cryptus.service.LoginCustomerService;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,10 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/loginzozozoz")
+@RequestMapping(path = "/login")
 public class LoginController {
     private final LoginCustomerService loginCustomerService;
     private CustomerService customerService;
@@ -150,16 +152,16 @@ public class LoginController {
 //    }
 
     @PostMapping
-    public String login(@RequestBody Account mpAccount) throws NoSuchAlgorithmException {
+    public ResponseEntity <?> login (@RequestBody Account mpAccount) throws NoSuchAlgorithmException {
         Optional<Customer> lookUpCustomer =
                 customerDaoJdbc.findCustomerByUsernamePassword(mpAccount.getGebruikersnaam());
         Customer foundCustomer = lookUpCustomer.get();
         String candidate = mpAccount.getWachtwoord();
         if(BCrypt.checkpw(candidate, foundCustomer.getPassword())){
-            return "Hello " + foundCustomer.getFirstName() + ", you are now logged in to Cryptus!";
+            return ResponseEntity.ok(new Token(UUID.randomUUID()));
         }
-        else return "The email and/or password you entered did not match our records. Please double check and try " +
-                "again.";
+        else
+             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong username password combination");
     }
 
     //Daan: I'm working on this method
