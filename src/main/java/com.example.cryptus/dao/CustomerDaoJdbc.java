@@ -201,6 +201,18 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
+    public Optional<Customer> getCustomerById(int id) {String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,id);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
+    }
+
+    @Override
     public Optional<Customer> findCustomerByName(String name) {
         String sql ="select * from user JOIN klant k on user.userId = k.userId where user.achternaam = ?";
         Customer customer = null;

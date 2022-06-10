@@ -139,14 +139,28 @@ public class CustomerRepository  {
             if (customerOptional.isEmpty()) {
                 return Optional.empty();
             } else {
-//                Portefeuille portefeuille1 = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
-//                Customer customer1 = customerOptional.orElse(null);
-//                customer1.setPortefeuille(portefeuille1);
-//                return Optional.of(customer1);
-                return customerDao.findCustomerById(id);
+                Portefeuille portefeuille1 = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+                Customer customer1 = customerOptional.orElse(null);
+                customer1.setPortefeuille(portefeuille1);
+                return Optional.of(customer1);
+
             }
 
+
         }
+
+
+        public Optional<Customer> getCustomerById(int id){
+        Optional<Customer> customerOptional = customerDao.getCustomerById(id);
+        if (customerOptional.isEmpty()) {
+            return Optional.empty();
+        } else {
+
+            return customerDao.getCustomerById(id);
+        }
+
+    }
+
 
         public int storeCustomer (Customer customer){
             customerDao.storeCustomer(customer);

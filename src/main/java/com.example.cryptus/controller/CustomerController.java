@@ -42,7 +42,6 @@ public class CustomerController {
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
     @Autowired
-
     public CustomerController(CustomerService customerService, CustomerConvertor customerConvertor) {
 
 
@@ -61,7 +60,7 @@ public class CustomerController {
         return customerService.customerByEmail(username.toString()).get(0);
     }
 
-    @GetMapping(value = "/list")
+    @GetMapping(value= "/list")
     public List<Customer> customerList(){
         return customerService.list();
 
@@ -76,7 +75,7 @@ public class CustomerController {
 
     @GetMapping(value = "/{id}")
     @ResponseBody Optional<Customer> findCustomerById(@PathVariable("id")int id){
-        return  customerService.findCustomerById(id);
+        return  customerService.getCustomerById(id);
     }
 
     @GetMapping("/findByLastname")

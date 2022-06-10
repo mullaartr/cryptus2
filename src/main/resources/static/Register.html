@@ -497,7 +497,7 @@ function isOverEighteen(day, month, year) {
         .then((response) => { // callback
           console.log(response)
           if (response.status === 200) {
-            return response.json()
+            return response
 
           }
 
@@ -518,7 +518,7 @@ function isOverEighteen(day, month, year) {
           }
 
 
-          //localStorage.setItem ('token',json.waarde) for a token
+          //localStorage.setItem ('token',json.waarde)
         })
         
       }

@@ -97,10 +97,10 @@ class CustomerServiceTest {
 
     @Test
     @DisplayName("Testing find customer by id method")
-    void findCustomerById() {
-        Mockito.when(mockRepository.findCustomerById(2)).thenReturn(Optional.of(customer));
+    void getCustomerById() {
+        Mockito.when(mockRepository.getCustomerById(3)).thenReturn(Optional.of(customer));
         CustomerService serviceUnderTest = new CustomerService(mockRepository);
-        Optional <Customer> actual = serviceUnderTest.findCustomerById(2);
+        Optional <Customer> actual = serviceUnderTest.getCustomerById(3);
         Optional <Customer> expected = Optional.of(customer);
         assertThat(actual).isNotNull().isEqualTo(expected);
 
