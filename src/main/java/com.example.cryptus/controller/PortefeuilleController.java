@@ -3,6 +3,7 @@ package com.example.cryptus.controller;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.dto.PortefeuilleDTO;
 import com.example.cryptus.model.Asset;
+import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 
 //import com.example.cryptus.security.ApplicationSecurityConfig;
@@ -62,16 +63,7 @@ public class PortefeuilleController {
 
         @PostMapping(value = "/save")
     public ResponseEntity<?> store(@RequestBody PortefeuilleDTO portefeuilleDTO) throws Exception {
-            System.out.println(portefeuilleDTO + "blablabla");
-        // owner moet geauthenticeerd en opgehaald worden aan de hand van de token
-
-      /*  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            currentUserName = authentication.getName();
-        }*/
-        Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
-        //portefeuille.setOwner(customerService.findCustomerByUsernamePassword(currentUserName).orElse(null));
+        Portefeuille portefeuille = new Portefeuille(portefeuilleDTO, customerService.getCurrentUser());
         portefeuilleService.storePortefeuille(portefeuille);
         return ResponseEntity.ok().build();
 
@@ -79,7 +71,7 @@ public class PortefeuilleController {
 
     @PatchMapping (value = "/update/{assetNaam}")
     public ResponseEntity<Portefeuille> updateSaldo(@PathVariable("assetNaam") String asset, @RequestBody PortefeuilleDTO portefeuilleDTO){
-        Portefeuille portefeuille = new Portefeuille(portefeuilleDTO);
+        Portefeuille portefeuille = new Portefeuille(portefeuilleDTO, customerService.getCurrentUser());
         Asset asset1 = portefeuille.getAssetLijst().
                 stream().filter(asset2 -> asset2.getAssetNaam().equals(asset)).
                 findAny().orElse(null);

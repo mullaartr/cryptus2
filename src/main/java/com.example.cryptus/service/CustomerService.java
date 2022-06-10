@@ -10,6 +10,9 @@ import com.example.cryptus.repository.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.checkerframework.checker.units.qual.C;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -76,5 +79,14 @@ public class CustomerService {
     public List<Customer> customerByEmail(String email){
         List<Customer> customers = customerRepository.customerByEmail(email);
         return customers;
+    }
+
+    public Customer getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            currentUserName = authentication.getName();
+        }
+        return this.findCustomerByUsernamePassword(currentUserName).orElse(null);
     }
 }

@@ -28,9 +28,9 @@ public class Portefeuille implements Serializable {
         this.assetLijst = new ArrayList<>();
     }
 
-    public Portefeuille(PortefeuilleDTO portefeuilleDTO) {
+    public Portefeuille(PortefeuilleDTO portefeuilleDTO, Customer customer) {
 
-        this(portefeuilleDTO.getPortefeuilleId(), new Customer(), portefeuilleDTO.getAssets().stream().map(assetDTO -> new Asset(assetDTO)).collect(Collectors.toList()));
+        this(portefeuilleDTO.getPortefeuilleId(), customer, portefeuilleDTO.getAssets().stream().map(assetDTO -> new Asset(assetDTO)).collect(Collectors.toList()));
     }
 
     public boolean hasEnoughAssets(String assetNaam, double assetAmount){

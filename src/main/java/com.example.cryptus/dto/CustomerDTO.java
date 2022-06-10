@@ -39,7 +39,6 @@ public class CustomerDTO {
         this.address = customer.getAddress();
         this.portefeuilleDTO = new PortefeuilleDTO(customer.getPortefeuille());
         this.bankAccountDTo = new BankAccountDTo(customer.getBankAccount());
-
     }
 
     public CustomerDTO() {

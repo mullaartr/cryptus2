@@ -80,8 +80,8 @@ public class CustomerController {
     }
 
     @GetMapping("/findByLastname")
-    @ResponseBody Optional<Customer> findCustomerByName(@RequestParam("customerName")String name){
-        return customerService.findCustomerByName(name);
+    @ResponseBody Optional<CustomerDTO> findCustomerByName(@RequestParam("customerName")String name){
+        return Optional.of(new CustomerDTO(customerService.findCustomerByName(name).orElse(null)));
 
     }
     @DeleteMapping(value = "/delete")
@@ -92,7 +92,7 @@ public class CustomerController {
 
 
     @GetMapping("/findByUsernamePassword")
-    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username) {
+    @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {
 //        Optional<Customer> expectedCustomer =
 //                customerService.findCustomerByUsernamePassword(username);
 //        Customer dbCustomer = expectedCustomer.get();
@@ -100,7 +100,7 @@ public class CustomerController {
 //
 //
 //        return Optional.of(dbCustomer);
-        return customerService.findCustomerByUsernamePassword(username);
+        return Optional.of(new CustomerDTO(customerService.findCustomerByUsernamePassword(username).orElse(null)));
 
     }
 
