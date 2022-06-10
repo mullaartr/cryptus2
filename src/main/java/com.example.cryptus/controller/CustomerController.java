@@ -75,8 +75,8 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/{id}")
-    @ResponseBody Optional<Customer> findCustomerById(@PathVariable("id")int id){
-        return  customerService.findCustomerById(id);
+    @ResponseBody CustomerDTO findCustomerById(@PathVariable("id")int id){
+        return  new CustomerDTO(customerService.findCustomerById(id).orElse(null));
     }
 
     @GetMapping("/findByLastname")

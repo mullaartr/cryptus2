@@ -263,8 +263,8 @@
             }
         ).then(json => {
                 console.log(json);
-                // const p = document.querySelector(`#iets`);
-                // p.innerHTML = json.firstName;
+                const p = document.querySelector(`#iets`);
+                p.innerHTML = json.firstName;
             }
         ).catch(ex => {
             console.log("Geen zinvolle foutmelding!!!!")
