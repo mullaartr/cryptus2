@@ -29,7 +29,6 @@ public class Portefeuille implements Serializable {
     }
 
     public Portefeuille(PortefeuilleDTO portefeuilleDTO, Customer customer) {
-
         this(portefeuilleDTO.getPortefeuilleId(), customer, portefeuilleDTO.getAssets().stream().map(assetDTO -> new Asset(assetDTO)).collect(Collectors.toList()));
     }
 

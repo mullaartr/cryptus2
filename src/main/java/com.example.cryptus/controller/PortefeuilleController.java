@@ -7,6 +7,7 @@ import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Portefeuille;
 
 //import com.example.cryptus.security.ApplicationSecurityConfig;
+import com.example.cryptus.service.AssetService;
 import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.PortefeuilleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,15 @@ public class PortefeuilleController {
     private PortefeuilleDTO portefeuilleDTO;
     private PortefeuilleDAO portefeuilleDAO;
     private PortefeuilleService portefeuilleService;
+    private AssetService assetService;
     private CustomerService customerService;
     private Logger logger = LogManager.getLogger(PortefeuilleController.class);
 
     @Autowired
-    public PortefeuilleController(PortefeuilleService portefeuilleService, CustomerService customerService) {
+    public PortefeuilleController(PortefeuilleService portefeuilleService, CustomerService customerService, AssetService assetService) {
         this.portefeuilleService = portefeuilleService;
         this.customerService = customerService;
+        this.assetService = assetService;
         logger.info("new PortefeuilleController");
     }
 

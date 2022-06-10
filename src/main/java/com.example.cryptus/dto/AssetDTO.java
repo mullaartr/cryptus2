@@ -5,13 +5,14 @@ import com.example.cryptus.model.Koers;
 
 public class AssetDTO {
 
-
+    private int assetId;
     private String assetNaam;
     private String assetAfkorting;
     private KoersDto koersDTO;
     private double saldo;
 
     public AssetDTO(Asset asset) {
+        this.assetId = asset.getAssetId();
         this.assetNaam = asset.getAssetNaam();
         this.assetAfkorting = asset.getAssetAfkorting();
         this.koersDTO = new KoersDto(asset.getKoers());
