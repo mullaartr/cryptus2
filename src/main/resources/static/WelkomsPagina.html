@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <style>
-            @media screen and (max-width: 800px) {
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @media screen and (max-width: 800px) {
             body {
-            background-color: rgb(252, 149, 31);
+                background-color: rgb(252, 149, 31);
             }
         }
-        .header{
+
+        .header {
             grid-area: hd;
             background-color: rgb(252, 149, 31);
+            border-top: 2px solid black;
+            border-bottom: 2px solid black;
+        }
 
-            background-size:contain;
-            background-repeat: no-repeat;
-            border-top: 2px solid black ;
-            border-bottom: 2px solid black ;}
-
-        .knoppenlaag{
+        .knoppenlaag {
             grid-area: kn;
             background-color: rgb(255, 255, 255);
         }
 
-        .item0{
+        .item0 {
             grid-area: hd;
-            display: block;
-            grid-column-start: 2;
-            grid-column-end: 5;
-            font-size: 2vw;
+            grid-column: 2 / 3;
+            object-fit: cover;
+            align-self: center;
+            font-size: 3vw;
             font-family: "Edwardian script ITC";
-            white-space: nowrap;
         }
-        
-        .item1{
+
+        .item1 {
             grid-area: kn;
             grid-column-start: 3;
             grid-column-end: 4;
@@ -43,7 +41,8 @@
             width: 75%;
             border-radius: 20px;
         }
-        .item2{
+
+        .item2 {
             grid-area: kn;
             grid-column-start: 4;
             grid-column-end: 5;
@@ -53,8 +52,9 @@
             height: 75%;
             width: 75%;
             border-radius: 20px;
-        } 
-        .item3{
+        }
+
+        .item3 {
             grid-area: kn;
             grid-column-start: 5;
             grid-column-end: 6;
@@ -64,8 +64,9 @@
             height: 75%;
             width: 75%;
             border-radius: 20px;
-        } 
-        .item4{
+        }
+
+        .item4 {
             grid-area: kn;
             grid-column-start: 6;
             grid-column-end: 7;
@@ -76,7 +77,8 @@
             width: 75%;
             border-radius: 20px;
         }
-        .item5{
+
+        .item5 {
             grid-area: kn;
             grid-column-start: 7;
             grid-column-end: 8;
@@ -87,8 +89,8 @@
             width: 75%;
             border-radius: 20px;
         }
-        
-        .item6{
+
+        .item6 {
             grid-area: kn;
             grid-column-start: 8;
             grid-column-end: 9;
@@ -99,7 +101,8 @@
             width: 75%;
             border-radius: 20px;
         }
-        .item8{
+
+        .item8 {
             grid-area: kn;
             grid-column-start: 9;
             grid-column-end: 10;
@@ -110,36 +113,38 @@
             width: 75%;
             border-radius: 20px;
         }
-        
-        .sidebar{
+
+        .sidebar {
             grid-area: sd;
             background-color: rgb(255, 255, 255);
         }
-        .item7{
+
+        .item7 {
             grid-area: sd;
             background-color: rgb(255, 217, 0);
             justify-self: center;
             align-self: center;
-            height: 100%;
+            height: 80%;
             width: 85%;
             border-radius: 20px;
         }
 
-        .main{
+        .main {
             grid-area: main;
             background-color: rgb(207, 214, 214);
             border: 2px solid rgb(0, 0, 0);
         }
 
-        .footer{
+        .voetje {
             grid-area: ft;
             background-color: rgb(252, 149, 31);
-            border-top: 2px solid black ;
-            border-bottom: 2px solid black ;
+            border-top: 2px solid black;
+            border-bottom: 2px solid black;
         }
-        
-        #cryptusLogo{
+
+        #cryptusLogo {
             display: inline-flex;
+            object-fit: cover;
             width: 10%;
             height: auto;
             grid-column: 1;
@@ -147,115 +152,126 @@
 
 
         .wrapper {
-        display: grid;
-        grid-template-columns: repeat(9, 1fr);
-        grid-template-rows: 1fr min-content;
-        grid-template-areas:
-        "hd hd hd hd  hd  hd   hd   hd   hd"
-        "sd sd kn kn kn kn kn kn kn  " 
+            display: grid;
+            flex-wrap: wrap;
+            grid-template-columns:auto;
+            grid-template-rows: repeat(6, 1fr);
+            padding: 2px;
+            grid-template-areas:
+        "hd hd hd hd hd hd hd hd hd"
+        "sd sd kn kn kn kn kn kn kn"
         "sd sd main main main main main main main"
         "sd sd main main main main main main main"
         "sd sd main main main main main main main"
-        "ft ft ft ft   ft   ft   ft   ft   ft";
+        "ft ft ft ft ft ft ft ft ft";
+        }
 
-            }
+        #coins {
+            list-style-type: none;
+        }
 
-            #coins{
-                list-style-type: none;
-            }
-           li {
+        li {
             justify-self: left;
-            border-bottom: 1px solid rgba(0,0,0,0.2);
-           }
-           
-          
-        
-        </style>
-    </head>
-    <body>
-        <div class="wrapper">
-    <div class="header"> <img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px"></div>
-    <div class="item0"><h1>"Bless the Bytes"</h1></div>
-    <div class="knoppenlaag" aria-colspan="2"></div>
-        <div class="item1"></div>
-        <div class="item2"></div>
-        <div class="item3"></div>
-        <div class="item4"></div>
-        <div class="item5"></div>
-        <div class="item6"></div>
-        <div class="item8"></div>
-    <div class="main" id="iets"></div>
-    <div class="sidebar">
-    <div class="item7"><ul id="coins">
-        <li id="bitcoin"><img src="Assets/bitcoin.webp">    BTC :</li>
-        <li id="ethereum"><img src="Assets/ethereum.webp">    ETH :</li>
-        <li id="tether"><img src="Assets/Tether-logo.webp">    USDT :</li>
-        <li id="usd-coin"><img src="Assets/USD_Coin_icon.webp">    USDC :</li>
-        <li id="binance-coin"><img src="Assets/bnb-icon2_2x.webp">    BNB :</li>
-        <li id="cardano"><img src="Assets/cardano.webp">    ADA :</li>
-        <li id="ripple"><img src="Assets/xrp-symbol-white-128.webp">    XRP :</li>
-        <li id="binance-usd"><img src="Assets/BUSD.webp">    BUSD :</li>
-        <li id="solana"><img src="Assets/solana.webp">    SOL :</li>
-        <li id="dogecoin"><img src="Assets/dogecoin.webp">    DOGE : </li>
-        <li id="polkadot"><img src="Assets/polkadot.webp">    DOT :</li>
-        <li id="wrapped-bitcoin"><img src="Assets/wrapped_bitcoin_wbtc.webp">    WBTC :</li>
-        <li id="lido-staked-ether"><img src="Assets/steth_logo.webp">    STETH :</li>
-        <li id="tron"><img src="Assets/tron-logo.webp">    TRX :</li>
-        <li id="avalanche-coin"><img src="Assets/coin-round-red.webp">    AVAX :</li>
-        <li id="dai"><img src="Assets/4943.webp">    DAI :</li>
-        <li id="shiba-inu"><img src="Assets/shiba.webp">    SHIB :</li>
-        <li id="leo-token"><img src="Assets/leo-token.webp">    LEO :</li>
-        <li id="cronos"><img src="Assets/oCw2s3GI_400x400.webp">   CRO :</li>
-        <li id="litecoin"><img src="Assets/litecoin.webp">    LTC :</li>
-    </ul>
-    </div>
-    </div>
-            <div class="footer"></div>
-</div>
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        }
 
+
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px"></div>
+    <h2 class="item0">"Bless the Bytes"</h2>
+    <div class="knoppenlaag" aria-colspan="2"></div>
+    <div class="item1"></div>
+    <div class="item2"></div>
+    <div class="item3"></div>
+    <div class="item4"></div>
+    <div class="item5"></div>
+    <div class="item6"></div>
+    <div class="item8"></div>
+    <div class="main" id="iets">
+        <button id="kutbutton"> submit</button>
+    </div>
+    <div class="sidebar">
+        <div class="item7">
+            <ul id="coins">
+                <li id="bitcoin"><img src="Assets/bitcoin.webp"> BTC :</li>
+                <li id="ethereum"><img src="Assets/ethereum.webp"> ETH :</li>
+                <li id="tether"><img src="Assets/Tether-logo.webp"> USDT :</li>
+                <li id="usd-coin"><img src="Assets/USD_Coin_icon.webp"> USDC :</li>
+                <li id="binance-coin"><img src="Assets/bnb-icon2_2x.webp"> BNB :</li>
+                <li id="cardano"><img src="Assets/cardano.webp"> ADA :</li>
+                <li id="ripple"><img src="Assets/xrp-symbol-white-128.webp"> XRP :</li>
+                <li id="binance-usd"><img src="Assets/BUSD.webp"> BUSD :</li>
+                <li id="solana"><img src="Assets/solana.webp"> SOL :</li>
+                <li id="dogecoin"><img src="Assets/dogecoin.webp"> DOGE :</li>
+                <li id="polkadot"><img src="Assets/polkadot.webp"> DOT :</li>
+                <li id="wrapped-bitcoin"><img src="Assets/wrapped_bitcoin_wbtc.webp"> WBTC :</li>
+                <li id="lido-staked-ether"><img src="Assets/steth_logo.webp"> STETH :</li>
+                <li id="tron"><img src="Assets/tron-logo.webp"> TRX :</li>
+                <li id="avalanche-coin"><img src="Assets/coin-round-red.webp"> AVAX :</li>
+                <li id="dai"><img src="Assets/4943.webp"> DAI :</li>
+                <li id="shiba-inu"><img src="Assets/shiba.webp"> SHIB :</li>
+                <li id="leo-token"><img src="Assets/leo-token.webp"> LEO :</li>
+                <li id="cronos"><img src="Assets/oCw2s3GI_400x400.webp"> CRO :</li>
+                <li id="litecoin"><img src="Assets/litecoin.webp"> LTC :</li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="voetje"></div>
+</div>
+</body>
 <script>
 
-document.querySelector('#kutbutton').addEventListener("click", ()=>{
-        let kutReturn = klantOphaler();
-        return kutReturn
+    document.querySelector('#kutbutton').addEventListener("click", () => {
+            let kutReturn = klantOphaler();
+            return kutReturn
         }
-        )
-     function klantNaamOphaler(){
+    )
+
+    function klantNaamOphaler() {
         fetch('http://localhost:8080/klant/gebruiker'
         ).then((response) => {
-                if(response.status === 200){
-                    return  response.json();
+                if (response.status === 200) {
+                    return response.json();
                 }
-        }
-        ).then(json=> {
-            let gebruiker = json1;
-            return gebruiker;
-        }
+            }
+        ).then(json => {
+                let gebruiker = json1;
+                return gebruiker;
+            }
         )
     }
-     function klantOphaler(){
-        let token = localStorage.getItem('token',json.token);
-        fetch('http://localhost:8080/klant/1',
+
+    function klantOphaler() {
+        let token = localStorage.getItem('token')
+        fetch('http://localhost:8080/klant/12',
             {
-                method: 'get',
-                headers:{
-                    'Content-type': `application/x-www-form-urlencoded`,
-                    'Authorization': `Bearer${token}`
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
 
             }).then((response) => {
-                if(response.status === 200){
+                console.log(response)
+                if (response.status === 200) {
+                    console.log("We zien hier")
                     return response.json();
                 }
-        }
+            }
         ).then(json => {
-            console.log(json);
-            const p = document.querySelector(`#iets`);
-            p.innerHTML = json.firstName;
-        }
-        )
+                console.log(json);
+                // const p = document.querySelector(`#iets`);
+                // p.innerHTML = json.firstName;
+            }
+        ).catch(ex => {
+            console.log("Geen zinvolle foutmelding!!!!")
+            console.log(ex)
+        })
     }
 </script>
 
-    </body>
+
 </html>
