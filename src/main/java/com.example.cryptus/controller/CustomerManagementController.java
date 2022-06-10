@@ -2,8 +2,7 @@ package com.example.cryptus.controller;
 
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.service.ApplicationUser;
-import com.example.cryptus.service.FakeApplicationUserDaoService;
+//import com.example.cryptus.service.FakeApplicationUserDaoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -77,11 +76,11 @@ public class CustomerManagementController {
                     "067373837463")
     );
 
-    private final FakeApplicationUserDaoService fakeApplicationUserDaoService;
+//    private final FakeApplicationUserDaoService fakeApplicationUserDaoService;
 
-    public CustomerManagementController(FakeApplicationUserDaoService fakeApplicationUserDaoService) {
-        this.fakeApplicationUserDaoService = fakeApplicationUserDaoService;
-    }
+//    public CustomerManagementController(FakeApplicationUserDaoService fakeApplicationUserDaoService) {
+//        this.fakeApplicationUserDaoService = fakeApplicationUserDaoService;
+//    }
 
 //    hasRole("ROLE_") hasAnyRole("ROLE_") hasAuthority("permission") hasAnyAuthority("permission")
 
@@ -109,17 +108,17 @@ public class CustomerManagementController {
         System.out.println(String.format("%s %s", customerId, customer));
     }
 
-    @PostMapping(path = "/lockAccount/{username}")
-    public void lockAccount(@PathVariable("username") String username) {
-        System.out.println("lockAccountCustomer");
-        fakeApplicationUserDaoService.selectApplicationUserByUsername(username).get().setAccountNonLocked(false);
-        System.out.println(fakeApplicationUserDaoService
-                .selectApplicationUserByUsername(username).get().isAccountNonLocked());
-    }
+//    @PostMapping(path = "/lockAccount/{username}")
+//    public void lockAccount(@PathVariable("username") String username) {
+//        System.out.println("lockAccountCustomer");
+//        fakeApplicationUserDaoService.selectApplicationUserByUsername(username).get().setAccountNonLocked(false);
+//        System.out.println(fakeApplicationUserDaoService
+//                .selectApplicationUserByUsername(username).get().isAccountNonLocked());
+//    }
 
-    @PostMapping(path = "/unlockAccount/{username}")
-    public void unlockAccount(@PathVariable("username") String username) {
-        System.out.println("unlockAccountCustomer");
-        fakeApplicationUserDaoService.selectApplicationUserByUsername(username).get().setAccountNonLocked(true);
-    }
+//    @PostMapping(path = "/unlockAccount/{username}")
+//    public void unlockAccount(@PathVariable("username") String username) {
+//        System.out.println("unlockAccountCustomer");
+//        fakeApplicationUserDaoService.selectApplicationUserByUsername(username).get().setAccountNonLocked(true);
+//    }
 }

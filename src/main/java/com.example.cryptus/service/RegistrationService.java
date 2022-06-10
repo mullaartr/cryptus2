@@ -66,12 +66,13 @@ public class RegistrationService {
         } else return true;
     }
 
-    public void checkRegistration(Customer customer)  {
-       if(isUniek(customer) && checkAge(customer) && checkBSN(customer)){
-           customer.setBankAccount(new BankAccount(customer, ibanService.ibanGenerator(), 1000000.00));
-           customerService.storeCustomer(customer);
-           portefeuilleService.storePortefeuille(new Portefeuille(customer));
-           bankAccountService.store(new BankAccount(customer));
+    public void checkRegistration(Customer customer) {
+        if (isUniek(customer) && checkAge(customer) && checkBSN(customer)) {
+            customer.setBankAccount(new BankAccount(customer, ibanService.ibanGenerator(), 1000000.00));
+            int key = customerService.storeCustomer(customer);
+            customer.setUserId(key);
+            portefeuilleService.storePortefeuille(new Portefeuille(customer));
+            bankAccountService.store(new BankAccount(customer));
         }
     }
 }

@@ -163,9 +163,7 @@ public class CustomerDaoJdbc implements CustomerDao {
             logger.info("New customer created" + customer.getLastName());
 
             }
-
-
-        return customer.getUserId();
+        return newKey;
     }
 
     @Override
