@@ -49,6 +49,7 @@ public class AssetDaoJdbc implements AssetDao {
         return Optional.of(asset);
     }
 
+
     RowMapper<Asset> assetRowMapper = (rs, rownum) -> {
         Asset asset = new Asset();
         asset.setAssetId(rs.getInt("assetId"));

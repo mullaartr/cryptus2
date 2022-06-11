@@ -27,6 +27,7 @@ public class AssetRepository {
         return assetDao.findAssetByAssetNaam(naam);
     }
 
+
     public List<Asset> findAllAssets() {
         return assetDao.findAllAssets();
     }

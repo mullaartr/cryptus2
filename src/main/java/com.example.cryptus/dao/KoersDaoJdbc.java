@@ -121,11 +121,20 @@ public class KoersDaoJdbc implements KoersDao {
         return jdbcTemplate.query(sql, koersRowMapper);
     }
 
+
+    private PreparedStatement insertStatementKoers(Koers koers, Connection connection) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO  koers (assetId, assetnaam, " +
+                "wisselkoersEuro, wisselkoersDollar, datumKoers) VALUES (?, ?, ?, ?, now()) ");
+        ps.setInt(1, koers.getAsset().getAssetId());
+        ps.setString(2, koers.getAsset().getAssetNaam());
+        ps.setDouble(3, koers.getKoersInEuro());
+        ps.setDouble(4, koers.getKoersInDollars());
+        return ps;
+    }
+
     @Override
     public void store(Koers koers) {
-        String sql = "INSERT INTO  koers (assetId, assetnaam, " +
-                "wisselkoersEuro, wisselkoersDollar, datumKoers) VALUES (?, ?, ?, ?, ?) ";
-        var store = jdbcTemplate.update(sql);
+        var store = jdbcTemplate.update(con -> insertStatementKoers(koers, con));
     }
 
     //todo is deze methode wel nodig?

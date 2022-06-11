@@ -7,8 +7,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -17,7 +21,8 @@ import java.util.*;
 
 
 
-@Service
+@Configuration
+@EnableScheduling
 public class CoinGeckoAPIService{
 
     private final Logger logger = LogManager.getLogger(CoinGeckoAPIService.class);
@@ -26,18 +31,22 @@ public class CoinGeckoAPIService{
 
     private Set<Koers> koersen;
 
-    private AssetDaoJdbc assetDaoJdbc;
+    private AssetService assetService;
 
-    public CoinGeckoAPIService(AssetDaoJdbc assetDaoJdbc) {
-        this.assetDaoJdbc = assetDaoJdbc;
+    private KoersService koersService;
+@Autowired
+public CoinGeckoAPIService(AssetService assetService, KoersService koersService) {
+        this.assetService = assetService;
+        this.koersService = koersService;
         logger.info("new koersService created");
     }
 
-    @Scheduled(fixedRate = 400000)
+    @Scheduled(fixedRate = 900000)
+    @RequestMapping
     public void coinAPI() throws IOException {
         URL url = new URL("https://api.coingecko.com/api/v3/simple/price?ids=Bitcoin%2CEthereum%2Ctether%2Cusd-coin" +
-                "%2Cbinancecoin%2Cripple%2Ccardano%2Cbinance-usd%2Csolana%2Cdogecoin%2Cpolkadot%2Cwrapped-bitcoin%2Ctron%2Clido-staked-ether-wormhole%2C" +
-                "dai%2Cavalanche-2%2Cshiba-inu%2Cleo%2Ccronos-wormhole%2Clitecoin&vs_currencies=eur%2Cusd");
+                "%2Cbinancecoin%2Cripple%2Ccardano%2Cbinance-usd%2Csolana%2Cdogecoin%2Cpolkadot%2Cwrapped-bitcoin%2Ctron%2staked-ether%2C" +
+                "dai%2Cavalanche-2%2Cshiba-inu%2Cleo%2Ccronos%2Clitecoin&vs_currencies=eur%2Cusd");
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -57,7 +66,9 @@ public class CoinGeckoAPIService{
                 koersenPrimitief = mapper.readValue(content.toString(), new TypeReference<Map<String, Map<String, Double>>>() {});
                 if(!koersenPrimitief.isEmpty()){
                     koersen = koersOmzetter(koersenPrimitief);
-                    //hier moet de koersen nog naar de database geschreven worden
+                    for (Koers koers: koersen) {
+                        koersService.storeKoers(koers);
+                    }
                     logger.info("Koersen zijn aangepast");
                 }
             }
@@ -72,7 +83,7 @@ public class CoinGeckoAPIService{
         Set<Koers> koersenSet = new HashSet<>();
         for (Map.Entry<String, Map<String, Double>> entry: koersen.entrySet()) {
             Koers koers = new Koers();
-            koers.setAsset(assetDaoJdbc.findAssetByAssetNaam(entry.getKey()).orElse(null));
+            koers.setAsset(assetService.findAssetByAssetNaam(entry.getKey()).orElse(null));
             for (Map.Entry <String, Double> entry2: entry.getValue().entrySet()) {
                 if(entry2.getKey().equals("eur")){
                     koers.setKoersInEuro(entry2.getValue());
