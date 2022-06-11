@@ -86,6 +86,16 @@ public class KoersDaoJdbc implements KoersDao {
     }
 
     @Override
+    public Optional<Koers> findKoersByDatum(LocalDateTime dateTime) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Koers> findKoersByAssetNaamFromPastDateToNow(String naam, LocalDateTime dateTime) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Koers> findMostRecentKoersByAssetNaam(String naam) {
         String sql = "select * from koers k where k.assetnaam = ? order by datumKoers Desc limit 1";
         Koers koers = null;
@@ -112,6 +122,17 @@ public class KoersDaoJdbc implements KoersDao {
     public List<Koers> findMostRecentKoersen() {
         String sql = "select * from koers k order by datumKoers Desc limit 20";
         return jdbcTemplate.query(sql, koersRowMapper);
+    }
+
+    @Override
+    public List<Koers> findAllKoersenByDatum(LocalDateTime dateTime) {
+        String sql = "SELECT * FROM koers WHERE DATE(datumKoers) = ?";
+        return jdbcTemplate.query(sql, koersRowMapper);
+    }
+
+    @Override
+    public List<Koers> findAllKoersenFromPastDateToNow(LocalDateTime dateTime) {
+        return null;
     }
 
     //todo waarschijnlijk moet deze methode verwijderd; hij heeft geen nut, en zou na verloop van tijd een enorme bak info teruggeven
