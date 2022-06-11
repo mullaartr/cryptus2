@@ -1,6 +1,7 @@
 package com.example.cryptus;
 
 import com.example.cryptus.dao.AssetDaoJdbc;
+import com.example.cryptus.dao.KoersDaoJdbc;
 import com.example.cryptus.service.CoinGeckoAPIService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,9 +20,6 @@ public class CryptusApplication implements CommandLineRunner {
 	@Override
 
 	public void run(String... args) throws Exception {
-
-
-
 
 	}
 }
