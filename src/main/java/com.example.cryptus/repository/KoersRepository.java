@@ -23,6 +23,7 @@ public class KoersRepository {
         logger.info("New KoersRepository");
     }
 
+    //return Optional.of(koersDao.findMostRecentKoersByAssetNaam(assetNaam));
     public Optional<Koers> findKoersByAssetNaam(String assetNaam) {
         return koersDao.findMostRecentKoersByAssetNaam(assetNaam);
     }
