@@ -4,9 +4,13 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        @media screen and (max-width: 800px) {
-            body {
+        @media only screen and (max-width: 600px) {
+            .item0{
+                display: none;
+            }
 
+            .header{
+                margin-bottom: 10px;
             }
         }
 
@@ -16,7 +20,6 @@
             background-color: rgb(252, 149, 31);
             border-top: 2px solid black;
             border-bottom: 2px solid black;
-
         }
         #cryptusLogo {
             align-self: center;
@@ -28,7 +31,6 @@
         }
         .item0 {
             grid-area: hd;
-            display: flex;
             align-self: center;
             font-size: clamp(60px, 80%, 80px);
             font-family: "Edwardian script ITC";
@@ -165,7 +167,7 @@
     <button id="item8" class="buttons">Zelf regelen</button>
 
     <div class="main" id="iets">
-
+        <script src="klantophaler();"></script>
     </div>
 
         <div class="item7">
@@ -198,12 +200,8 @@
 </div>
 </body>
 <script>
+    klantOphaler();
 
-    document.querySelector('#kutbutton').addEventListener("click", () => {
-            let kutReturn = klantOphaler();
-            return kutReturn
-        }
-    )
 
     document.querySelector('#item1').addEventListener("click", () => {
         window.location.href = "register.html";
@@ -242,6 +240,7 @@
         ).then(json => {
                 const p = document.querySelector(`#iets`);
                 p.innerHTML = json.firstName;
+
             }
         ).catch(ex => {
             console.log("Geen zinvolle foutmelding!!!!")
