@@ -1,165 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         @media screen and (max-width: 800px) {
             body {
-                background-color: rgb(252, 149, 31);
+
             }
         }
 
         .header {
             grid-area: hd;
+            height: clamp(150px, 100%, 150px);
             background-color: rgb(252, 149, 31);
             border-top: 2px solid black;
             border-bottom: 2px solid black;
-        }
 
-        .knoppenlaag {
-            grid-area: kn;
-            background-color: rgb(255, 255, 255);
         }
-
+        #cryptusLogo {
+            align-self: center;
+            object-fit: cover;
+            float: left;
+            text-align: left;
+            width: 150px;
+            grid-column: 1;
+        }
         .item0 {
             grid-area: hd;
-            grid-column: 2 / 3;
-            object-fit: cover;
+            display: flex;
             align-self: center;
-            font-size: 3vw;
+            font-size: clamp(60px, 80%, 80px);
             font-family: "Edwardian script ITC";
         }
 
-        .item1 {
+
+        .buttons{
             grid-area: kn;
+            justify-self: center;
+            font-family: Arial, sans-serif;
+            border: 2px solid black;
+            margin-bottom: 4px;
+            background-color: rgb(255, 217, 0);
+            height: 40px;
+            width: 90%;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+        .buttons:hover {background-color: rgb(142, 123, 16)
+        }
+
+        .buttons:active {
+            background-color: rgb(142, 123, 16);
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        #item0{
+            grid-area: kn;
+            justify-self: center;
+            grid-column: 1/3;
+            font-family: Arial, sans-serif;
+            padding-right: 80px;
+        }
+
+        #item1 {
             grid-column-start: 3;
             grid-column-end: 4;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
         }
 
-        .item2 {
-            grid-area: kn;
+        #item2 {
             grid-column-start: 4;
             grid-column-end: 5;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
         }
 
-        .item3 {
-            grid-area: kn;
+        #item3 {
             grid-column-start: 5;
             grid-column-end: 6;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
         }
 
-        .item4 {
-            grid-area: kn;
+        #item4 {
             grid-column-start: 6;
             grid-column-end: 7;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
         }
 
-        .item5 {
-            grid-area: kn;
+        #item5 {
             grid-column-start: 7;
             grid-column-end: 8;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
         }
 
-        .item6 {
-            grid-area: kn;
+        #item6 {
             grid-column-start: 8;
             grid-column-end: 9;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
         }
 
-        .item8 {
-            grid-area: kn;
+        #item8 {
             grid-column-start: 9;
             grid-column-end: 10;
-            justify-self: center;
-            align-self: center;
-            background-color: rgb(255, 217, 0);
-            height: 75%;
-            width: 75%;
-            border-radius: 20px;
-        }
-
-        .sidebar {
-            grid-area: sd;
-            background-color: rgb(255, 255, 255);
         }
 
         .item7 {
             grid-area: sd;
-            background-color: rgb(255, 217, 0);
             justify-self: center;
             align-self: center;
-            height: 80%;
-            width: 85%;
-            border-radius: 20px;
+            height: 100%;
+            width: 100%;
+
         }
 
         .main {
             grid-area: main;
-            background-color: rgb(207, 214, 214);
             border: 2px solid rgb(0, 0, 0);
         }
 
         .voetje {
             grid-area: ft;
             background-color: rgb(252, 149, 31);
+            height: clamp(150px, 100%, 150px);
             border-top: 2px solid black;
             border-bottom: 2px solid black;
         }
 
-        #cryptusLogo {
-            display: inline-flex;
-            object-fit: cover;
-            width: 10%;
-            height: auto;
-            grid-column: 1;
-        }
-
-
         .wrapper {
             display: grid;
             flex-wrap: wrap;
-            grid-template-columns:auto;
-            grid-template-rows: repeat(6, 1fr);
+            grid-template-columns:repeat(9, 1fr);
+            grid-template-rows: auto;
             padding: 2px;
             grid-template-areas:
         "hd hd hd hd hd hd hd hd hd"
-        "sd sd kn kn kn kn kn kn kn"
+        "kn kn kn kn kn kn kn kn kn"
         "sd sd main main main main main main main"
         "sd sd main main main main main main main"
         "sd sd main main main main main main main"
@@ -172,7 +143,9 @@
 
         li {
             justify-self: left;
+            margin-bottom: 2px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
         }
 
 
@@ -180,31 +153,32 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px"></div>
-    <h2 class="item0">"Bless the Bytes"</h2>
-    <div class="knoppenlaag" aria-colspan="2"></div>
-    <div class="item1"></div>
-    <div class="item2"></div>
-    <div class="item3"></div>
-    <div class="item4"></div>
-    <div class="item5"></div>
-    <div class="item6"></div>
-    <div class="item8"></div>
+    <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px"><h2 class="item0">"Bless the Bytes"</h2></div>
+    <div class="knoppenlaag"></div>
+    <div id="item0">Huidige koersen (in €) :</div>
+    <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>
+    <button id="item2" class="buttons">Crypto's kopen</button>
+    <button id="item3" class="buttons">Crypto's verkopen</button>
+    <button id="item4" class="buttons">Crypto's overmaken</button>
+    <button id="item5" class="buttons">Marktplaats</button>
+    <button id="item6" class="buttons">Bless me!</button>
+    <button id="item8" class="buttons">Zelf regelen</button>
+
     <div class="main" id="iets">
-        <button id="kutbutton"> submit</button>
+
     </div>
-    <div class="sidebar">
+
         <div class="item7">
             <ul id="coins">
                 <li id="bitcoin"><img src="Assets/bitcoin.webp"> BTC :</li>
-                <li id="ethereum"><img src="Assets/ethereum.webp"> ETH :</li>
-                <li id="tether"><img src="Assets/Tether-logo.webp"> USDT :</li>
-                <li id="usd-coin"><img src="Assets/USD_Coin_icon.webp"> USDC :</li>
-                <li id="binance-coin"><img src="Assets/bnb-icon2_2x.webp"> BNB :</li>
-                <li id="cardano"><img src="Assets/cardano.webp"> ADA :</li>
-                <li id="ripple"><img src="Assets/xrp-symbol-white-128.webp"> XRP :</li>
-                <li id="binance-usd"><img src="Assets/BUSD.webp"> BUSD :</li>
-                <li id="solana"><img src="Assets/solana.webp"> SOL :</li>
+                <li id="ethereum"><img src="Assets/ethereum.webp">  ETH :</li>
+                <li id="tether"><img src="Assets/Tether-logo.webp">     USDT :</li>
+                <li id="usd-coin"><img src="Assets/USD_Coin_icon.webp">     USDC :</li>
+                <li id="binance-coin"><img src="Assets/bnb-icon2_2x.webp">      BNB :</li>
+                <li id="cardano"><img src="Assets/cardano.webp">    ADA :</li>
+                <li id="ripple"><img src="Assets/xrp-symbol-white-128.webp">    XRP :</li>
+                <li id="binance-usd"><img src="Assets/BUSD.webp">   BUSD :</li>
+                <li id="solana"><img src="Assets/solana.webp">  SOL :</li>
                 <li id="dogecoin"><img src="Assets/dogecoin.webp"> DOGE :</li>
                 <li id="polkadot"><img src="Assets/polkadot.webp"> DOT :</li>
                 <li id="wrapped-bitcoin"><img src="Assets/wrapped_bitcoin_wbtc.webp"> WBTC :</li>
@@ -217,7 +191,7 @@
                 <li id="cronos"><img src="Assets/oCw2s3GI_400x400.webp"> CRO :</li>
                 <li id="litecoin"><img src="Assets/litecoin.webp"> LTC :</li>
             </ul>
-        </div>
+
 
     </div>
     <div class="voetje"></div>
@@ -230,6 +204,10 @@
             return kutReturn
         }
     )
+
+    document.querySelector('#item1').addEventListener("click", () => {
+        window.location.href = "register.html";
+    })
 
     function klantNaamOphaler() {
         fetch('http://localhost:8080/klant/gebruiker'
@@ -262,7 +240,6 @@
                 }
             }
         ).then(json => {
-                console.log(json);
                 const p = document.querySelector(`#iets`);
                 p.innerHTML = json.firstName;
             }
