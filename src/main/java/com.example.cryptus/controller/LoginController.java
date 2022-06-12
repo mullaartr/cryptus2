@@ -110,19 +110,6 @@ public class LoginController {
             "067373837463"
     );
 
-//    Customer devil = new Customer(
-//            1,
-//            "Adam",
-//            "von",
-//            "Hilversum",
-//            forUser.hashSaltNPepper("password"),
-//            "alsomail@email.com",
-//            Date.valueOf("1982-12-12"),
-//            "12345678",
-//            new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-//            "adam@hilversum.von",
-//            "067373837463"
-//    );
 
     @Autowired
     LoginController(LoginCustomerService loginCustomerService, CustomerDaoJdbc customerDaoJdbc) {
