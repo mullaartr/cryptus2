@@ -15,9 +15,4 @@ public class PasswordConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-
-//    @Bean
-//    public String hashSaltPepper(String mpWachtwoord) {
-//        return BCrypt.hashpw(mpWachtwoord, BCrypt.gensalt(12) + PEPPER);
-//    }
 }
