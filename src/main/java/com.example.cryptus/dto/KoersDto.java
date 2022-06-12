@@ -29,6 +29,7 @@ public class KoersDto {
         this.koersInEuro = koers.getKoersInEuro();
         this.koersInDollars = koers.getKoersInDollars();
         this.koersDatum = koers.getKoersDatum();
+        this.assetNaam = koers.getAsset().getAssetNaam();
     }
 
 

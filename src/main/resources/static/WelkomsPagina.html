@@ -2,21 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineMax.min.js" integrity="sha512-0xrMWUXzEAc+VY7k48pWd5YT6ig03p4KARKxs4Bqxb9atrcn2fV41fWs+YXTKb8lD2sbPAmZMjKENiyzM/Gagw==" crossorigin="anonymous"></script>
+
 
     <style>
+
+
+        .tickerwrapper {
+            grid-area: kn;
+            position: relative;
+            left:0%;
+            border: 1px solid #444;
+            background: #fff;
+            width: 99.9%;
+            height: 30px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .list {
+            position: relative;
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            list-style: none;
+            padding:0;
+            margin:0;
+        }
+
+        .list.cloned {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        .list li {
+            float: left;
+            padding-left: 20px;
+        }
         @media only screen and (max-width: 600px) {
             .item0{
                 display: none;
             }
 
-            .header{
-                margin-bottom: 10px;
-            }
         }
+
+
 
         .header {
             grid-area: hd;
-            height: clamp(150px, 100%, 150px);
+            height: clamp(150px, 80%, 150px);
             background-color: rgb(252, 149, 31);
             border-top: 2px solid black;
             border-bottom: 2px solid black;
@@ -32,8 +68,12 @@
         .item0 {
             grid-area: hd;
             align-self: center;
-            font-size: clamp(60px, 80%, 80px);
+            font-size: 80px;
             font-family: "Edwardian script ITC";
+        }
+        h2{
+            margin-bottom: 0;
+            margin-top: 30px;
         }
 
 
@@ -59,13 +99,6 @@
             transform: translateY(4px);
         }
 
-        #item0{
-            grid-area: kn;
-            justify-self: center;
-            grid-column: 1/3;
-            font-family: Arial, sans-serif;
-            padding-right: 80px;
-        }
 
         #item1 {
             grid-column-start: 3;
@@ -143,12 +176,8 @@
             list-style-type: none;
         }
 
-        li {
-            justify-self: left;
-            margin-bottom: 2px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-            font-family: Arial, sans-serif;
-        }
+
+
 
 
     </style>
@@ -156,56 +185,60 @@
 <body>
 <div class="wrapper">
     <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px"><h2 class="item0">"Bless the Bytes"</h2></div>
-    <div class="knoppenlaag"></div>
-    <div id="item0">Huidige koersen (in €) :</div>
-    <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>
-    <button id="item2" class="buttons">Crypto's kopen</button>
-    <button id="item3" class="buttons">Crypto's verkopen</button>
-    <button id="item4" class="buttons">Crypto's overmaken</button>
-    <button id="item5" class="buttons">Marktplaats</button>
-    <button id="item6" class="buttons">Bless me!</button>
-    <button id="item8" class="buttons">Zelf regelen</button>
-
+    <div class="tickerwrapper"> <ul class='list'>
+        <li class='listitem' id="Bitcoin"></li>
+        <li class='listitem' id="Ethereum"></li>
+        <li class='listitem' id="Tether"></li>
+        <li class='listitem' id="USD-Coin"></li>
+        <li class='listitem' id="BinanceCoin"></li>
+        <li class='listitem' id="Cardano"></li>
+        <li class='listitem' id="Ripple"></li>
+        <li class='listitem' id="Binance-USD"></li>
+        <li class='listitem' id="Solana"></li>
+        <li class='listitem' id="Dogecoin"></li>
+        <li class='listitem' id="Polkadot"></li>
+        <li class='listitem' id="Wrapped-Bitcoin"></li>
+        <li class='listitem' id="Staked-Ether"></li>
+        <li class='listitem' id="Tron"></li>
+        <li class='listitem' id="Avalanche-2"></li>
+        <li class='listitem' id="Dai"></li>
+        <li class='listitem' id="Shiba-Inu"></li>
+        <li class='listitem' id="Leo"></li>
+        <li class='listitem' id="Cronos"></li>
+        <li class='listitem' id="Litecoin"></li>
+    </ul>
+    </ul>
+    </div>
     <div class="main" id="iets">
-        <script src="klantophaler();"></script>
+        <button type="submit" id="kutbutton">submit</button>
+        <!--<script src="klantophaler();"></script>-->
     </div>
 
-        <div class="item7">
-            <ul id="coins">
-                <li id="bitcoin"><img src="Assets/bitcoin.webp"> BTC :</li>
-                <li id="ethereum"><img src="Assets/ethereum.webp">  ETH :</li>
-                <li id="tether"><img src="Assets/Tether-logo.webp">     USDT :</li>
-                <li id="usd-coin"><img src="Assets/USD_Coin_icon.webp">     USDC :</li>
-                <li id="binance-coin"><img src="Assets/bnb-icon2_2x.webp">      BNB :</li>
-                <li id="cardano"><img src="Assets/cardano.webp">    ADA :</li>
-                <li id="ripple"><img src="Assets/xrp-symbol-white-128.webp">    XRP :</li>
-                <li id="binance-usd"><img src="Assets/BUSD.webp">   BUSD :</li>
-                <li id="solana"><img src="Assets/solana.webp">  SOL :</li>
-                <li id="dogecoin"><img src="Assets/dogecoin.webp"> DOGE :</li>
-                <li id="polkadot"><img src="Assets/polkadot.webp"> DOT :</li>
-                <li id="wrapped-bitcoin"><img src="Assets/wrapped_bitcoin_wbtc.webp"> WBTC :</li>
-                <li id="lido-staked-ether"><img src="Assets/steth_logo.webp"> STETH :</li>
-                <li id="tron"><img src="Assets/tron-logo.webp"> TRX :</li>
-                <li id="avalanche-coin"><img src="Assets/coin-round-red.webp"> AVAX :</li>
-                <li id="dai"><img src="Assets/4943.webp"> DAI :</li>
-                <li id="shiba-inu"><img src="Assets/shiba.webp"> SHIB :</li>
-                <li id="leo-token"><img src="Assets/leo-token.webp"> LEO :</li>
-                <li id="cronos"><img src="Assets/oCw2s3GI_400x400.webp"> CRO :</li>
-                <li id="litecoin"><img src="Assets/litecoin.webp"> LTC :</li>
-            </ul>
-
-
+    <div class="item7">
+        <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>
+        <button id="item2" class="buttons">Crypto's kopen</button>
+        <button id="item3" class="buttons">Crypto's verkopen</button>
+        <button id="item4" class="buttons">Crypto's overmaken</button>
+        <button id="item5" class="buttons">Marktplaats</button>
+        <button id="item6" class="buttons">Bless me!</button>
+        <button id="item8" class="buttons">Zelf regelen</button>
     </div>
+
+
+
     <div class="voetje"></div>
 </div>
 </body>
 <script>
-    klantOphaler();
+    //klantOphaler();
+
+    koersOphaler();
 
 
-    document.querySelector('#item1').addEventListener("click", () => {
-        window.location.href = "register.html";
-    })
+      document.querySelector('#item1').addEventListener("click", () => {
+          window.location.href = "register.html";
+      })
+
 
     function klantNaamOphaler() {
         fetch('http://localhost:8080/klant/gebruiker'
@@ -220,6 +253,43 @@
             }
         )
     }
+
+    function koersOphaler(){
+        let token = localStorage.getItem('token')
+        fetch('http://localhost:8080/koers/meest-recent',
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+
+            }).then((response) => {
+                console.log(response)
+                if (response.status === 200) {
+                    return response.json();
+                }
+            }
+        ).then(json => {
+            console.log(json);
+                json.forEach(json => vullLijstEuro(json));
+                maakTekstLint();
+
+
+
+            }
+        ).catch(ex => {
+            console.log(ex)
+        })
+    }
+    function vullLijstEuro(json){
+        const naam = `#${json.assetNaam}`;
+        const e = document.querySelector(naam)
+        const plaatje = `Assets/${json.assetNaam}.webp`
+        e.innerHTML =`<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} € ${json.koersInEuro} : $ ${json.koersInDollars}`;
+    }
+
+
+
 
     function klantOphaler() {
         let token = localStorage.getItem('token')
@@ -246,6 +316,41 @@
             console.log(ex)
         })
     }
+    function maakTekstLint() {
+        var $tickerWrapper = $(".tickerwrapper");
+        var $list = $tickerWrapper.find("ul.list");
+        var $clonedList = $list.clone();
+        var listWidth = 20;
+
+        $list.find("li").each(function (i) {
+            listWidth += $(this, i).outerWidth(true);
+        });
+
+        var endPos = $tickerWrapper.width() - listWidth;
+
+        $list.add($clonedList).css({
+            "width": listWidth + "px"
+        });
+
+        $clonedList.addClass("cloned").appendTo($tickerWrapper);
+
+        var infinite = new TimelineMax({repeat: -1, paused: true});
+        var time = 40;
+
+        infinite.fromTo($list, time, {rotation: 0.01, x: 0}, {force3D: true, x: -listWidth, ease: Linear.easeNone}, 0)
+            .fromTo($clonedList, time, {rotation: 0.01, x: listWidth}, {force3D: true, x: 0, ease: Linear.easeNone}, 0)
+            .set($list, {force3D: true, rotation: 0.01, x: listWidth})
+            .to($clonedList, time, {force3D: true, rotation: 0.01, x: -listWidth, ease: Linear.easeNone}, time)
+            .to($list, time, {force3D: true, rotation: 0.01, x: 0, ease: Linear.easeNone}, time)
+            .progress(1).progress(1)
+            .play();
+        $tickerWrapper.on("mouseenter", function(){
+            infinite.pause();
+        }).on("mouseleave", function(){
+            infinite.play();
+        });
+    }
+
 </script>
 
 

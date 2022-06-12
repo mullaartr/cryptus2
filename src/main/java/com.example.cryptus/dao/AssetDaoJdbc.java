@@ -1,6 +1,5 @@
 package com.example.cryptus.dao;
 import com.example.cryptus.model.Asset;
-import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,18 @@ public class AssetDaoJdbc implements AssetDao {
         Asset asset = null;
         try {
             asset = jdbcTemplate.queryForObject(sql, assetRowMapper, naam);
+        } catch (DataAccessException exception) {
+            logger.info("Asset not found");
+        }
+        return Optional.of(asset);
+    }
+
+    @Override
+    public Optional<Asset> findAssetByAssetId(int id) {
+        String sql = "select * from asset a where a.assetId = ?";
+        Asset asset = null;
+        try {
+            asset = jdbcTemplate.queryForObject(sql, assetRowMapper, id);
         } catch (DataAccessException exception) {
             logger.info("Asset not found");
         }

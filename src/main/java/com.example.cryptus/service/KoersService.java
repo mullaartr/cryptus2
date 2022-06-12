@@ -63,6 +63,10 @@ public class KoersService {
 //        return koersen;
 //    }
 
+    public List<Koers> findMostRecentKoersen(){
+        return koersRepository.findMostRecentKoersen();
+    }
+
     public List<Koers> getAllKoersen() {
         return koersRepository.findAllKoersen();
     }

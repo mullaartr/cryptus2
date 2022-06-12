@@ -13,6 +13,8 @@ public interface AssetDao {
     //deze methode staat nu (ook) in de KoersDao + Jdbc
     Optional<Asset> findAssetByAssetNaam(String naam);
 
+    Optional<Asset> findAssetByAssetId(int id);
+
     List<Asset> findAllAssets();
     void store (Asset asset);
     void delete (String naam);

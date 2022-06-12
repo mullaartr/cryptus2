@@ -56,6 +56,7 @@ public class KoersDaoJdbc implements KoersDao {
     RowMapper<Koers> koersRowMapper = (rs, rownum) -> {
         Koers koers = new Koers();
         koers.setAsset(null);
+        koers.setId(rs.getInt("assetId"));
         koers.setKoersInEuro(rs.getDouble("wisselkoersEuro"));
         koers.setKoersInDollars((rs.getDouble("wisselKoersDollar")));
         koers.setKoersDatum(rs.getObject("datumKoers", LocalDateTime.class)); //hoop dat dit werkt
@@ -120,7 +121,7 @@ public class KoersDaoJdbc implements KoersDao {
     // en voor elke asset findMostRecentKoersByAssetNaam(String naam) aan te roepen
     @Override
     public List<Koers> findMostRecentKoersen() {
-        String sql = "select * from koers k order by datumKoers Desc limit 20";
+        String sql = "select * from koers k  order by datumKoers Desc limit 20";
         return jdbcTemplate.query(sql, koersRowMapper);
     }
 

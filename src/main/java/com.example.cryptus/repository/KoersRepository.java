@@ -1,6 +1,9 @@
 package com.example.cryptus.repository;
 
+import com.example.cryptus.dao.AssetDao;
+import com.example.cryptus.dao.AssetDaoJdbc;
 import com.example.cryptus.dao.KoersDao;
+import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Koers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +20,12 @@ public class KoersRepository {
     private final Logger logger = LoggerFactory.getLogger(KoersRepository.class);
     private KoersDao koersDao;
 
+    private AssetDao assetDao;
+
     @Autowired
-    public KoersRepository(KoersDao koersDao) {
+    public KoersRepository(KoersDao koersDao, AssetDao assetDao) {
         this.koersDao = koersDao;
+        this.assetDao = assetDao;
         logger.info("New KoersRepository");
     }
 
@@ -33,7 +39,9 @@ public class KoersRepository {
     }
 
     public List<Koers> findMostRecentKoersen() {
-        return koersDao.findMostRecentKoersen();
+        List<Koers> koersen = koersDao.findMostRecentKoersen();
+        koersen.stream().forEach(koers -> koers.setAsset(assetDao.findAssetByAssetId(koers.getId()).orElse(null)));
+        return koersen;
     }
 
     public List<Koers> findAllKoersen(){
