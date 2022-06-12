@@ -76,13 +76,6 @@ public class CustomerManagementController {
                     "067373837463")
     );
 
-//    private final FakeApplicationUserDaoService fakeApplicationUserDaoService;
-
-//    public CustomerManagementController(FakeApplicationUserDaoService fakeApplicationUserDaoService) {
-//        this.fakeApplicationUserDaoService = fakeApplicationUserDaoService;
-//    }
-
-//    hasRole("ROLE_") hasAnyRole("ROLE_") hasAuthority("permission") hasAnyAuthority("permission")
 
     @GetMapping(path = "/allcustomers")
     public List<Customer> getAllCustomers(){

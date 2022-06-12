@@ -17,7 +17,7 @@ import static org.mindrot.jbcrypt.BCrypt.gensalt;
 import static org.mindrot.jbcrypt.BCrypt.hashpw;
 
 @RestController
-@RequestMapping(path = "users")
+@RequestMapping(path = "/users")
 public class RegisterCustomerController {
 
     private CustomerService customerService;
