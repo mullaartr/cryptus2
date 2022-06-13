@@ -71,13 +71,13 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/{id}")
-<<<<<<< HEAD
-    @ResponseBody Optional<Customer> findCustomerById(@PathVariable("id")int id){
-        return  customerService.getCustomerById(id);
-=======
-    @ResponseBody CustomerDTO findCustomerById(@PathVariable("id")int id){
-        return  new CustomerDTO(customerService.findCustomerById(id).orElse(null));
->>>>>>> c7559dbba41324ba51aa906e1f9596a725477509
+    @ResponseBody Optional<Customer> findCustomerById(@PathVariable("id")int id) {
+        return customerService.getCustomerById(id);
+
+        @ResponseBody CustomerDTO findCustomerById ( @PathVariable("id") int id){
+            return new CustomerDTO(customerService.findCustomerById(id).orElse(null));
+
+        }
     }
 
     @GetMapping("/findByLastname")
@@ -93,10 +93,10 @@ public class CustomerController {
 
 
     @GetMapping("/findByUsernamePassword")
-<<<<<<< HEAD
+
     @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username) {
         return customerService.findCustomerByUsernamePassword(username);
-=======
+
     @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {
 //        Optional<Customer> expectedCustomer =
 //                customerService.findCustomerByUsernamePassword(username);
@@ -106,7 +106,7 @@ public class CustomerController {
 //
 //        return Optional.of(dbCustomer);
         return Optional.of(new CustomerDTO(customerService.findCustomerByUsernamePassword(username).orElse(null)));
->>>>>>> c7559dbba41324ba51aa906e1f9596a725477509
+
 
     }
 
