@@ -81,10 +81,6 @@ public class PortefeuilleRepository {
         portefeuilleDAO.delete(id);
     }
 
-    public Optional<Portefeuille> findPortefeuilleOfAsset(int assetId,
-                                                          int portefeuilleId){
-        return portefeuilleDAO.findPortefeuilleOfAsset(assetId, portefeuilleId);
-    }
 
     public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
         portefeuilleDAO.storePortefeuilleRegel(portefeuille, asset);

@@ -127,11 +127,12 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     public void store(Portefeuille portefeuille) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertPortefeuilleStatement(portefeuille, connection), keyHolder);
+        int newKey = keyHolder.getKey().intValue();
+        portefeuille.setPortefeuilleId(newKey);
         for (int i = 0; i < portefeuille.getAssetLijst().size(); i++) {
             storePortefeuilleRegel(portefeuille, portefeuille.getAssetLijst().get(i));
         }
-        int newKey = keyHolder.getKey().intValue();
-        portefeuille.setPortefeuilleId(newKey);
+
     }
 
     public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
@@ -144,15 +145,6 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return findPortefeuilleById(portefeuilleId);
     }
 
-    public Optional<Portefeuille> findPortefeuilleOfAsset(int assetID,
-                                                          int PortefeuilleId){
-        int portefeuilleId = jdbcTemplate.queryForObject("select " +
-                        "portefeuilleId from portefeuille_regel where assetId" +
-                        " = ? and portefeuilleID = ?" +
-                        " order by portefeuilleID Desc limit 1",
-                Integer.class, assetID, PortefeuilleId);
-        return findPortefeuilleById(portefeuilleId);
-    }
 
     @Override
     public void update(Portefeuille portefeuille, Asset asset) {

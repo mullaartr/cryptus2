@@ -33,14 +33,6 @@ public class AssetRepository {
 
     }
 
-    public Optional<Asset> findAssetByPortefeuille(String naam) {
-
-        Optional<Asset> asset = assetDao.findAssetByAssetNaam(naam);
-
-        return asset;
-
-    }
-
 
     public List<Asset> findAllAssets() {
         return assetDao.findAllAssets();
