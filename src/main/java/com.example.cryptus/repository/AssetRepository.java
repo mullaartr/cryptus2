@@ -33,27 +33,11 @@ public class AssetRepository {
 
     }
 
-    public Optional<Asset> findAssetByPortefeuille(String naam,
-                                                int portefeuilleid) {
+    public Optional<Asset> findAssetByPortefeuille(String naam) {
 
         Optional<Asset> asset = assetDao.findAssetByAssetNaam(naam);
-        if(asset.isEmpty()){
-            return Optional.empty();
-        }
-        Asset asset1 = asset.get();
 
-        Optional<Portefeuille> portefeuille1 =
-                portefeuilleRepository.findPortefeuilleOfAsset(asset1.getAssetId(), portefeuilleid);
-
-        if(portefeuille1.isEmpty()){
-            return Optional.empty();
-        }
-        asset1.setPortefeuille(portefeuille1.get());
-
-        if(!portefeuille1.get().getAssetLijst().contains(asset1)){
-            portefeuille1.get().getAssetLijst().add(asset1);
-        }
-        return Optional.of(asset1);
+        return asset;
 
     }
 
@@ -66,9 +50,6 @@ public class AssetRepository {
         assetDao.store(asset);
     }
 
-    public void storeRegel(Asset asset){
-        assetDao.storeRegel(asset);
-    }
 
     public void deleteAsset(String naam) {
         assetDao.delete(naam);

@@ -13,6 +13,8 @@ public interface PortefeuilleDAO {
     Optional<Portefeuille> findPortefeuilleOfAsset(int id, int id2);
     Optional<List<Portefeuille>> findPortefeuilles();
     void store(Portefeuille portefeuille);
+
+    void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset);
     void update(Portefeuille portefeuille, Asset asset);
     void delete(int id);
 

@@ -36,15 +36,7 @@ public class AssetDaoJdbc implements AssetDao {
         return ps;
     }
 
-    private PreparedStatement inserAssetIntoPortefeuilleRegel(Asset asset, Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("insert into " +
-                "portefeuille_regel(portefeuilleID, assetId, saldo) values(?," +
-                "?,?)");
-        ps.setInt(1, asset.getPortefeuille().getPortefeuilleId());
-        ps.setInt(2, asset.getAssetId());
-        ps.setDouble(3, asset.getSaldo());
-        return ps;
-    }
+
 
     @Override
     public Optional<Asset> findAssetByAssetNaam(String naam) {
@@ -94,10 +86,6 @@ public class AssetDaoJdbc implements AssetDao {
         asset.setAssetId(newKey);
     }
 
-    public void storeRegel(Asset asset){
-        jdbcTemplate.update(con -> inserAssetIntoPortefeuilleRegel(asset,
-                con));
-    }
 
     @Override
     public void delete(String naam) {

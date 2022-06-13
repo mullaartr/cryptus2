@@ -85,4 +85,8 @@ public class PortefeuilleRepository {
                                                           int portefeuilleId){
         return portefeuilleDAO.findPortefeuilleOfAsset(assetId, portefeuilleId);
     }
+
+    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
+        portefeuilleDAO.storePortefeuilleRegel(portefeuille, asset);
+    }
 }

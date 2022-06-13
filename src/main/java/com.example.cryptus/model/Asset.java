@@ -12,16 +12,16 @@ public class Asset {
     private Koers koers; //van koers
     private double saldo; // van portefeuille_regel
 
-    private Portefeuille portefeuille;
 
 
-    public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo, Portefeuille portefeuille) {
+
+    public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
         this.koers = koers;
         this.saldo = saldo;
-        this.portefeuille = portefeuille;
+
     }
 
     public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers) {
@@ -32,20 +32,20 @@ public class Asset {
     }
 
     public Asset(String assetNaam, String assetAfkorting, Koers koers, double saldo) {
-        this(0, assetNaam, assetAfkorting, koers, saldo, null);
+        this(0, assetNaam, assetAfkorting, koers, saldo);
     }
 
     public Asset(AssetDTO assetDTO) {
         this(0, assetDTO.getAssetNaam(), assetDTO.getAssetAfkorting(),
-                new Koers(assetDTO.getKoersDTO()), assetDTO.getSaldo(), null);
+                new Koers(assetDTO.getKoersDTO()), assetDTO.getSaldo());
     }
 
     public Asset(String assetNaam) {
-        this(0, assetNaam, null, null, 0.0, null);
+        this(0, assetNaam, null, null, 0.0);
     }
 
     public Asset() {
-        this(0, null, null, null, 0.0, null);
+        this(0, null, null, null, 0.0);
     }
 
     public int getAssetId() {
@@ -88,13 +88,6 @@ public class Asset {
         this.saldo = saldo;
     }
 
-    public Portefeuille getPortefeuille() {
-        return portefeuille;
-    }
-
-    public void setPortefeuille(Portefeuille portefeuille) {
-        this.portefeuille = portefeuille;
-    }
 
     @Override
     public boolean equals(Object o) {

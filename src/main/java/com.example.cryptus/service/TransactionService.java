@@ -87,7 +87,7 @@ public class TransactionService {
         assert assetSeller != null;
         assetSeller.setSaldo(assetSeller.getSaldo() - assetAmount);
         if(assetSeller ==  null){
-            assetRepository.storeRegel(assetSeller);//mock
+            portefeuilleRepository.storePortefeuilleRegel(seller.get().getPortefeuille(), assetSeller);//mock
         } else {
             portefeuilleRepository.updatePortefeuille(seller.get().getPortefeuille(),
                     assetSeller);
@@ -106,8 +106,7 @@ public class TransactionService {
         Asset nieuweAsset = assetRepository.findAssetByAssetNaam(assetNaam).get();
         nieuweAsset.setSaldo(assetAmount);
         buyer.getPortefeuille().getAssetLijst().add(nieuweAsset);
-        nieuweAsset.setPortefeuille(buyer.getPortefeuille());
-        assetRepository.storeRegel(nieuweAsset);
+        portefeuilleRepository.storePortefeuilleRegel(buyer.getPortefeuille(), nieuweAsset);
     }
     public double calcValueTransactionInEuro(String assetNaam,double assetAmount) {
         double koersAsset = koersRepository.findKoersByAssetNaam(assetNaam).get().getKoersInEuro();
