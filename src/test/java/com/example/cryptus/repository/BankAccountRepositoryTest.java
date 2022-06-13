@@ -1,11 +1,7 @@
 package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.BankAccountDaoJdbc;
-import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.model.BankAccount;
-import com.example.cryptus.model.Customer;
-import com.example.cryptus.service.BankAccountService;
-import com.example.cryptus.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,7 +83,7 @@ class BankAccountRepositoryTest {
     @DisplayName("Testing deposit to bank account method")
     void addFunds() {
         BankAccount actual = new BankAccount("12234",600,4);
-        actual.addFunds(600);
+        actual.depositMoney(600);
         bankAccountRepositoryUnderTest.update(actual);
         BankAccount expected = new BankAccount("12234",1200,4);
         assertThat(actual.getBalance()).isEqualTo(expected.getBalance());
@@ -117,6 +113,6 @@ class BankAccountRepositoryTest {
     @Test
     @DisplayName("Testing  cannot deposit zero amount to his account")
     void cantDepositZero() {
-        assertThrows(RuntimeException.class, () -> testAccount.addFunds(0));
+        assertThrows(RuntimeException.class, () -> testAccount.depositMoney(0));
     }
 }
