@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class User implements Serializable {
 
     //Daan: I made a logger
-    private final transient Logger logger = LoggerFactory.getLogger(User.class);
+//    private final transient Logger logger = LoggerFactory.getLogger(User.class);
 
     private int userId;
     private String firstName;
@@ -35,11 +35,22 @@ public abstract class User implements Serializable {
         this.userName = userName;
         this.password = password;
     }
-
+    public User(int userId, String firstName, String preposition, String lastName, String userName, String password, List<Transaction> transactionList, BankAccount bankAccount, Portefeuille portefeuille) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.preposition = preposition;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.transactionList = transactionList;
+        this.bankAccount = bankAccount;
+        this.portefeuille = portefeuille;
+        //logger.info("User created with all-args constructor");
+    }
     //Daan: I created this no-args constructor
     public User() {
         super();
-        logger.info("User created with no-args constructor");
+//        logger.info("User created with no-args constructor");
     }
 
     //Daan: I created this constructor for registration

@@ -1,6 +1,5 @@
 package com.example.cryptus.dao;
 import com.example.cryptus.model.Asset;
-import com.example.cryptus.model.Portefeuille;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,16 @@ public class AssetDaoJdbc implements AssetDao {
         return ps;
     }
 
+    private PreparedStatement inserAssetIntoPortefeuilleRegel(Asset asset, Connection connection) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("insert into " +
+                "portefeuille_regel(portefeuilleID, assetId, saldo) values(?," +
+                "?,?)");
+        ps.setInt(1, asset.getPortefeuille().getPortefeuilleId());
+        ps.setInt(2, asset.getAssetId());
+        ps.setDouble(3, asset.getSaldo());
+        return ps;
+    }
+
     @Override
     public Optional<Asset> findAssetByAssetNaam(String naam) {
         String sql = "select * from asset a where a.naam = ?";
@@ -48,6 +57,19 @@ public class AssetDaoJdbc implements AssetDao {
         }
         return Optional.of(asset);
     }
+
+    @Override
+    public Optional<Asset> findAssetByAssetId(int id) {
+        String sql = "select * from asset a where a.assetId = ?";
+        Asset asset = null;
+        try {
+            asset = jdbcTemplate.queryForObject(sql, assetRowMapper, id);
+        } catch (DataAccessException exception) {
+            logger.info("Asset not found");
+        }
+        return Optional.of(asset);
+    }
+
 
     RowMapper<Asset> assetRowMapper = (rs, rownum) -> {
         Asset asset = new Asset();
@@ -70,6 +92,11 @@ public class AssetDaoJdbc implements AssetDao {
         jdbcTemplate.update(connection -> insertAssetStatement(asset, connection), keyHolder);
         int newKey = keyHolder.getKey().intValue();
         asset.setAssetId(newKey);
+    }
+
+    public void storeRegel(Asset asset){
+        jdbcTemplate.update(con -> inserAssetIntoPortefeuilleRegel(asset,
+                con));
     }
 
     @Override

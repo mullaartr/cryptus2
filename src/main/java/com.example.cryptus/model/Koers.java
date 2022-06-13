@@ -11,14 +11,16 @@ public class Koers {
 
     private final Logger logger = LoggerFactory.getLogger(Koers.class);
 
-    double koersInEuro;
-    double koersInDollars;
-    LocalDateTime koersDatum;
-    Asset asset;
+    private int id;
+    private double koersInEuro;
+    private double koersInDollars;
+    private LocalDateTime koersDatum;
+    private Asset asset;
 
     //todo LocalDateTime koersDatum implementeren in alle Koersklassen
 
-    public Koers(double koersInEuro, double koersInDollars, Asset asset) {
+    public Koers(int id, double koersInEuro, double koersInDollars, Asset asset) {
+        this.id = id;
         this.koersInEuro = koersInEuro;
         this.koersInDollars = koersInDollars;
         this.asset = asset;
@@ -74,5 +76,13 @@ public class Koers {
 
     public void setAsset(Asset asset) {
         this.asset = asset;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

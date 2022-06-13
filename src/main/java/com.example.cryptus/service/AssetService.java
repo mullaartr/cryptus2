@@ -27,6 +27,7 @@ public class AssetService {
         return assetRepository.findAssetByAssetNaam(naam);
     }
 
+
     public List<Asset> findAllAssets() {
         return  assetRepository.findAllAssets();
     }

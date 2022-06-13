@@ -144,6 +144,16 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return findPortefeuilleById(portefeuilleId);
     }
 
+    public Optional<Portefeuille> findPortefeuilleOfAsset(int assetID,
+                                                          int PortefeuilleId){
+        int portefeuilleId = jdbcTemplate.queryForObject("select " +
+                        "portefeuilleId from portefeuille_regel where assetId" +
+                        " = ? and portefeuilleID = ?" +
+                        " order by portefeuilleID Desc limit 1",
+                Integer.class, assetID, PortefeuilleId);
+        return findPortefeuilleById(portefeuilleId);
+    }
+
     @Override
     public void update(Portefeuille portefeuille, Asset asset) {
         String sql = "Update portefeuille_regel  SET  saldo = ? where portefeuilleId = ? and assetId = ?";

@@ -42,10 +42,10 @@ public class TransactionController {
     public ResponseEntity<Optional<Transaction>> buyFromBank(@RequestParam String assetName, @RequestParam int assetAmount) {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-                //Customer buyer = customerService.findCustomerByEmail(username).get();
-
-        //I.v.m een test zet ik nu hard de buyer op userId 2
-        Customer buyer = customerService.findCustomerById(2).get();
+        int userIdBuyer =
+                customerService.customerByEmail(username).get(0).getUserId();
+                Customer buyer =
+                customerService.findCustomerById(userIdBuyer).get();
         transactionService.buyFromBank(buyer, assetName, assetAmount);
         return null;
     }

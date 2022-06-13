@@ -56,6 +56,7 @@ public class KoersDaoJdbc implements KoersDao {
     RowMapper<Koers> koersRowMapper = (rs, rownum) -> {
         Koers koers = new Koers();
         koers.setAsset(null);
+        koers.setId(rs.getInt("assetId"));
         koers.setKoersInEuro(rs.getDouble("wisselkoersEuro"));
         koers.setKoersInDollars((rs.getDouble("wisselKoersDollar")));
         koers.setKoersDatum(rs.getObject("datumKoers", LocalDateTime.class)); //hoop dat dit werkt
@@ -86,6 +87,16 @@ public class KoersDaoJdbc implements KoersDao {
     }
 
     @Override
+    public Optional<Koers> findKoersByDatum(LocalDateTime dateTime) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Koers> findKoersByAssetNaamFromPastDateToNow(String naam, LocalDateTime dateTime) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Koers> findMostRecentKoersByAssetNaam(String naam) {
         String sql = "select * from koers k where k.assetnaam = ? order by datumKoers Desc limit 1";
         Koers koers = null;
@@ -110,8 +121,19 @@ public class KoersDaoJdbc implements KoersDao {
     // en voor elke asset findMostRecentKoersByAssetNaam(String naam) aan te roepen
     @Override
     public List<Koers> findMostRecentKoersen() {
-        String sql = "select * from koers k order by datumKoers Desc limit 20";
+        String sql = "select * from koers k  order by datumKoers Desc limit 20";
         return jdbcTemplate.query(sql, koersRowMapper);
+    }
+
+    @Override
+    public List<Koers> findAllKoersenByDatum(LocalDateTime dateTime) {
+        String sql = "SELECT * FROM koers WHERE DATE(datumKoers) = ?";
+        return jdbcTemplate.query(sql, koersRowMapper);
+    }
+
+    @Override
+    public List<Koers> findAllKoersenFromPastDateToNow(LocalDateTime dateTime) {
+        return null;
     }
 
     //todo waarschijnlijk moet deze methode verwijderd; hij heeft geen nut, en zou na verloop van tijd een enorme bak info teruggeven
@@ -121,11 +143,20 @@ public class KoersDaoJdbc implements KoersDao {
         return jdbcTemplate.query(sql, koersRowMapper);
     }
 
+
+    private PreparedStatement insertStatementKoers(Koers koers, Connection connection) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO  koers (assetId, assetnaam, " +
+                "wisselkoersEuro, wisselkoersDollar, datumKoers) VALUES (?, ?, ?, ?, now()) ");
+        ps.setInt(1, koers.getAsset().getAssetId());
+        ps.setString(2, koers.getAsset().getAssetNaam());
+        ps.setDouble(3, koers.getKoersInEuro());
+        ps.setDouble(4, koers.getKoersInDollars());
+        return ps;
+    }
+
     @Override
     public void store(Koers koers) {
-        String sql = "INSERT INTO  koers (assetId, assetnaam, " +
-                "wisselkoersEuro, wisselkoersDollar, datumKoers) VALUES (?, ?, ?, ?, ?) ";
-        var store = jdbcTemplate.update(sql);
+        var store = jdbcTemplate.update(con -> insertStatementKoers(koers, con));
     }
 
     //todo is deze methode wel nodig?

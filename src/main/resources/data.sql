@@ -50,10 +50,28 @@ VALUES ('1234567891', 1000000.00, 1),
        ('9876543211', 1000000.00, 2);
 
 INSERT INTO `asset`
-VALUES (1, 'bitcoin', 'BTC'),
-       (2, 'etherium', 'ETH'),
-       (3, 'dodgecoin', 'DGC'),
-       (4, 'euro', 'EUR');
+(1, 'Bitcoin', 'BTC'),
+       (2, 'Ethereum', 'ETH'),
+       (3, 'Tether', 'USDT'),
+       (4, 'USD-Coin', 'USDC'),
+       (5, 'BinanceCoin', 'BNB'),
+       (6, 'Cardano', 'ADA'),
+       (7, 'Ripple', 'XRP'),
+       (8, 'Binance-USD', 'BUSD'),
+       (9, 'Solana', 'SOL'),
+       (10, 'Dogecoin', 'Doge'),
+       (11, 'Polkadot', 'DOT'),
+       (12, 'Wrapped-Bitcoin', 'WBTC'),
+       (13, 'TRON', 'TRX'),
+       (14, 'Staked-Ether', 'STETH'),
+       (15, 'Dai', 'DAI'),
+       (16, 'Avalanche-2', 'AVAX'),
+       (17, 'Shiba-Inu', 'SHIB'),
+       (18, 'Leo', 'Leo'),
+       (19, 'Cronos', 'CRO'),
+       (20, 'Litecoin', 'LTC'),
+        (21, 'Euro', 'Eur'),
+        (22, 'Dollar', 'USD')
 
 INSERT INTO `portefeuille`
 VALUES (1, 1),

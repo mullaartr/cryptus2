@@ -1,13 +1,15 @@
 package com.example.cryptus.dto;
 
+import com.example.cryptus.model.Koers;
+
 import java.time.LocalDateTime;
 
 public class KoersDto {
 
-    double koersInEuro;
-    double koersInDollars;
-    String assetNaam;
-    LocalDateTime koersDatum;
+    private double koersInEuro;
+    private double koersInDollars;
+    private String assetNaam;
+    private LocalDateTime koersDatum;
 
     //todo LocalDateTime koersDatum hierin verwerken
 
@@ -22,6 +24,15 @@ public class KoersDto {
         this.koersInEuro = koersInEuro;
         this.koersInDollars = koersInDollars;
     }
+
+    public KoersDto(Koers koers) {
+        this.koersInEuro = koers.getKoersInEuro();
+        this.koersInDollars = koers.getKoersInDollars();
+        this.koersDatum = koers.getKoersDatum();
+        this.assetNaam = koers.getAsset().getAssetNaam();
+    }
+
+
 
     public LocalDateTime getKoersDatum() {
         return koersDatum;

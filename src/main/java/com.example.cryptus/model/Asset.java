@@ -1,23 +1,27 @@
 package com.example.cryptus.model;
 
+import com.example.cryptus.dto.AssetDTO;
 import com.example.cryptus.model.Koers;
 
 import java.util.Objects;
 
 public class Asset {
-    int assetId;
-    String assetNaam;
-    String assetAfkorting;
-    Koers koers; //van koers
-    double saldo; // van portefeuille_regel
+    private int assetId;
+    private String assetNaam;
+    private String assetAfkorting;
+    private Koers koers; //van koers
+    private double saldo; // van portefeuille_regel
+
+    private Portefeuille portefeuille;
 
 
-    public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo) {
+    public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo, Portefeuille portefeuille) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
         this.koers = koers;
         this.saldo = saldo;
+        this.portefeuille = portefeuille;
     }
 
     public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers) {
@@ -28,15 +32,20 @@ public class Asset {
     }
 
     public Asset(String assetNaam, String assetAfkorting, Koers koers, double saldo) {
-        this(0, assetNaam, assetAfkorting, koers, saldo);
+        this(0, assetNaam, assetAfkorting, koers, saldo, null);
+    }
+
+    public Asset(AssetDTO assetDTO) {
+        this(0, assetDTO.getAssetNaam(), assetDTO.getAssetAfkorting(),
+                new Koers(assetDTO.getKoersDTO()), assetDTO.getSaldo(), null);
     }
 
     public Asset(String assetNaam) {
-        this(0, assetNaam, null, null, 0.0);
+        this(0, assetNaam, null, null, 0.0, null);
     }
 
     public Asset() {
-        this(0, null, null, null, 0.0);
+        this(0, null, null, null, 0.0, null);
     }
 
     public int getAssetId() {
@@ -79,12 +88,20 @@ public class Asset {
         this.saldo = saldo;
     }
 
+    public Portefeuille getPortefeuille() {
+        return portefeuille;
+    }
+
+    public void setPortefeuille(Portefeuille portefeuille) {
+        this.portefeuille = portefeuille;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Asset asset = (Asset) o;
-        return assetId == asset.assetId && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting) && koers.equals(asset.koers);
+        return assetId == asset.assetId && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting);
     }
 
     @Override
