@@ -91,17 +91,11 @@ public class CustomerController {
 
 
 
-    @GetMapping("/findByUsernamePassword")
-    @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {
-//        Optional<Customer> expectedCustomer =
-//                customerService.findCustomerByUsernamePassword(username);
-//        Customer dbCustomer = expectedCustomer.get();
-//        customerConvertor.entityToDTO(dbCustomer);
-//
-//
-//        return Optional.of(dbCustomer);
-        return Optional.of(new CustomerDTO(customerService.findCustomerByUsernamePassword(username).orElse(null)));
-
+    @GetMapping("/findByUsernamePassword/")
+    @ResponseBody CustomerDTO findCustomerByUsernamePassword() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Customer customer = customerService.findCustomerByUsernamePassword(username).get();
+        return new CustomerDTO(customer);
     }
 
 

@@ -207,7 +207,7 @@
         <li class='listitem' id="Cronos"></li>
         <li class='listitem' id="Litecoin"></li>
     </ul>
-    </ul>
+
     </div>
     <div class="main" id="iets">
         <button type="submit" id="kutbutton">submit</button>
@@ -233,29 +233,41 @@
     //klantOphaler();
 
     koersOphaler();
-
+    let koersen;
+    let euroOfDollar = true;
 
       document.querySelector('#item1').addEventListener("click", () => {
           window.location.href = "register.html";
       })
 
+    document.querySelector('#iets').addEventListener("click", () => {
+        klantOphaler()
+    })
+
 
     function klantNaamOphaler() {
-        fetch('http://localhost:8080/klant/gebruiker'
-        ).then((response) => {
+        let token = localStorage.getItem('token');
+        fetch('http://localhost:8080/klant',
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+
+            }).then((response) => {
                 if (response.status === 200) {
                     return response.json();
                 }
             }
         ).then(json => {
-                let gebruiker = json1;
-                return gebruiker;
+            return json;
             }
         )
     }
 
     function koersOphaler(){
         let token = localStorage.getItem('token')
+
         fetch('http://localhost:8080/koers/meest-recent',
             {
                 method: 'GET',
@@ -270,11 +282,9 @@
                 }
             }
         ).then(json => {
-            console.log(json);
-                json.forEach(json => vullLijstEuro(json));
+                koersen = json;
+                koersen.forEach(koersen => vullLijstEuro(koersen));
                 maakTekstLint();
-
-
 
             }
         ).catch(ex => {
@@ -285,15 +295,27 @@
         const naam = `#${json.assetNaam}`;
         const e = document.querySelector(naam)
         const plaatje = `Assets/${json.assetNaam}.webp`
-        e.innerHTML =`<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} € ${json.koersInEuro} : $ ${json.koersInDollars}`;
+        if(euroOfDollar) {
+            e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} € ${json.koersInEuro}`;
+        } else {
+            e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} : $ ${json.koersInDollars}`;
+        }
+
     }
+    document.querySelector('.tickerwrapper').addEventListener("click", () => {
+        euroOfDollar = !euroOfDollar;
+        koersen.forEach(koersen => vullLijstEuro(koersen));
+
+
+    })
 
 
 
 
     function klantOphaler() {
         let token = localStorage.getItem('token')
-        fetch('http://localhost:8080/klant/12',
+        //let klantnaam = `${klantNaamOphaler()}`
+            fetch(`http://localhost:8080/klant/findByUsernamePassword/`,
             {
                 method: 'GET',
                 headers: {

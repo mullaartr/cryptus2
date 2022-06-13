@@ -4,8 +4,6 @@ import com.example.cryptus.dao.CustomerDaoJdbc;
 import com.example.cryptus.model.Account;
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
-import com.example.cryptus.model.User;
-import com.example.cryptus.service.CustomerDTO;
 import com.example.cryptus.service.CustomerService;
 import com.example.cryptus.service.LoginCustomerService;
 

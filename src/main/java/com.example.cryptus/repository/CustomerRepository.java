@@ -190,8 +190,11 @@ public class CustomerRepository  {
                 return Optional.empty();
 
             } else {
-                return customerDao.findCustomerByName(name);
-
+                Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(customerOptional.get().getUserId()).orElse(null);
+                Customer customer = customerOptional.orElse(null);
+                customer.setPortefeuille(portefeuille);
+                portefeuille.setOwner(customer);
+                return Optional.of(customer);
             }
 
         }
@@ -204,7 +207,11 @@ public class CustomerRepository  {
                 return Optional.empty();
 
             } else {
-                return customerDao.findCustomerByUsernamePassword(username);
+                Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(customerOptional.get().getUserId()).orElse(null);
+                Customer customer = customerOptional.orElse(null);
+                customer.setPortefeuille(portefeuille);
+                portefeuille.setOwner(customer);
+                return Optional.of(customer);
 
             }
 
