@@ -43,10 +43,10 @@ public class CustomerController {
 
 
 
-            this.customerService = customerService;
-            this.customerConvertor = customerConvertor;
-            logger.info("New customerController");
-        }
+        this.customerService = customerService;
+        this.customerConvertor = customerConvertor;
+        logger.info("New customerController");
+    }
 
 
     @GetMapping
@@ -71,13 +71,9 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/{id}")
-    @ResponseBody Optional<Customer> findCustomerById(@PathVariable("id")int id) {
-        return customerService.getCustomerById(id);
+    @ResponseBody CustomerDTO findCustomerById(@PathVariable("id")int id){
+        return  new CustomerDTO(customerService.findCustomerById(id).orElse(null));
 
-        @ResponseBody CustomerDTO findCustomerById ( @PathVariable("id") int id){
-            return new CustomerDTO(customerService.findCustomerById(id).orElse(null));
-
-        }
     }
 
     @GetMapping("/findByLastname")
@@ -92,10 +88,13 @@ public class CustomerController {
 
 
 
-    @GetMapping("/findByUsernamePassword")
 
-    @ResponseBody Optional<Customer> findCustomerByUsernamePassword(@RequestParam("username") String username) {
-        return customerService.findCustomerByUsernamePassword(username);
+    @GetMapping("/findByUsernamePassword/")
+    @ResponseBody CustomerDTO findCustomerByUsernamePassword() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Customer customer = customerService.findCustomerByUsernamePassword(username).get();
+        return new CustomerDTO(customer);
+    }
 
     @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {
 //        Optional<Customer> expectedCustomer =
@@ -106,7 +105,6 @@ public class CustomerController {
 //
 //        return Optional.of(dbCustomer);
         return Optional.of(new CustomerDTO(customerService.findCustomerByUsernamePassword(username).orElse(null)));
-
 
     }
 

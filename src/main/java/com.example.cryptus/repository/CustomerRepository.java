@@ -146,25 +146,7 @@ public class CustomerRepository  {
             if (customerOptional.isEmpty()) {
                 return Optional.empty();
             } else {
-
-
-                Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
-                Customer customer = customerOptional.orElse(null);
-                customer.setPortefeuille(portefeuille);
-                assert portefeuille != null;
-                portefeuille.setOwner(customer);
-                BankAccount account =
-                        bankaccountDAO.findBankAccountByUserId(id).orElse( null );
-                assert account != null;
-                account.setAccountHolder(customer);
-                customer.setBankAccount( account );
-                List<Transaction> list  =
-                        transactionRepository.getBuyTransactionsFromUser( id );
-                List<Transaction> sellList  =
-                        transactionRepository.getSellTransactionsFromUser( id );
-                list.addAll( sellList );
-                customer.setTransactionList( list );
-                return Optional.of(customer);
+                return volledigeCustomer(customerOptional);
             }
         }
 
@@ -205,8 +187,7 @@ public class CustomerRepository  {
                 return Optional.empty();
 
             } else {
-                return customerDao.findCustomerByName(name);
-
+                return volledigeCustomer(customerOptional);
             }
 
         }
@@ -219,7 +200,8 @@ public class CustomerRepository  {
                 return Optional.empty();
 
             } else {
-                return customerDao.findCustomerByUsernamePassword(username);
+
+                return volledigeCustomer(customerOptional);
 
             }
 
@@ -274,5 +256,26 @@ public class CustomerRepository  {
             return firstNames[randomizer.nextInt(firstNames.length)];
         }
 
+
+        private Optional<Customer> volledigeCustomer(Optional<Customer> customerOptional){
+            int id = customerOptional.get().getUserId();
+            Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+            Customer customer = customerOptional.orElse(null);
+            customer.setPortefeuille(portefeuille);
+            assert portefeuille != null;
+            portefeuille.setOwner(customer);
+            BankAccount account =
+                    bankaccountDAO.findBankAccountByUserId(id).orElse( null );
+            assert account != null;
+            account.setAccountHolder(customer);
+            customer.setBankAccount( account );
+            List<Transaction> list  =
+                    transactionRepository.getBuyTransactionsFromUser( id );
+            List<Transaction> sellList  =
+                    transactionRepository.getSellTransactionsFromUser( id );
+            list.addAll( sellList );
+            customer.setTransactionList( list );
+            return Optional.of(customer);
+        }
     }
 
