@@ -80,4 +80,9 @@ public class PortefeuilleRepository {
     public void deletePortefeuille(int id){
         portefeuilleDAO.delete(id);
     }
+
+    public Optional<Portefeuille> findPortefeuilleOfAsset(int assetId,
+                                                          int portefeuilleId){
+        return portefeuilleDAO.findPortefeuilleOfAsset(assetId, portefeuilleId);
+    }
 }
