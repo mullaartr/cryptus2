@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.cryptus.model.BankAccount.MINIMUM_BALANCE;
+
 
 @Repository
 public class BankAccountRepository {
@@ -50,9 +52,16 @@ public class BankAccountRepository {
     }
 
     public void addFunds(double amount, int id){
+        if(amount <= MINIMUM_BALANCE){
+            System.out.println("Amount must be greater than Zero");
+        }
+        else{
+            bankAccountDao.addFunds(amount, id);
+
+        }
 
 
-        bankAccountDao.addFunds(amount, id);
+
 
     }
     public void withdrawFunds(double amount, int id){

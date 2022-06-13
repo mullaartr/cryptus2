@@ -39,14 +39,15 @@ class CustomerRepositoryTest {
 
     @Test
     @DisplayName("Testing find customer by ID method")
-    void findCustomerById() {
+    void getCustomerById() {
 
-        Mockito.when(mockDao.findCustomerById(3)).thenReturn(Optional.of(testCustomer));
+        Mockito.when(mockDao.getCustomerById(3)).thenReturn(Optional.of(testCustomer));
         customerRepositoryUnderTest = new CustomerRepository(mockDao);
-        Optional<Customer> actual = customerRepositoryUnderTest.findCustomerById(3);
+        Optional<Customer> actual = customerRepositoryUnderTest.getCustomerById(3);
 
         Optional<Customer> expected = Optional.ofNullable(testCustomer);
         assertThat(actual).isNotNull().isEqualTo(expected);
+
 
 
 
@@ -56,8 +57,8 @@ class CustomerRepositoryTest {
     @DisplayName("Testing store customer method")
     void storeCustomer() {
         customerRepositoryUnderTest.storeCustomer(testCustomer);
-        Mockito.when(mockDao.findCustomerById(3)).thenReturn(Optional.of(testCustomer));
-        Optional<Customer> actual = customerRepositoryUnderTest.findCustomerById(3);
+        Mockito.when(mockDao.getCustomerById(3)).thenReturn(Optional.of(testCustomer));
+        Optional<Customer> actual = customerRepositoryUnderTest.getCustomerById(3);
         Optional<Customer> expected = Optional.of(testCustomer);
         assertThat(actual).isNotNull().isEqualTo(expected);
     }

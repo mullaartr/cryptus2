@@ -11,11 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -42,7 +39,6 @@ public class CustomerController {
     private final Logger logger = LogManager.getLogger(CustomerDaoJdbc.class);
 
     @Autowired
-
     public CustomerController(CustomerService customerService, CustomerConvertor customerConvertor) {
 
 
@@ -61,7 +57,7 @@ public class CustomerController {
         return customerService.customerByEmail(username.toString()).get(0);
     }
 
-    @GetMapping(value = "/list")
+    @GetMapping(value= "/list")
     public List<Customer> customerList(){
         return customerService.list();
 
@@ -77,6 +73,7 @@ public class CustomerController {
     @GetMapping(value = "/{id}")
     @ResponseBody CustomerDTO findCustomerById(@PathVariable("id")int id){
         return  new CustomerDTO(customerService.findCustomerById(id).orElse(null));
+
     }
 
     @GetMapping("/findByLastname")
@@ -91,6 +88,7 @@ public class CustomerController {
 
 
 
+
     @GetMapping("/findByUsernamePassword/")
     @ResponseBody CustomerDTO findCustomerByUsernamePassword() {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -98,8 +96,20 @@ public class CustomerController {
         return new CustomerDTO(customer);
     }
 
+    @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {
+//        Optional<Customer> expectedCustomer =
+//                customerService.findCustomerByUsernamePassword(username);
+//        Customer dbCustomer = expectedCustomer.get();
+//        customerConvertor.entityToDTO(dbCustomer);
+//
+//
+//        return Optional.of(dbCustomer);
+        return Optional.of(new CustomerDTO(customerService.findCustomerByUsernamePassword(username).orElse(null)));
 
-    @PostMapping(value = "/create",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    }
+
+
+    @PostMapping(value = "/create")
     @ResponseBody
     ResponseEntity<?> createCustomer(@RequestBody Customer customer) throws NoSuchAlgorithmException {
         if (customer instanceof Customer) {

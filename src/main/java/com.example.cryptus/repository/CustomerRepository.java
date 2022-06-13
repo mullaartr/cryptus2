@@ -146,6 +146,8 @@ public class CustomerRepository  {
             if (customerOptional.isEmpty()) {
                 return Optional.empty();
             } else {
+
+
                 Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
                 Customer customer = customerOptional.orElse(null);
                 customer.setPortefeuille(portefeuille);
@@ -165,6 +167,19 @@ public class CustomerRepository  {
                 return Optional.of(customer);
             }
         }
+
+
+        public Optional<Customer> getCustomerById(int id){
+        Optional<Customer> customerOptional = customerDao.getCustomerById(id);
+        if (customerOptional.isEmpty()) {
+            return Optional.empty();
+        } else {
+
+            return customerDao.getCustomerById(id);
+        }
+
+    }
+
 
         public int storeCustomer (Customer customer){
             int key = customerDao.storeCustomer(customer);

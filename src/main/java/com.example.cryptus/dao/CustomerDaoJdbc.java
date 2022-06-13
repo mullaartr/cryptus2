@@ -31,10 +31,9 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0,"","","","","",new Date(0),
-                "",new Address(),"","");
-        Address address = customer.getAddress();
-        //System.out.println("hello");
+        Customer customer = new Customer();
+        Address address = new Address();
+        customer.setAddress(address);
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -196,6 +195,18 @@ public class CustomerDaoJdbc implements CustomerDao {
         jdbcTemplate.update("DELETE FROM user WHERE userId= ?",id);
 
 
+    }
+
+    @Override
+    public Optional<Customer> getCustomerById(int id) {String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,id);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
     }
 
     @Override
