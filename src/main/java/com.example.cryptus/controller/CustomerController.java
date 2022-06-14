@@ -43,10 +43,10 @@ public class CustomerController {
 
 
 
-            this.customerService = customerService;
-            this.customerConvertor = customerConvertor;
-            logger.info("New customerController");
-        }
+        this.customerService = customerService;
+        this.customerConvertor = customerConvertor;
+        logger.info("New customerController");
+    }
 
 
     @GetMapping
