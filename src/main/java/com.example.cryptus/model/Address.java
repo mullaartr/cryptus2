@@ -44,6 +44,16 @@ public class Address {
         return city;
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "houseNumber=" + houseNumber +
+                ", Street='" + Street + '\'' +
+                ", postcode='" + postcode + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
+
     public void setCity(String city) {
         this.city = city;
     }

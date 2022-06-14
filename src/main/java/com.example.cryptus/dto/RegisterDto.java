@@ -2,6 +2,7 @@ package com.example.cryptus.dto;
 
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.BankAccount;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Date;
 
@@ -10,6 +11,7 @@ public class RegisterDto {
     String firstName;
     String preposition;
     String lastName;
+
     java.sql.Date birthDate;
     String BSN;
     Address address;

@@ -158,14 +158,12 @@ public class Customer extends User {
 
     @Override
     public String toString() {
-        return     super.toString()+
-                " BirthDate= " + birthDate +'\n' +
-                " BSN= " + BSN + '\n' +
-                " City= " + address.getCity() + '\n' +
-                " Street= " + address.getStreet() + '\n' +
-                " HouseNumber=" + address.getHouseNumber() +'\n' +
-                " email= " + email + '\n' +
-                " Postcode= " + address.getPostcode() + '\n' +
-                " Phone= " + phone ;
+        return "Customer{" +
+                "birthDate=" + birthDate +
+                ", BSN='" + BSN + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address=" + address +
+                '}';
     }
 }
