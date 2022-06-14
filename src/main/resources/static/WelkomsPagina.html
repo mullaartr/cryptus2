@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/BaseTemplate.css">
+    <script src="js/BaseTemplate.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineMax.min.js" integrity="sha512-0xrMWUXzEAc+VY7k48pWd5YT6ig03p4KARKxs4Bqxb9atrcn2fV41fWs+YXTKb8lD2sbPAmZMjKENiyzM/Gagw==" crossorigin="anonymous"></script>
@@ -10,173 +12,9 @@
     <style>
 
 
-        .tickerwrapper {
-            grid-area: kn;
-            position: relative;
-            left:0%;
-            border: 1px solid #444;
-            background: #fff;
-            width: 99.9%;
-            height: 30px;
-            overflow: hidden;
-            cursor: pointer;
-        }
 
-        .list {
-            position: relative;
-            display: inline-block;
-            font-family: Arial, sans-serif;
-            list-style: none;
-            padding:0;
-            margin:0;
-        }
-
-        .list.cloned {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-
-        .list li {
-            float: left;
-            padding-left: 20px;
-        }
-        @media only screen and (max-width: 600px) {
-            .item0{
-                display: none;
-            }
-
-        }
-
-
-
-        .header {
-            grid-area: hd;
-            height: clamp(150px, 80%, 150px);
-            background-color: rgb(252, 149, 31);
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-        }
-        #cryptusLogo {
-            align-self: center;
-            object-fit: cover;
-            float: left;
-            text-align: left;
-            width: 150px;
-            grid-column: 1;
-        }
-        .item0 {
-            grid-area: hd;
-            align-self: center;
-            font-size: 80px;
-            font-family: "Edwardian script ITC";
-        }
-        h2{
-            margin-bottom: 0;
-            margin-top: 30px;
-        }
-
-
-        .buttons{
-            grid-area: kn;
-            justify-self: center;
-            font-family: Arial, sans-serif;
-            border: 2px solid black;
-            margin-bottom: 4px;
-            background-color: rgb(255, 217, 0);
-            height: 40px;
-            width: 90%;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.5s;
-        }
-        .buttons:hover {background-color: rgb(142, 123, 16)
-        }
-
-        .buttons:active {
-            background-color: rgb(142, 123, 16);
-            box-shadow: 0 5px #666;
-            transform: translateY(4px);
-        }
-
-
-        #item1 {
-            grid-column-start: 3;
-            grid-column-end: 4;
-        }
-
-        #item2 {
-            grid-column-start: 4;
-            grid-column-end: 5;
-        }
-
-        #item3 {
-            grid-column-start: 5;
-            grid-column-end: 6;
-        }
-
-        #item4 {
-            grid-column-start: 6;
-            grid-column-end: 7;
-        }
-
-        #item5 {
-            grid-column-start: 7;
-            grid-column-end: 8;
-        }
-
-        #item6 {
-            grid-column-start: 8;
-            grid-column-end: 9;
-        }
-
-        #item8 {
-            grid-column-start: 9;
-            grid-column-end: 10;
-        }
-
-        .item7 {
-            grid-area: sd;
-            justify-self: center;
-            align-self: center;
-            height: 100%;
-            width: 100%;
-
-        }
-
-        .main {
-            grid-area: main;
-            border: 2px solid rgb(0, 0, 0);
-        }
-
-        .voetje {
-            grid-area: ft;
-            background-color: rgb(252, 149, 31);
-            height: clamp(150px, 100%, 150px);
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-        }
-
-        .wrapper {
-            display: grid;
-            flex-wrap: wrap;
-            grid-template-columns:repeat(9, 1fr);
-            grid-template-rows: auto;
-            padding: 2px;
-            grid-template-areas:
-        "hd hd hd hd hd hd hd hd hd"
-        "kn kn kn kn kn kn kn kn kn"
-        "sd sd main main main main main main main"
-        "sd sd main main main main main main main"
-        "sd sd main main main main main main main"
-        "ft ft ft ft ft ft ft ft ft";
-        }
-
-        #coins {
-            list-style-type: none;
-        }
-
-
+        /*//col:nth-child(odd) {background: #CCC}*/
+        col:nth-child(2n +1) {background: #FFF}
 
 
 
@@ -210,8 +48,7 @@
 
     </div>
     <div class="main" id="iets">
-        <button type="submit" id="kutbutton">submit</button>
-        <!--<script src="klantophaler();"></script>-->
+        <div id="klantGegevens"></div>
     </div>
 
     <div class="item7">
@@ -230,78 +67,18 @@
 </div>
 </body>
 <script>
-    //klantOphaler();
 
-    koersOphaler();
     let koersen;
     let euroOfDollar = true;
+    klantOphaler()
 
       document.querySelector('#item1').addEventListener("click", () => {
           window.location.href = "register.html";
       })
 
-    document.querySelector('#iets').addEventListener("click", () => {
-        klantOphaler()
-    })
 
 
-    function klantNaamOphaler() {
-        let token = localStorage.getItem('token');
-        fetch('http://localhost:8080/klant',
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
 
-            }).then((response) => {
-                if (response.status === 200) {
-                    return response.json();
-                }
-            }
-        ).then(json => {
-            return json;
-            }
-        )
-    }
-
-    function koersOphaler(){
-        let token = localStorage.getItem('token')
-
-        fetch('http://localhost:8080/koers/meest-recent',
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-
-            }).then((response) => {
-                console.log(response)
-                if (response.status === 200) {
-                    return response.json();
-                }
-            }
-        ).then(json => {
-                koersen = json;
-                koersen.forEach(koersen => vullLijstEuro(koersen));
-                maakTekstLint();
-
-            }
-        ).catch(ex => {
-            console.log(ex)
-        })
-    }
-    function vullLijstEuro(json){
-        const naam = `#${json.assetNaam}`;
-        const e = document.querySelector(naam)
-        const plaatje = `Assets/${json.assetNaam}.webp`
-        if(euroOfDollar) {
-            e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} € ${json.koersInEuro}`;
-        } else {
-            e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} : $ ${json.koersInDollars}`;
-        }
-
-    }
     document.querySelector('.tickerwrapper').addEventListener("click", () => {
         euroOfDollar = !euroOfDollar;
         koersen.forEach(koersen => vullLijstEuro(koersen));
@@ -330,48 +107,61 @@
                 }
             }
         ).then(json => {
-                const p = document.querySelector(`#iets`);
-                p.innerHTML = json.firstName;
+            console.log(json);
+                tabelKlantGegevens(json);
 
             }
         ).catch(ex => {
             console.log(ex)
         })
     }
-    function maakTekstLint() {
-        var $tickerWrapper = $(".tickerwrapper");
-        var $list = $tickerWrapper.find("ul.list");
-        var $clonedList = $list.clone();
-        var listWidth = 20;
+    function tabelKlantGegevens(json) {
+        const table = document.createElement('table');
+        const main = document.querySelector('#klantGegevens')
+        table.style.padding = '3px';
+        let header = table.createTHead();
+        header.style.fontWeight = 'Bold';
+        header.style.fontSize = '1.5em';
+        let rij1 = table.insertRow(0);
+        let rij2 = table.insertRow(1);
+        let rij3 = table.insertRow(2)
+        let rij4 = table.insertRow(3)
+        let rij5 = table.insertRow(4)
+        let rij6 = table.insertRow(5)
+        let rij7 = table.insertRow(6)
+        let rij1Cell1 = rij1.insertCell(0);
+        let rij1cel2 = rij1.insertCell(1);
+        let rij2cel1 = rij2.insertCell(0);
+        let rij2cel2 = rij2.insertCell(1);
+        let rij3Cell1 = rij3.insertCell(0);
+        let rij3Cell2 = rij3.insertCell(1);
+        let rij4Cell1 = rij4.insertCell(0)
+        let rij4Cell2 = rij4.insertCell(1);
+        let rij5Cell1 = rij5.insertCell(0)
+        let rij5Cell2 = rij5.insertCell(1);
+        let rij6Cell1 = rij6.insertCell(0);
+        let rij6Cell2 = rij6.insertCell(1);
 
-        $list.find("li").each(function (i) {
-            listWidth += $(this, i).outerWidth(true);
-        });
 
-        var endPos = $tickerWrapper.width() - listWidth;
+        header.innerText = 'Gegevens:'
+        rij1Cell1.innerText = 'Voornaam:';
+        rij1cel2.innerText = json.firstName;
+        rij2cel1.innerText = 'Achternaam:';
+        rij2cel2.innerText = json.preposition + json.lastName;
+        rij3Cell1.innerText = 'Geboortedatum';
+        rij3Cell2.innerText = json.birthDate;
+        rij4Cell1.innerText = 'E-mail';
+        rij4Cell2.innerText =  json.email;
+        rij5Cell1.innerText = 'Telefoon Nummer';
+        rij5Cell2.innerText = json.phone;
+        rij6Cell1.innerText = 'BSN';
+        rij6Cell2.innerText = json.bsn;
+        main.appendChild(table);
 
-        $list.add($clonedList).css({
-            "width": listWidth + "px"
-        });
 
-        $clonedList.addClass("cloned").appendTo($tickerWrapper);
-
-        var infinite = new TimelineMax({repeat: -1, paused: true});
-        var time = 40;
-
-        infinite.fromTo($list, time, {rotation: 0.01, x: 0}, {force3D: true, x: -listWidth, ease: Linear.easeNone}, 0)
-            .fromTo($clonedList, time, {rotation: 0.01, x: listWidth}, {force3D: true, x: 0, ease: Linear.easeNone}, 0)
-            .set($list, {force3D: true, rotation: 0.01, x: listWidth})
-            .to($clonedList, time, {force3D: true, rotation: 0.01, x: -listWidth, ease: Linear.easeNone}, time)
-            .to($list, time, {force3D: true, rotation: 0.01, x: 0, ease: Linear.easeNone}, time)
-            .progress(1).progress(1)
-            .play();
-        $tickerWrapper.on("mouseenter", function(){
-            infinite.pause();
-        }).on("mouseleave", function(){
-            infinite.play();
-        });
     }
+
+
 
 </script>
 
