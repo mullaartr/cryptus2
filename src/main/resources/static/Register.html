@@ -41,7 +41,9 @@
 <body>
 <script>
     $(function () {
-        $("#datepicker").datepicker();
+        $("#datepicker").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
     });
 </script>
 
@@ -129,7 +131,7 @@
             </tr>
             <tr>
                 <td>Enter post code :</td>
-                <td><input type="text" placeholder="1000NL" id="postCode" class="tb"/></td>
+                <td><input type="text" placeholder="1000NL" id="postcode" class="tb"/></td>
             </tr>
             <tr>
                 <td>Enter street Name :</td>
@@ -172,7 +174,7 @@
 
         <script>
 
-            document.querySelector('#postCode').addEventListener('focusout', checkForAddressPart);
+            document.querySelector('#postcode').addEventListener('focusout', checkForAddressPart);
 
             document.querySelector('#houseNumber').addEventListener('focusout', checkForAddressPart);
 
@@ -181,7 +183,7 @@
                 let regex = new RegExp(/^[1-9][0-9]{3}[\s]?[A-Za-z]{2}$/i);
 
                 // velden moeten niet leg zijn, liefst regex
-                let postcode = document.querySelector('#postCode').value
+                let postcode = document.querySelector('#postcode').value
                 let houseNumber = document.querySelector('#houseNumber').value
 
                 // als postcode een valide postcode is nummer niet leeg, dan
@@ -215,7 +217,7 @@
                 document.querySelector('#city').value = addressPart.city; // zonder validatie
                 document.querySelector('#street').value = addressPart.street; // zonder validatie
                 // error style weghalen
-                document.querySelector('#postCode').classList.remove('error');
+                document.querySelector('#postcode').classList.remove('error');
                 document.querySelector('#houseNumber').classList.remove('error');
             }
 
@@ -282,10 +284,22 @@
         let proposition = document.getElementById("proposition").value;
         let lastName = document.getElementById("lastName").value;
         let dOB = document.getElementById("datepicker").value;
+
         let houseNumber = document.getElementById("houseNumber").value;
-        let postCode = document.getElementById("postCode").value;
+        let postcode = document.getElementById("postcode").value;
         let street = document.getElementById("street").value;
         let city = document.getElementById("city").value;
+
+        // const address = {
+        //     houseNumber,
+        //     postCode,
+        //     street,
+        //     city
+        //
+        //
+        // }
+
+        //build address object
         let BSN = document.getElementById("bsn").value;
         let email = document.getElementById("email1").value;
         let phone = document.getElementById("phone").value;
@@ -335,8 +349,8 @@
             alert("please enter house number.");
             return
         }
-        if (postCode == '') {
-            alert("please postcode.");
+        if (postcode == '') {
+            alert("please enter your postcode.");
             return
         }
         if (street == '') {
@@ -399,10 +413,18 @@
             userName: uname,
             password: pwd,
             birthDate: dOB,
-            houseNumber: houseNumber,
-            postcode: postCode,
-            street: street,
-            city: city,
+            address: { houseNumber,
+                postcode,
+                street,
+                city,
+
+            },
+
+
+            // houseNumber: houseNumber,
+            // postcode: postCode,
+            // street: street,
+            // city: city,
             bsn: BSN,
             email: email,
             phone: phone
@@ -429,7 +451,7 @@
             .then((response) => { // callback
                 console.log(response)
                 if (response.status === 200) {
-                    return response
+                    return response.json()
                     // if (response.status === 200) {
                     //   let token = response.headers.get("Authorization").split(" ")[1]
                     //   console.log(token)
