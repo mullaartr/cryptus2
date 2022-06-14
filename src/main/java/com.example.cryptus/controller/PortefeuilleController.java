@@ -54,7 +54,7 @@ public class PortefeuilleController {
     }
 
     @GetMapping(value = "/{id}")
-    @ResponseBody public ResponseEntity<PortefeuilleDTO> portefeuille(@PathVariable("id") int id){
+    @ResponseBody public ResponseEntity<?> portefeuille(@PathVariable("id") int id){
         Optional<Portefeuille> portefeuille = portefeuilleService.findPortefeuilleById(id);
         if(portefeuille.isPresent()){
             return ResponseEntity.ok().body(new PortefeuilleDTO(portefeuille.orElse(null)));

@@ -102,10 +102,11 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
 (
+    `portefeuille_regel_Id` INT NOT NULL AUTO_INCREMENT,
     `portefeuilleID` INT            NOT NULL,
     `assetId`        INT            NOT NULL,
     `saldo`          DECIMAL(16, 6) NOT NULL,
-    PRIMARY KEY (`portefeuilleID`, `assetId`),
+    PRIMARY KEY (`portefeuille_regel_Id`),
     INDEX `verzinzelf5_idx` (`assetId`) ,
     CONSTRAINT `portefeuilleregel_portefeuille`
         FOREIGN KEY (`portefeuilleID`)
@@ -115,15 +116,15 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
     CONSTRAINT `portefeuilleregel_asset`
         FOREIGN KEY (`assetId`)
             REFERENCES `cryptus`.`asset` (`assetId`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE RESTRICT
+            ON UPDATE RESTRICT
 );
 -- -----------------------------------------------------
 -- Table `cryptus`.`transactie`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
 (
-    `transactieId`         INT            NOT NULL AUTO_INCREMENT,
+    `transactieId`         INT            NOT NULL UNIQUE AUTO_INCREMENT,
     `datumtijd`            TIMESTAMP(2)   NOT NULL,
     `kosten`               DECIMAL(16, 2) NOT NULL,
     `creditiban`           VARCHAR(45)    NOT NULL,

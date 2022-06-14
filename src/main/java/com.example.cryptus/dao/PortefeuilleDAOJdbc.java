@@ -136,7 +136,8 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     }
 
     public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
-        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con));
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con), keyHolder);
     }
 
     public Optional<Portefeuille> findPortefeuilleOf(int userId) {
