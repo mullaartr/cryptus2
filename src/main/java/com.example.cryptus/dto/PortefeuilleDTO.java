@@ -24,7 +24,7 @@ public class PortefeuilleDTO  {
     public PortefeuilleDTO(Portefeuille portefeuille) {
         this.portefeuilleId = portefeuille.getPortefeuilleId();
         this.assets = portefeuille.getAssetLijst().stream().map(AssetDTO::new).collect(Collectors.toList());
-        portefeuille.getOwner().setPortefeuille(null);
+        portefeuille.setOwner(null);
     }
 
     public List<AssetDTO> getAssets() {

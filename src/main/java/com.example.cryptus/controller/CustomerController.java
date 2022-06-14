@@ -89,11 +89,12 @@ public class CustomerController {
 
 
 
-    @GetMapping("/findByUsernamePassword/")
+    @GetMapping("/findByUsernamePassword")
     @ResponseBody CustomerDTO findCustomerByUsernamePassword() {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Customer customer = customerService.findCustomerByUsernamePassword(username).get();
-        return new CustomerDTO(customer);
+        CustomerDTO customerDTO =  new CustomerDTO(customer);
+        return customerDTO;
     }
 
     @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {

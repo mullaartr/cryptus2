@@ -1,9 +1,13 @@
 koersOphaler()
 
 
-document.querySelector('#item1').addEventListener("click", () => {
-    window.location.href = "register.html";
+let euroOfDollar = true;
+
+document.querySelector('.tickerwrapper').addEventListener("click", () => {
+    euroOfDollar = !euroOfDollar;
+    koersen.forEach(koersen => vullLijstEuro(koersen));
 })
+
 
 
 function koersOphaler(){
@@ -37,18 +41,12 @@ function vullLijstEuro(json){
     const e = document.querySelector(naam)
     const plaatje = `Assets/${json.assetNaam}.webp`
     if(euroOfDollar) {
-        e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} € ${json.koersInEuro}`;
+        e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} € ${json.koersInEuro}`;
     } else {
-        e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} : $ ${json.koersInDollars}`;
+        e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} : $ ${json.koersInDollars}`;
     }
 
 }
-document.querySelector('.tickerwrapper').addEventListener("click", () => {
-    euroOfDollar = !euroOfDollar;
-    koersen.forEach(koersen => vullLijstEuro(koersen));
-
-
-})
 
 
 function maakTekstLint() {
