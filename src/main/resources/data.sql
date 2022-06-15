@@ -50,7 +50,7 @@ VALUES ('1234567891', 1000000.00, 1),
        ('9876543211', 1000000.00, 2);
 
 INSERT INTO `asset`
-(1, 'Bitcoin', 'BTC'),
+values (1, 'Bitcoin', 'BTC'),
        (2, 'Ethereum', 'ETH'),
        (3, 'Tether', 'USDT'),
        (4, 'USD-Coin', 'USDC'),
@@ -71,7 +71,7 @@ INSERT INTO `asset`
        (19, 'Cronos', 'CRO'),
        (20, 'Litecoin', 'LTC'),
         (21, 'Euro', 'Eur'),
-        (22, 'Dollar', 'USD')
+        (22, 'Dollar', 'USD');
 
 INSERT INTO `portefeuille`
 VALUES (1, 1),
