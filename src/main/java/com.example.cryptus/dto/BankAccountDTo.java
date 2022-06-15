@@ -8,6 +8,9 @@ public class BankAccountDTo {
 
     private String iban;
 
+    public BankAccountDTo() {
+    }
+
     public BankAccountDTo(BankAccount bankAccount) {
         this.balance = bankAccount.getBalance();
         this.iban = bankAccount.getIban();

@@ -45,7 +45,7 @@ public CoinGeckoAPIService(AssetService assetService, KoersService koersService)
     @RequestMapping
     public void coinAPI() throws IOException {
         URL url = new URL("https://api.coingecko.com/api/v3/simple/price?ids=Bitcoin%2CEthereum%2Ctether%2Cusd-coin" +
-                "%2Cbinancecoin%2Cripple%2Ccardano%2Cbinance-usd%2Csolana%2Cdogecoin%2Cpolkadot%2Cwrapped-bitcoin%2Ctron%2staked-ether%2C" +
+                "%2Cbinancecoin%2Cripple%2Ccardano%2Cbinance-usd%2Csolana%2Cdogecoin%2Cpolkadot%2Cwrapped-bitcoin%2Ctron%2Cstaked-ether%2C" +
                 "dai%2Cavalanche-2%2Cshiba-inu%2Cleo%2Ccronos%2Clitecoin&vs_currencies=eur%2Cusd");
         try {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();

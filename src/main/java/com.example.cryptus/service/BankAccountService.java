@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.cryptus.model.BankAccount.MINIMUM_BALANCE;
+
 @Service
 public class BankAccountService {
 
@@ -50,7 +52,7 @@ public class BankAccountService {
     }
 
     public void addFunds(double amount, int id){
-        if(amount <= 0){
+        if(amount <= MINIMUM_BALANCE){
             System.out.println("Amount must be greater than Zero");
         }else{
             bankAccountRepository.addFunds(amount, id);

@@ -31,10 +31,9 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     RowMapper<Customer> rowMapper = (rs, rowNum) -> {
-        Customer customer = new Customer(0,"","","","","",new Date(0),
-                "",new Address(),"","");
-        Address address = customer.getAddress();
-        //System.out.println("hello");
+        Customer customer = new Customer();
+        Address address = new Address();
+        customer.setAddress(address);
         customer.setUserId(rs.getInt("userId"));
         customer.setFirstName(rs.getString("voornaam"));
         customer.setPreposition(rs.getString("tussenvoegsel"));
@@ -149,8 +148,10 @@ public class CustomerDaoJdbc implements CustomerDao {
 
 
     public int storeCustomer(Customer customer){
-
         Address address = customer.getAddress();
+        System.out.println(customer + "Hello");
+
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertUserStatement(customer, connection), keyHolder);
         int newKey = keyHolder.getKey().intValue();
@@ -158,6 +159,7 @@ public class CustomerDaoJdbc implements CustomerDao {
                 "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int insert = jdbcTemplate.update(sql,newKey, customer.getBirthDate(), address.getStreet(), address.getHouseNumber(), address.getPostcode(),
                 address.getCity(), customer.getBSN(), customer.getEmail(), customer.getPhone());
+
 
         if (insert == 1) {
             logger.info("New customer created" + customer.getLastName());
@@ -176,6 +178,8 @@ public class CustomerDaoJdbc implements CustomerDao {
     @Override
     public void update(Customer customer) {
         Address address = new Address();
+        customer.setAddress(address);
+
         String sql = "UPDATE user " +
                 "SET voornaam = ?, tussenvoegsel = ?, achternaam = ?, gebruikersnaam = ?, wachtwoord = ?  WHERE userId = ?" ;
         int update2 = jdbcTemplate.update(sql,customer.getFirstName(), customer.getPreposition(), customer.getLastName(), customer.getUserName(),
@@ -196,6 +200,18 @@ public class CustomerDaoJdbc implements CustomerDao {
         jdbcTemplate.update("DELETE FROM user WHERE userId= ?",id);
 
 
+    }
+
+    @Override
+    public Optional<Customer> getCustomerById(int id) {String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
+        Customer customer = null;
+        try{
+            customer = jdbcTemplate.queryForObject(sql,rowMapper,id);
+        }catch (DataAccessException exception){
+            logger.info("Customer was not found");
+        }
+
+        return Optional.ofNullable(customer);
     }
 
     @Override

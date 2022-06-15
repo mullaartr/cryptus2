@@ -2,7 +2,6 @@ package com.example.cryptus.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class BankAccount {
@@ -91,7 +90,7 @@ public class BankAccount {
         return Objects.hash(getUserId(), getBalance());
     }
 
-    public double addFunds(double amount) {
+    public double depositMoney(double amount) {
         if (amount > MINIMUM_BALANCE)
             balance += amount;
         else {

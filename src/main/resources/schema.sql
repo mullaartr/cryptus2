@@ -1,8 +1,8 @@
 -- -----------------------------------------------------
 -- Schema cryptus
 -- -----------------------------------------------------
--- CREATE SCHEMA IF NOT EXISTS `cryptus` DEFAULT CHARACTER SET utf8 ;
--- USE `cryptus` ;
+ CREATE SCHEMA IF NOT EXISTS `cryptus`  ;
+ USE `cryptus` ;
 -- -----------------------------------------------------
 -- Table `cryptus`.`user`
 -- -----------------------------------------------------
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`klant`
     `emailadres`    VARCHAR(45) NOT NULL,
     `telefoon`      VARCHAR(10) NOT NULL,
     PRIMARY KEY (`userId`),
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
+    UNIQUE INDEX `userId_UNIQUE` (`userId` ),
     CONSTRAINT `klant_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`beheerder`
     `userId`           INT NOT NULL,
     `personeelsnummer` INT NOT NULL,
     PRIMARY KEY (`userId`),
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
-    UNIQUE INDEX `personeelsnummer_UNIQUE` (`personeelsnummer` ASC) VISIBLE,
+    UNIQUE INDEX `userId_UNIQUE1` (`userId` ) ,
+    UNIQUE INDEX `personeelsnummer_UNIQUE` (`personeelsnummer` ) ,
     CONSTRAINT `beheerder_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`bankrekening`
     `iban`   VARCHAR(45)    NOT NULL,
     `saldo`  DECIMAL(16, 2) NOT NULL,
     `userId` INT            NOT NULL,
-    INDEX `verzinzelf2_idx` (`userId` ASC) VISIBLE,
+    INDEX `verzinzelf2_idx` (`userId` ),
     PRIMARY KEY (`iban`),
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
+    UNIQUE INDEX `userId_UNIQUE2` (`userId` ) ,
     CONSTRAINT `bankrekening_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
@@ -89,8 +89,8 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille`
     `portefeuilleID` INT NOT NULL AUTO_INCREMENT,
     `userId`         INT NOT NULL,
     PRIMARY KEY (`portefeuilleID`),
-    INDEX `user_portefeuille_idx` (`userId` ASC) VISIBLE,
-    UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
+    INDEX `user_portefeuille_idx` (`userId` ) ,
+    UNIQUE INDEX `userId_UNIQUE3` (`userId` ) ,
     CONSTRAINT `portefeuille_user`
         FOREIGN KEY (`userId`)
             REFERENCES `cryptus`.`user` (`userId`)
@@ -102,11 +102,12 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
 (
+    `portefeuille_regel_Id` INT NOT NULL AUTO_INCREMENT,
     `portefeuilleID` INT            NOT NULL,
     `assetId`        INT            NOT NULL,
     `saldo`          DECIMAL(16, 6) NOT NULL,
-    PRIMARY KEY (`portefeuilleID`, `assetId`),
-    INDEX `verzinzelf5_idx` (`assetId` ASC) VISIBLE,
+    PRIMARY KEY (`portefeuille_regel_Id`),
+    INDEX `verzinzelf5_idx` (`assetId`) ,
     CONSTRAINT `portefeuilleregel_portefeuille`
         FOREIGN KEY (`portefeuilleID`)
             REFERENCES `cryptus`.`portefeuille` (`portefeuilleID`)
@@ -115,15 +116,15 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
     CONSTRAINT `portefeuilleregel_asset`
         FOREIGN KEY (`assetId`)
             REFERENCES `cryptus`.`asset` (`assetId`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE RESTRICT
+            ON UPDATE RESTRICT
 );
 -- -----------------------------------------------------
 -- Table `cryptus`.`transactie`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
 (
-    `transactieId`         INT            NOT NULL AUTO_INCREMENT,
+    `transactieId`         INT            NOT NULL UNIQUE AUTO_INCREMENT,
     `datumtijd`            TIMESTAMP(2)   NOT NULL,
     `kosten`               DECIMAL(16, 2) NOT NULL,
     `creditiban`           VARCHAR(45)    NOT NULL,
@@ -135,11 +136,11 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
     `creditportefeuilleID` INT            NOT NULL,
     `creditassetId`        INT            NOT NULL,
     PRIMARY KEY (`transactieId`),
-    INDEX `verzinzelf3_idx` (`debitportefeuilleID` ASC, `debitassetId` ASC) VISIBLE,
-    INDEX `verzinzelf9_idx` (`creditiban` ASC) VISIBLE,
-    INDEX `verzinzelf10_idx` (`debitiban` ASC) VISIBLE,
-    INDEX `verzinzelf7_idx` (`creditportefeuilleID` ASC, `creditassetId`
-                             ASC) VISIBLE,
+    INDEX `verzinzelf3_idx` (`debitportefeuilleID` , `debitassetId` ) ,
+    INDEX `verzinzelf9_idx` (`creditiban` ),
+    INDEX `verzinzelf10_idx` (`debitiban` ),
+    INDEX `verzinzelf7_idx` (`creditportefeuilleID`, `creditassetId`
+        ),
     CONSTRAINT `transactie_debit_portefeuilleregel`
         FOREIGN KEY (`debitportefeuilleID`, `debitassetId`)
             REFERENCES `cryptus`.`portefeuille_regel` (`portefeuilleID`, `assetId`)
@@ -172,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`koers`
     `wisselkoersEuro`   DECIMAL(16, 6) NOT NULL,
     `wisselkoersDollar` DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`assetId`, `datumKoers`),
-    INDEX `verzinzelf6_idx` (`assetId` ASC) VISIBLE,
+    INDEX `verzinzelf6_idx` (`assetId`),
     CONSTRAINT `koers_asset`
         FOREIGN KEY (`assetId`)
             REFERENCES `cryptus`.`asset` (`assetId`)

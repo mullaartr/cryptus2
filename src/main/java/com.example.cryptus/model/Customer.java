@@ -3,6 +3,7 @@ package com.example.cryptus.model;
 import com.example.cryptus.dto.RegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Date;
+import java.util.List;
 
 public class Customer extends User {
 
@@ -28,8 +29,14 @@ public class Customer extends User {
     public Customer(BankAccount bankAccount){
             super();
     }
-
-
+    public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password, List<Transaction> transactionList, BankAccount bankAccount, Portefeuille portefeuille, Date birthDate, String BSN, String email, String phone, Address address) {
+        super(userId, firstName, preposition, lastName, userName, password, transactionList, bankAccount, portefeuille);
+        this.birthDate = birthDate;
+        this.BSN = BSN;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+    }
     public Customer(int userId, Address address) {
         super(userId);
         this.address = address;
@@ -151,14 +158,12 @@ public class Customer extends User {
 
     @Override
     public String toString() {
-        return     super.toString()+
-                " BirthDate= " + birthDate +'\n' +
-                " BSN= " + BSN + '\n' +
-                " City= " + address.getCity() + '\n' +
-                " Street= " + address.getStreet() + '\n' +
-                " HouseNumber=" + address.getHouseNumber() +'\n' +
-                " email= " + email + '\n' +
-                " Postcode= " + address.getPostcode() + '\n' +
-                " Phone= " + phone ;
+        return "Customer{" +
+                "birthDate=" + birthDate +
+                ", BSN='" + BSN + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address=" + address +
+                '}';
     }
 }

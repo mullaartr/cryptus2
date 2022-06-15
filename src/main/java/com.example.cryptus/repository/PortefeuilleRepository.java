@@ -80,4 +80,9 @@ public class PortefeuilleRepository {
     public void deletePortefeuille(int id){
         portefeuilleDAO.delete(id);
     }
+
+
+    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
+        portefeuilleDAO.storePortefeuilleRegel(portefeuille, asset);
+    }
 }

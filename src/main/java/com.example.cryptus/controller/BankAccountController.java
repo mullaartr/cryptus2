@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.cryptus.model.BankAccount.MINIMUM_BALANCE;
+
 @RestController
 @RequestMapping(value = "/bankaccount")
 public class BankAccountController {
@@ -36,14 +38,13 @@ public class BankAccountController {
     @PatchMapping(value = "/deposit")
     @ResponseBody
     public ResponseEntity<?> addFunds(@RequestParam double amount, @RequestParam int id){
-
         if(amount <= 0){
+            System.out.println("hellooooooo");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Amount must be bigger than 0");
 
         }
         else{
             bankAccountService.addFunds(amount,id);
-            //return new ResponseEntity<BankAccount>(HttpStatus.ACCEPTED);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Funds were added Successfully");
 
         }

@@ -19,4 +19,6 @@ public interface AssetDao {
     void store (Asset asset);
     void delete (String naam);
 
+
 }
+

@@ -36,6 +36,8 @@ public class AssetDaoJdbc implements AssetDao {
         return ps;
     }
 
+
+
     @Override
     public Optional<Asset> findAssetByAssetNaam(String naam) {
         String sql = "select * from asset a where a.naam = ?";
@@ -83,6 +85,7 @@ public class AssetDaoJdbc implements AssetDao {
         int newKey = keyHolder.getKey().intValue();
         asset.setAssetId(newKey);
     }
+
 
     @Override
     public void delete(String naam) {

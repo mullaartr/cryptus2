@@ -64,6 +64,11 @@ public class CustomerService {
         return customerRepository.list();
     }
 
+    public Optional<Customer> getCustomerById(int id){
+
+        return customerRepository.getCustomerById(id);
+    }
+
 
 
     public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId) {

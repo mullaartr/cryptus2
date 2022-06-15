@@ -38,6 +38,8 @@ class PortefeuilleDAOJdbcTest {
     private Asset asset2;
     private Asset asset3;
     private Asset asset5;
+
+    private Customer customer;
     private List<Asset> assetList;
     private List<Asset> assetList1;
     private List<Asset> assetList3;
@@ -54,15 +56,15 @@ class PortefeuilleDAOJdbcTest {
         asset = new Asset(1, "Bitcoin", "BTC", null, 25.0);
         assetList.add(asset);
         portefeuille = new Portefeuille(1, null, assetList);
-        mullaart = new Customer(1,"Rogier",null,"Mullaart","12345","12345", Date.valueOf("1969-08-13"),"163647861",
-                new Address(6,"Justine de Gouwerhof","2011GP","Haarlem")
-                ,"rogier.mullaart@gmail.com","0647185165");
+        mullaart = new Customer(3);
+        customer = new Customer(4);
         portefeuille1 = new Portefeuille(3, mullaart, new ArrayList<>());
         asset1 = new Asset(1, "Bitcoin", "BTC", null, 4.0);
-        asset2 = new Asset(2, "Etherium", "ETH", null, 8.0);
-        asset3 = new Asset(3, "Dodgecoin", "DGC", null,  8.0);
-        asset5 = new Asset(2, "Etherium", "ETH", null, 25.0);
+        asset2 = new Asset(2, "Ethereum", "ETH", null, 8.0);
+        asset3 = new Asset(3, "Tether", "USDT", null,  8.0);
+        asset5 = new Asset(2, "Ethereum", "ETH", null, 25.0);
         assetList3 = new ArrayList<>();
+        assetList3.add(asset);
         assetList3.add(asset5);
         portefeuille4 = new Portefeuille(2, null, assetList3);
         portefeuilles = new ArrayList<>();
@@ -72,6 +74,7 @@ class PortefeuilleDAOJdbcTest {
         assetList1.add(asset1);
         assetList1.add(asset2);
         assetList1.add(asset3);
+        assetList.add(asset5);
         portefeuille1.setAssetLijst(assetList1);
         customerDaoJdbc = new CustomerDaoJdbc(new JdbcTemplate());
     }
@@ -99,7 +102,6 @@ class PortefeuilleDAOJdbcTest {
     void storePortefeuille(){
         portefeuilleDaoJDBCUnderTest.store(portefeuille1);
         Portefeuille actual = portefeuilleDaoJDBCUnderTest.findPortefeuilleById(3).orElse(null);
-        //portefeuille1.setOwner(customerDaoJdbc.findCustomerByPortefeuilleId(portefeuille1.getPortefeuilleId()).orElse(null));
         Portefeuille expected = portefeuille1;
         assertThat(actual).isNotNull().isEqualTo(expected);
     }
@@ -107,7 +109,7 @@ class PortefeuilleDAOJdbcTest {
     @Test
     @Order(4)
     void updatePortefeuille() {
-        portefeuille1.setPortefeuilleId(4);
+        portefeuille1.setOwner(customer);
         portefeuilleDaoJDBCUnderTest.store(portefeuille1);
         Asset asset = portefeuille1.getAssetLijst().
                 stream().filter(asset1 -> asset1.getAssetNaam().equals("Bitcoin")).

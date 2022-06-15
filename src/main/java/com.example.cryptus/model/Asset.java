@@ -13,12 +13,15 @@ public class Asset {
     private double saldo; // van portefeuille_regel
 
 
+
+
     public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers, double saldo) {
         this.assetId = assetId;
         this.assetNaam = assetNaam;
         this.assetAfkorting = assetAfkorting;
         this.koers = koers;
         this.saldo = saldo;
+
     }
 
     public Asset(int assetId, String assetNaam, String assetAfkorting, Koers koers) {
@@ -33,7 +36,8 @@ public class Asset {
     }
 
     public Asset(AssetDTO assetDTO) {
-        this(0, assetDTO.getAssetNaam(), assetDTO.getAssetAfkorting(), new Koers(assetDTO.getKoersDTO()), assetDTO.getSaldo());
+        this(0, assetDTO.getAssetNaam(), assetDTO.getAssetAfkorting(),
+                new Koers(assetDTO.getKoersDTO()), assetDTO.getSaldo());
     }
 
     public Asset(String assetNaam) {
@@ -84,12 +88,13 @@ public class Asset {
         this.saldo = saldo;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Asset asset = (Asset) o;
-        return assetId == asset.assetId && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting) && koers.equals(asset.koers);
+        return assetId == asset.assetId && Double.compare(asset.saldo, saldo) == 0 && assetNaam.equals(asset.assetNaam) && assetAfkorting.equals(asset.assetAfkorting);
     }
 
     @Override

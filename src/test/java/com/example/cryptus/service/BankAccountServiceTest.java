@@ -75,7 +75,7 @@ class BankAccountServiceTest {
     void addFunds() {
         bankAccount = new BankAccount();
         bankAccount.setBalance(5000);
-        bankAccount.addFunds(5000);
+        bankAccount.depositMoney(5000);
         assertEquals(10000,bankAccount.getBalance());
     }
 

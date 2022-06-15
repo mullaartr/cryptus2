@@ -35,7 +35,18 @@ public abstract class User implements Serializable {
         this.userName = userName;
         this.password = password;
     }
-
+    public User(int userId, String firstName, String preposition, String lastName, String userName, String password, List<Transaction> transactionList, BankAccount bankAccount, Portefeuille portefeuille) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.preposition = preposition;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.transactionList = transactionList;
+        this.bankAccount = bankAccount;
+        this.portefeuille = portefeuille;
+        //logger.info("User created with all-args constructor");
+    }
     //Daan: I created this no-args constructor
     public User() {
         super();
