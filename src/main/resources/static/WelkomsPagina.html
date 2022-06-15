@@ -165,7 +165,7 @@
     function klantOphaler() {
         let token = localStorage.getItem('token')
         //let klantnaam = `${klantNaamOphaler()}`
-            fetch(`http://localhost:8080/klant/findByUsernamePassword`,
+            fetch(`/klant/findByUsernamePassword`,
             {
                 method: 'GET',
                 headers: {

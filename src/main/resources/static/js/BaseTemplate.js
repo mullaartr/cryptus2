@@ -19,7 +19,7 @@ document.querySelector('.tickerwrapper').addEventListener("click", () => {
 function koersOphaler(){
     let token = localStorage.getItem('token')
 
-    fetch('http://localhost:8080/koers/meest-recent',
+    fetch('/koers/meest-recent',
         {
             method: 'GET',
             headers: {

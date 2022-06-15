@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "transactions")
-public class TransactionController {
+public class TransactionController <T> {
     private final Logger logger = LogManager.getLogger(CustomerController.class);
     private final TransactionService transactionService;
     private final CustomerService customerService;
@@ -41,15 +41,15 @@ public class TransactionController {
 
     // respons
     @PostMapping("/buytransaction_bank")
-    public ResponseEntity<Optional<Transaction>> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) {
+    public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         int userIdBuyer =
                 customerService.customerByEmail(username).get(0).getUserId();
                 Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
-        transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
-        return null;
+
+        return (ResponseEntity<?>) transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
     }
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,

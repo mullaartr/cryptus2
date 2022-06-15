@@ -6,13 +6,16 @@ import com.example.cryptus.model.Transaction;
 import com.example.cryptus.repository.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-public class TransactionService {
+public class TransactionService <T>{
 
     private final Logger logger = LogManager.getLogger(CustomerService.class);
     private final TransactionRepository transactionRepository;
@@ -50,7 +53,7 @@ public class TransactionService {
     public List<Transaction> getSellTransactionsFromUser(int userId) {
         return transactionRepository.getSellTransactionsFromUser(userId);
     }
-    public Optional<Transaction> buyFromBank(Customer buyer, String assetNaam, double assetAmount) {
+    public <T> T buyFromBank(Customer buyer, String assetNaam, double assetAmount) {
 
         Optional<Customer> seller =
                 customerRepository.findCustomerById(BANK);//mock
@@ -63,16 +66,16 @@ public class TransactionService {
         double percentage = bankConfigRepository.getPercentage();//mock
         if (seller.get().getPortefeuille().hasEnoughAssets(assetNaam, assetAmount)) {
             addAndWithdrawAssets(buyer, assetNaam, assetAmount, seller);
-        } else {
-            return null;
+        } else{
+            return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit");
         }
         if (buyer.getBankAccount().hasSufficientFunds(totalValue)) {
             addAndWithdrawEuros(buyer, seller, totalValue);
         } else {
-            return null;
+            return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("je hebt op dit moment niet genoeg saldo op je bankrekening");
         }
         Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
-        return Optional.of(transaction);
+        return (T) transaction;
     }
     private Transaction createNewTransaction(Customer buyer, double assetAmount, Optional<Customer> seller, Optional<Asset> assetBought, double totalValue, double percentage) {
         Transaction transaction = new Transaction(buyer, seller.get(),
