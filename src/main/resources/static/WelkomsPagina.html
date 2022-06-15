@@ -11,11 +11,54 @@
 
     <style>
 
+        #klantGegevens{
+            grid-column-start: 3;
+            grid-column-end: 8;
+            grid-row-start: 3;
+
+        }
+
+        #coinLijst1{
+            grid-column-start: 3;
+            grid-column-end: 4;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+        #coinLijst2{
+            grid-column-start: 5;
+            grid-column-end: 6;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+        #coinLijst3{
+            grid-column-start: 7;
+            grid-column-end: 8;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+        #coinLijst4
+        {
+            grid-column-start: 9;
+            grid-column-end: 10;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+        #coinLijst2{
+            grid-column-start: ;
+            grid-column-end: 6;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+
+
         #adresGegevens{
             grid-column-start: 8;
             grid-column-end: 10;
             grid-row-start: 3;
-
         }
 
         td:nth-child(2n + 2) {background: #CCC}
@@ -53,11 +96,50 @@
 
     </div>
     <div class="main" id="iets">
-        <div id="klantGegevens"></div>
 
     </div>
-    <div id="adresGegevens"></div>
 
+    <div class="main" id="klantGegevens"></div>
+    <div class="main" id="adresGegevens"></div>
+
+
+     <table class="main" id="coinLijst1">
+        <tr><td><img src="Assets/bitcoin.webp"> BTC:</td><td  id='BitcoinT'>0</td></tr>
+        <tr><td><img src="Assets/ethereum.webp">  ETH :</td><td id="EthereumT">0</td></tr>
+        <tr><td><img src="Assets/Tether.webp">     USDT :</td><td id="TetherT">0</td></tr>
+        <tr><td><img src="Assets/USD-Coin.webp">USDC :</td><td id="SD-CoinT">0</td></tr>
+        <tr><td><img src="Assets/BinanceCoin.webp">      BNB :</td><td id="BinanceCoinT">0</td></tr>
+    </table>
+
+    <table class="main" id="coinLijst2">
+        <tr><td><img src="Assets/cardano.webp">    ADA :</td><td id="CardanoT">0</td></tr>
+        <tr><td><img src="Assets/Ripple.webp">    XRP :</td><td id="RippleT">0</td></tr>
+        <tr><td><img src="Assets/Binance-USD.webp">   BUSD :</td><td id="Binance-USDT">0</td></tr>
+        <tr><td><img src="Assets/solana.webp">  SOL :</td><td id="SolanaT">0</td></tr>
+        <tr><td><img src="Assets/dogecoin.webp"> DOGE :</td><td id="DogecoinT">0</td></tr>
+        <tr><td><img src="Assets/polkadot.webp"> DOT :</td><td id="PolkadotT">0</td></tr>
+    </table>
+
+
+     <!--   /li>
+        <li class='listitem' id="usd-coin">     </li>
+        <li class='listitem' id="binance-coin"></li>
+        <li class='listitem' id="cardano"></li>
+        <li class='listitem' id="ripple"></li>
+        <li class='listitem' id="binance-usd"></li>
+        <li class='listitem' id="solana"></li>
+        <li class='listitem' id="dogecoin"></li>
+        <li class='listitem' id="polkadot"></li>
+        <li class='listitem' id="wrapped-bitcoin"><img src="Assets/wrapped_bitcoin_wbtc.webp"> WBTC :</li>
+        <li class='listitem' id="lido-staked-ether"><img src="Assets/steth_logo.webp"> STETH :</li>
+        <li class='listitem' id="tron"><img src="Assets/tron-logo.webp"> TRX :</li>
+        <li class='listitem' id="avalanche-coin"><img src="Assets/coin-round-red.webp"> AVAX :</li>
+        <li class='listitem' id="dai"><img src="Assets/4943.webp"> DAI :</li>
+        <li  class='listitem' id="shiba-inu"><img src="Assets/shiba.webp"> SHIB :</li>
+        <li class='listitem' id="leo-token"><img src="Assets/leo-token.webp"> LEO :</li>
+        <li class='listitem' id="cronos"><img src="Assets/oCw2s3GI_400x400.webp"> CRO :</li>
+        <li class='listitem' id="litecoin"><img src="Assets/litecoin.webp"> LTC :</li>
+-->
 
     <div class="item7">
         <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>

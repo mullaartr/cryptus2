@@ -90,7 +90,7 @@ h2{
 
 .main {
     grid-area: main;
-    border: 2px solid rgb(0, 0, 0);
+
 }
 
 .voetje {
@@ -119,6 +119,8 @@ h2{
     grid-template-areas:
         "hd hd hd hd hd hd hd hd hd"
         "kn kn kn kn kn kn kn kn kn"
+        "sd sd main main main main main main main"
+        "sd sd main main main main main main main"
         "sd sd main main main main main main main"
         "sd sd main main main main main main main"
         "sd sd main main main main main main main"
