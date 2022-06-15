@@ -1,6 +1,7 @@
 package com.example.cryptus.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ public class Transaction{
     private double feePercentage;
     private LocalDateTime timestamp;
 
+    @Autowired
     public Transaction() {
         this(0, null, null, null, 0.00, 0.00, 0.00, LocalDateTime.now());
         logger.info("Nieuwe transactie die de no arg constructor gebruikt.");
