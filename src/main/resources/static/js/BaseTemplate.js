@@ -36,12 +36,15 @@ function koersOphaler(){
             koersen = json;
             koersen.forEach(koersen => vullLijstEuro(koersen));
             maakTekstLint();
+            return json;
 
         }
     ).catch(ex => {
         console.log(ex)
     })
 }
+
+
 function vullLijstEuro(json){
     const naam = `#${json.assetNaam}`;
     const e = document.querySelector(naam)
