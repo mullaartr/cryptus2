@@ -63,9 +63,13 @@ public class TransactionService {
         double percentage = bankConfigRepository.getPercentage();//mock
         if (seller.get().getPortefeuille().hasEnoughAssets(assetNaam, assetAmount)) {
             addAndWithdrawAssets(buyer, assetNaam, assetAmount, seller);
+        } else {
+            return null;
         }
         if (buyer.getBankAccount().hasSufficientFunds(totalValue)) {
             addAndWithdrawEuros(buyer, seller, totalValue);
+        } else {
+            return null;
         }
         Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
         return Optional.of(transaction);

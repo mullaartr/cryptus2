@@ -118,6 +118,11 @@
         ).then(json => {
 
                 maakAssetList(json);
+                document.querySelector(`#TetherButton`).addEventListener("click", () => {
+                    console.log("SDKFS:DKFSDFKSD>:FK");
+                    buyAsset(Tether);
+                })
+
 
             }
         ).catch(ex => {
@@ -206,8 +211,8 @@
             const buyButton = document.createElement("button")
             buyButton.classList.add("buttons")
             buyButton.innerHTML = "BUY " + `${e.assetNaam}`
-            buyButton.id = `${e.assetNaam}`
-            buyButton.addEventListener("click", buyAsset)
+            buyButton.id = `${e.assetNaam}` + "Button";
+            //document.querySelector(`#${e.assetNaam}`).addEventListener("click", buyAsset)
             row.appendChild(buyButton)
 
             const amount = document.createElement("input");
@@ -215,23 +220,30 @@
             amount.setAttribute("type", "text");
             row.appendChild(amount);
 
+
+
         });
         assetTable.setAttribute("border", "0")
         const iets = document.querySelector('#iets')
         iets.appendChild(assetTable)
     }
 
+    let Tether = "Tether";
+    console.log("saldkjfhsakdljfh" + document.querySelector('#TetherButton'));
 
-    function buyAsset() {
-        let name = document.querySelector(`#${assetNaam}`)
-        let amount = document.querySelector(`#amountOf${assetNaam}`)
-        let buyParams = {assetName: `${name}`, assetAmount: `${amount}`}
+
+
+
+    function buyAsset(assetNaam) {
+        let amount = document.querySelector(`#amountOf${assetNaam}`).value;
+        let buyParams = {"assetName": `${assetNaam}`, "assetAmount": parseInt(`${amount}`)}
         let token = localStorage.getItem('token');
-        fetch('http://localhost:8080/buytransaction_bank', //ik heb deze POST-request niet in Postman
+        fetch('http://localhost:8080/transactions/buytransaction_bank', //ik heb deze POST-request niet in Postman
             {
                 method: 'POST',
                 headers: {
-                    'content-Type': 'application/json' // correct header?
+                    'content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`// correct header?
                 },
                 body: JSON.stringify(buyParams)
                 //the POST aan de Java-kant returns null, should that change?

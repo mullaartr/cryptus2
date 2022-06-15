@@ -33,6 +33,8 @@ public class TransactionDTO {
         logger.info("Nieuwe transactieDTO die de all arg constructor gebruikt" +
                 ".");
     }
+
+
     public int getTransactionId() {
         return transactionId;
     }
