@@ -103,7 +103,7 @@
     function koersOphaler2(){
         let token = localStorage.getItem('token')
 
-        fetch('http://localhost:8080/koers/meest-recent',
+        fetch('/koers/meest-recent',
             {
                 method: 'GET',
                 headers: {
@@ -222,13 +222,15 @@
                     if(response.status === 200){
                         return response.json();
                     } else {
-                        alert(response.stringify);
+                        let text = JSON.stringify(response.statusText)
+
+                        alert(text);
                     }
                  //pop up: transactie geslaagd
 
         }).then(json => {
 
-            alert(json.stringify);
+            alert(json.stringify());
         })
             .catch((error) => {
                 console.error('Foutje', error); // pop up: transactie gefaald
