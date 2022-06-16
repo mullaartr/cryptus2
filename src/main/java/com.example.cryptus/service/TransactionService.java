@@ -75,7 +75,7 @@ public class TransactionService <T>{
             return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("je hebt op dit moment niet genoeg saldo op je bankrekening");
         }
         Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
-        return (T) transaction;
+        return (T)ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
     }
     private Transaction createNewTransaction(Customer buyer, double assetAmount, Optional<Customer> seller, Optional<Asset> assetBought, double totalValue, double percentage) {
         Transaction transaction = new Transaction(buyer, seller.get(),
