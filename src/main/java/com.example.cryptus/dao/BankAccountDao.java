@@ -19,7 +19,7 @@ public interface BankAccountDao {
 
     void update(BankAccount bankAccount);
 
-    void delete(int userId);
+    void delete(String iban);
 
     //update bankrekening set saldo = saldo + ? Where userId = 10
     //SELECT * FROM bankrekening where userId = 10
