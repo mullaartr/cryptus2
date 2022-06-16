@@ -219,13 +219,16 @@
                 body: JSON.stringify(buyParams)
                 //the POST aan de Java-kant returns null, should that change?
             }).then((response) => {
-            if (response.status === 200) {
-                return response.json(); //pop up: transactie geslaagd
-            } else {
-                //pop up: onvoldoende saldo
-            }
+                    if(response.status === 200){
+                        return response.json();
+                    } else {
+                        alert(response.stringify);
+                    }
+                 //pop up: transactie geslaagd
+
         }).then(json => {
-            return json;
+
+            alert(json.stringify);
         })
             .catch((error) => {
                 console.error('Foutje', error); // pop up: transactie gefaald
