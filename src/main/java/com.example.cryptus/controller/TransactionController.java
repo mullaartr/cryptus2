@@ -1,4 +1,6 @@
 package com.example.cryptus.controller;
+import com.example.cryptus.dto.TransactionDTO;
+import com.example.cryptus.dto.buyAssetDTO;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.service.CustomerService;
@@ -14,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "transactions")
-public class TransactionController {
+public class TransactionController <T> {
     private final Logger logger = LogManager.getLogger(CustomerController.class);
     private final TransactionService transactionService;
     private final CustomerService customerService;
@@ -39,15 +41,15 @@ public class TransactionController {
 
     // respons
     @PostMapping("/buytransaction_bank")
-    public ResponseEntity<Optional<Transaction>> buyFromBank(@RequestParam String assetName, @RequestParam int assetAmount) {
+    public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         int userIdBuyer =
                 customerService.customerByEmail(username).get(0).getUserId();
                 Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
-        transactionService.buyFromBank(buyer, assetName, assetAmount);
-        return null;
+
+        return (ResponseEntity<?>) transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
     }
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,

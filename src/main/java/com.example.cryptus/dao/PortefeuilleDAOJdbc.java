@@ -117,7 +117,8 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
 
     private PreparedStatement insertPortefeuilleRegelStatement(Portefeuille portefeuille, Asset asset, Connection connection)throws SQLException {
         PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO portefeuille_regel(portefeuilleID, SALDO, ASSETId) VALUES (?,?,?)");
+                "INSERT INTO portefeuille_regel(portefeuilleID, SALDO, ASSETId) VALUES (?,?,?)",
+                Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, portefeuille.getPortefeuilleId());
         ps.setDouble(2, asset.getSaldo());
         ps.setInt(3, asset.getAssetId());
@@ -138,6 +139,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
     public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> insertPortefeuilleRegelStatement(portefeuille, asset, con), keyHolder);
+        int newKey = keyHolder.getKey().intValue();
     }
 
     public Optional<Portefeuille> findPortefeuilleOf(int userId) {

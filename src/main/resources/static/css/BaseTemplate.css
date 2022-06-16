@@ -1,0 +1,128 @@
+
+.tickerwrapper {
+    grid-area: kn;
+    position: relative;
+    left:0%;
+    border: 1px solid #444;
+    background: #fff;
+    width: 99.9%;
+    height: 30px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.list {
+    position: relative;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+.list.cloned {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.list li {
+    float: left;
+    padding-left: 20px;
+}
+@media only screen and (max-width: 600px) {
+    .item0{
+        display: none;
+    }
+
+}
+
+
+
+.header {
+    grid-area: hd;
+    height: clamp(150px, 80%, 150px);
+    background-color: rgb(252, 149, 31);
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+#cryptusLogo {
+    align-self: center;
+    object-fit: cover;
+    float: left;
+    text-align: left;
+    width: 150px;
+    grid-column: 1;
+}
+.item0 {
+    grid-area: hd;
+    align-self: center;
+    font-size: 80px;
+    font-family: "Edwardian script ITC";
+}
+h2{
+    margin-bottom: 0;
+    margin-top: 30px;
+}
+
+
+.buttons{
+    grid-area: kn;
+    justify-self: center;
+    font-family: Arial, sans-serif;
+    border: 2px solid black;
+    margin-bottom: 4px;
+    background-color: rgb(255, 217, 0);
+    height: 40px;
+    width: 90%;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+.buttons:hover {background-color: rgb(142, 123, 16)
+}
+
+.buttons:active {
+    background-color: rgb(142, 123, 16);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.main {
+    grid-area: main;
+
+}
+
+.voetje {
+    grid-area: ft;
+    background-color: rgb(252, 149, 31);
+    height: clamp(150px, 100%, 150px);
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.item7 {
+    grid-area: sd;
+    justify-self: center;
+    align-self: center;
+    height: 100%;
+    width: 100%;
+
+}
+
+.wrapper {
+    display: grid;
+    flex-wrap: wrap;
+    grid-template-columns:repeat(9, 1fr);
+    grid-template-rows: auto;
+    padding: 2px;
+    grid-template-areas:
+        "hd hd hd hd hd hd hd hd hd"
+        "kn kn kn kn kn kn kn kn kn"
+        "sd sd main main main main main main main"
+        "sd sd main main main main main main main"
+        "sd sd main main main main main main main"
+        "sd sd main main main main main main main"
+        "sd sd main main main main main main main"
+        "ft ft ft ft ft ft ft ft ft";
+}

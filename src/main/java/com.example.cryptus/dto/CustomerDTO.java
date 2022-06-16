@@ -116,4 +116,20 @@ public class CustomerDTO {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public PortefeuilleDTO getPortefeuilleDTO() {
+        return portefeuilleDTO;
+    }
+
+    public void setPortefeuilleDTO(PortefeuilleDTO portefeuilleDTO) {
+        this.portefeuilleDTO = portefeuilleDTO;
+    }
+
+    public BankAccountDTo getBankAccountDTo() {
+        return bankAccountDTo;
+    }
+
+    public void setBankAccountDTo(BankAccountDTo bankAccountDTo) {
+        this.bankAccountDTo = bankAccountDTo;
+    }
 }

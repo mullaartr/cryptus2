@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/BaseTemplate.css">
+    <script src="js/BaseTemplate.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineMax.min.js" integrity="sha512-0xrMWUXzEAc+VY7k48pWd5YT6ig03p4KARKxs4Bqxb9atrcn2fV41fWs+YXTKb8lD2sbPAmZMjKENiyzM/Gagw==" crossorigin="anonymous"></script>
@@ -9,173 +11,53 @@
 
     <style>
 
-
-        .tickerwrapper {
-            grid-area: kn;
-            position: relative;
-            left:0%;
-            border: 1px solid #444;
-            background: #fff;
-            width: 99.9%;
-            height: 30px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .list {
-            position: relative;
-            display: inline-block;
-            font-family: Arial, sans-serif;
-            list-style: none;
-            padding:0;
-            margin:0;
-        }
-
-        .list.cloned {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-
-        .list li {
-            float: left;
-            padding-left: 20px;
-        }
-        @media only screen and (max-width: 600px) {
-            .item0{
-                display: none;
-            }
+        #klantGegevens{
+            grid-column-start: 3;
+            grid-column-end: 8;
+            grid-row-start: 3;
 
         }
 
-
-
-        .header {
-            grid-area: hd;
-            height: clamp(150px, 80%, 150px);
-            background-color: rgb(252, 149, 31);
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-        }
-        #cryptusLogo {
-            align-self: center;
-            object-fit: cover;
-            float: left;
-            text-align: left;
-            width: 150px;
-            grid-column: 1;
-        }
-        .item0 {
-            grid-area: hd;
-            align-self: center;
-            font-size: 80px;
-            font-family: "Edwardian script ITC";
-        }
-        h2{
-            margin-bottom: 0;
-            margin-top: 30px;
+        .coinLijst{
+            grid-area: main;
         }
 
-
-        .buttons{
-            grid-area: kn;
-            justify-self: center;
-            font-family: Arial, sans-serif;
-            border: 2px solid black;
-            margin-bottom: 4px;
-            background-color: rgb(255, 217, 0);
-            height: 40px;
-            width: 90%;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.5s;
-        }
-        .buttons:hover {background-color: rgb(142, 123, 16)
-        }
-
-        .buttons:active {
-            background-color: rgb(142, 123, 16);
-            box-shadow: 0 5px #666;
-            transform: translateY(4px);
-        }
-
-
-        #item1 {
+        #coinLijst1{
             grid-column-start: 3;
             grid-column-end: 4;
+            grid-row-start: 4;
+            grid-row-end: 8;
         }
 
-        #item2 {
-            grid-column-start: 4;
-            grid-column-end: 5;
-        }
-
-        #item3 {
+        #coinLijst2{
             grid-column-start: 5;
             grid-column-end: 6;
+            grid-row-start: 4;
+            grid-row-end: 8;
         }
-
-        #item4 {
-            grid-column-start: 6;
-            grid-column-end: 7;
-        }
-
-        #item5 {
+        #coinLijst3{
             grid-column-start: 7;
             grid-column-end: 8;
+            grid-row-start: 4;
+            grid-row-end: 8;
         }
 
-        #item6 {
-            grid-column-start: 8;
-            grid-column-end: 9;
-        }
-
-        #item8 {
+        #coinLijst4 {
             grid-column-start: 9;
             grid-column-end: 10;
+            grid-row-start: 4;
+            grid-row-end: 8;
         }
 
-        .item7 {
-            grid-area: sd;
-            justify-self: center;
-            align-self: center;
-            height: 100%;
-            width: 100%;
 
+
+        #adresGegevens{
+            grid-column-start: 8;
+            grid-column-end: 10;
+            grid-row-start: 3;
         }
 
-        .main {
-            grid-area: main;
-            border: 2px solid rgb(0, 0, 0);
-        }
-
-        .voetje {
-            grid-area: ft;
-            background-color: rgb(252, 149, 31);
-            height: clamp(150px, 100%, 150px);
-            border-top: 2px solid black;
-            border-bottom: 2px solid black;
-        }
-
-        .wrapper {
-            display: grid;
-            flex-wrap: wrap;
-            grid-template-columns:repeat(9, 1fr);
-            grid-template-rows: auto;
-            padding: 2px;
-            grid-template-areas:
-        "hd hd hd hd hd hd hd hd hd"
-        "kn kn kn kn kn kn kn kn kn"
-        "sd sd main main main main main main main"
-        "sd sd main main main main main main main"
-        "sd sd main main main main main main main"
-        "ft ft ft ft ft ft ft ft ft";
-        }
-
-        #coins {
-            list-style-type: none;
-        }
-
+        td:nth-child(2n + 2) {background: #CCC}
 
 
 
@@ -199,7 +81,7 @@
         <li class='listitem' id="Polkadot"></li>
         <li class='listitem' id="Wrapped-Bitcoin"></li>
         <li class='listitem' id="Staked-Ether"></li>
-        <li class='listitem' id="Tron"></li>
+        <li class='listitem' id="TRON"></li>
         <li class='listitem' id="Avalanche-2"></li>
         <li class='listitem' id="Dai"></li>
         <li class='listitem' id="Shiba-Inu"></li>
@@ -210,9 +92,43 @@
 
     </div>
     <div class="main" id="iets">
-        <button type="submit" id="kutbutton">submit</button>
-        <!--<script src="klantophaler();"></script>-->
+
     </div>
+
+    <div class="main" id="klantGegevens"></div>
+    <div class="main" id="adresGegevens"></div>
+
+
+     <table class="coinLijst" id="coinLijst1">
+        <tr><td><img src="Assets/bitcoin.webp"> BTC:</td><td  id='BitcoinT'>0</td></tr>
+        <tr><td><img src="Assets/ethereum.webp">  ETH :</td><td id="EthereumT">0</td></tr>
+        <tr><td><img src="Assets/Tether.webp">     USDT :</td><td id="TetherT">0</td></tr>
+        <tr><td><img src="Assets/USD-Coin.webp">USDC :</td><td id="SD-CoinT">0</td></tr>
+        <tr><td><img src="Assets/BinanceCoin.webp">      BNB :</td><td id="BinanceCoinT">0</td></tr>
+    </table>
+
+    <table class="coinLijst" id="coinLijst2">
+        <tr><td><img src="Assets/cardano.webp">    ADA :</td><td id="CardanoT">0</td></tr>
+        <tr><td><img src="Assets/Ripple.webp">    XRP :</td><td id="RippleT">0</td></tr>
+        <tr><td><img src="Assets/Binance-USD.webp">   BUSD :</td><td id="Binance-USDT">0</td></tr>
+        <tr><td><img src="Assets/solana.webp">  SOL :</td><td id="SolanaT">0</td></tr>
+        <tr><td><img src="Assets/dogecoin.webp"> DOGE :</td><td id="DogecoinT">0</td></tr>
+    </table>
+
+    <table class="coinLijst" id="coinLijst3">
+        <tr><td><img src="Assets/polkadot.webp"> DOT :</td><td id="PolkadotT">0</td></tr>
+        <tr><td><img src="Assets/Wrapped-Bitcoin.webp">    ADA :</td><td id="Wrapped-BitcoinT">0</td></tr>
+        <tr><td><img src="Assets/Staked-Ether.webp">    XRP :</td><td id="Staked-EtherT">0</td></tr>
+        <tr><td><img src="Assets/TRON.webp">   BUSD :</td><td id="TRONT">0</td></tr>
+        <tr><td><img src="Assets/Avalanche-2.webp">  SOL :</td><td id="Avalanche-2T">0</td></tr>
+    </table>
+    <table class="coinLijst" id="coinLijst4">
+        <tr><td><img src="Assets/Dai.webp">    XRP :</td><td id="DaiT">0</td></tr>
+        <tr><td><img src="Assets/Shiba-Inu.webp">   BUSD :</td><td id="Shiba-InuT">0</td></tr>
+        <tr><td><img src="Assets/Leo.webp">  SOL :</td><td id="LeoT">0</td></tr>
+        <tr><td><img src="Assets/Cronos.webpp"> DOGE :</td><td id="CronosT">0</td></tr>
+        <tr><td><img src="Assets/Litecoin.webp"> DOT :</td><td id="LitecoinT">0</td></tr>
+    </table>
 
     <div class="item7">
         <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>
@@ -230,83 +146,17 @@
 </div>
 </body>
 <script>
-    //klantOphaler();
 
-    koersOphaler();
-    let koersen;
-    let euroOfDollar = true;
+
+
+    klantOphaler()
 
       document.querySelector('#item1').addEventListener("click", () => {
           window.location.href = "register.html";
       })
 
-    document.querySelector('#iets').addEventListener("click", () => {
-        klantOphaler()
-    })
-
-
-    function klantNaamOphaler() {
-        let token = localStorage.getItem('token');
-        fetch('http://localhost:8080/klant',
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-
-            }).then((response) => {
-                if (response.status === 200) {
-                    return response.json();
-                }
-            }
-        ).then(json => {
-            return json;
-            }
-        )
-    }
-
-    function koersOphaler(){
-        let token = localStorage.getItem('token')
-
-        fetch('http://localhost:8080/koers/meest-recent',
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-
-            }).then((response) => {
-                console.log(response)
-                if (response.status === 200) {
-                    return response.json();
-                }
-            }
-        ).then(json => {
-                koersen = json;
-                koersen.forEach(koersen => vullLijstEuro(koersen));
-                maakTekstLint();
-
-            }
-        ).catch(ex => {
-            console.log(ex)
-        })
-    }
-    function vullLijstEuro(json){
-        const naam = `#${json.assetNaam}`;
-        const e = document.querySelector(naam)
-        const plaatje = `Assets/${json.assetNaam}.webp`
-        if(euroOfDollar) {
-            e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} € ${json.koersInEuro}`;
-        } else {
-            e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px">" ${json.assetNaam} : $ ${json.koersInDollars}`;
-        }
-
-    }
-    document.querySelector('.tickerwrapper').addEventListener("click", () => {
-        euroOfDollar = !euroOfDollar;
-        koersen.forEach(koersen => vullLijstEuro(koersen));
-
-
+    document.querySelector('#item2').addEventListener("click", () => {
+        window.location.href = "BuyAssetsFromBank.html";
     })
 
 
@@ -315,7 +165,7 @@
     function klantOphaler() {
         let token = localStorage.getItem('token')
         //let klantnaam = `${klantNaamOphaler()}`
-            fetch(`http://localhost:8080/klant/findByUsernamePassword/`,
+            fetch(`/klant/findByUsernamePassword`,
             {
                 method: 'GET',
                 headers: {
@@ -330,48 +180,106 @@
                 }
             }
         ).then(json => {
-                const p = document.querySelector(`#iets`);
-                p.innerHTML = json.firstName;
+            console.log(json);
+                tabelKlantGegevens(json);
+                adresGegevens(json.address);
+                portefeuilleToner(json.portefeuilleDTO)
+                console.log(json.portefeuilleDTO)
+
 
             }
         ).catch(ex => {
             console.log(ex)
         })
     }
-    function maakTekstLint() {
-        var $tickerWrapper = $(".tickerwrapper");
-        var $list = $tickerWrapper.find("ul.list");
-        var $clonedList = $list.clone();
-        var listWidth = 20;
+    function tabelKlantGegevens(json) {
+        const table = document.createElement('table');
+        const main = document.querySelector('#klantGegevens')
+        table.style.padding = '3px';
+        let header = table.createTHead();
+        header.style.fontWeight = 'Bold';
+        header.style.fontSize = '1.5em';
+        let rij1 = table.insertRow(0);
+        let rij2 = table.insertRow(1);
 
-        $list.find("li").each(function (i) {
-            listWidth += $(this, i).outerWidth(true);
-        });
+        let rij1Cell1 = rij1.insertCell(0);
+        let rij1cel2 = rij1.insertCell(1);
+        let rij2cel1 = rij2.insertCell(0);
+        let rij2cel2 = rij2.insertCell(1);
+        let rij3Cell1 = rij1.insertCell(2);
+        let rij3Cell2 = rij1.insertCell(3);
+        let rij4Cell1 = rij2.insertCell(2)
+        let rij4Cell2 = rij2.insertCell(3);
+        let rij5Cell1 = rij1.insertCell(4)
+        let rij5Cell2 = rij1.insertCell(5);
+        let rij6Cell1 = rij2.insertCell(4);
+        let rij6Cell2 = rij2.insertCell(5);
 
-        var endPos = $tickerWrapper.width() - listWidth;
 
-        $list.add($clonedList).css({
-            "width": listWidth + "px"
-        });
-
-        $clonedList.addClass("cloned").appendTo($tickerWrapper);
-
-        var infinite = new TimelineMax({repeat: -1, paused: true});
-        var time = 40;
-
-        infinite.fromTo($list, time, {rotation: 0.01, x: 0}, {force3D: true, x: -listWidth, ease: Linear.easeNone}, 0)
-            .fromTo($clonedList, time, {rotation: 0.01, x: listWidth}, {force3D: true, x: 0, ease: Linear.easeNone}, 0)
-            .set($list, {force3D: true, rotation: 0.01, x: listWidth})
-            .to($clonedList, time, {force3D: true, rotation: 0.01, x: -listWidth, ease: Linear.easeNone}, time)
-            .to($list, time, {force3D: true, rotation: 0.01, x: 0, ease: Linear.easeNone}, time)
-            .progress(1).progress(1)
-            .play();
-        $tickerWrapper.on("mouseenter", function(){
-            infinite.pause();
-        }).on("mouseleave", function(){
-            infinite.play();
-        });
+        header.innerText = 'Gegevens:'
+        rij1Cell1.innerText = 'Voornaam:';
+        rij1cel2.innerText = json.firstName;
+        rij2cel1.innerText = 'Achternaam:';
+        rij2cel2.innerText = json.preposition +  " " + json.lastName;
+        rij3Cell1.innerText = 'Geboortedatum:';
+        rij3Cell2.innerText = json.birthDate;
+        rij4Cell1.innerText = 'E-mail:';
+        rij4Cell2.innerText =  json.email;
+        rij5Cell1.innerText = 'Telefoon Nummer:';
+        rij5Cell2.innerText = json.phone;
+        rij6Cell1.innerText = 'BSN:';
+        rij6Cell2.innerText = json.bsn;
+        main.appendChild(table);
     }
+
+    function adresGegevens(json){
+        const table = document.createElement('table');
+        const main = document.querySelector('#adresGegevens')
+        table.style.padding = '3px';
+        let header = table.createTHead();
+        header.style.fontWeight = 'Bold';
+        header.style.fontSize = '1.5em';
+        let rij1 = table.insertRow(0);
+        let rij2 = table.insertRow(1);
+
+        let rij1Cell1 = rij1.insertCell(0);
+        let rij1cel2 = rij1.insertCell(1);
+        let rij1Cell3 = rij1.insertCell(2);
+        let rij1cel4 = rij1.insertCell(3);
+        let rij2cel1 = rij2.insertCell(0);
+        let rij2cel2 = rij2.insertCell(1);
+        let rij2cel3 = rij2.insertCell(2);
+        let rij2cel4 = rij2.insertCell(3);
+
+        header.innerText = 'Adres:'
+        rij1Cell1.innerText = 'Straat:';
+        rij1cel2.innerText = json.street
+        rij2cel1.innerText = 'huisnr';
+        rij2cel2 .innerText = json.houseNumber;
+        rij2cel3.innerText = 'postcode:';
+        rij2cel4.innerText = json.postcode;
+        rij1Cell3.innerText = 'Stad: ';
+        rij1cel4.innerText = json.city;
+        main.appendChild(table);
+    }
+
+    function bankRekening(json){
+
+    }
+
+    function portefeuilleToner(json){
+        const assets = json.assets;
+        for(const asset of assets){
+            const tabelRij =  document.querySelector(`#${asset.assetNaam}T`)
+            if(asset.saldo !== 0){
+                tabelRij.innerText = asset.saldo;
+            }
+
+        }
+
+
+    }
+
 
 </script>
 
