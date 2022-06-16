@@ -119,10 +119,7 @@
         ).then(json => {
 
                 maakAssetList(json);
-                document.querySelector(`#TetherButton`).addEventListener("click", () => {
-                    console.log("SDKFS:DKFSDFKSD>:FK");
-                    buyAsset(Tether);
-                })
+
 
 
             }
@@ -159,37 +156,8 @@
         })
     }
 
-
-
     function maakAssetList(assetKoersen) {
         console.log(assetKoersen)
-
-        // let assetKoersenString = `
-        // [
-        // {"assetNaam":"bitcoin","wisselkoersEuro":"29000.000000","wisselkoersDollar":"28000.000000"},
-        // {"assetNaam":"Ethereum","wisselkoersEuro":"30000.000000","wisselkoersDollar":"27000.000000"},
-        // {"assetNaam":"Tether","wisselkoersEuro":"31000.000000","wisselkoersDollar":"26000.000000"},
-        // {"assetNaam":"USD-Coin","wisselkoersEuro":"32000.000000","wisselkoersDollar":"25000.000000"},
-        // {"assetNaam":"Dogecoin","wisselkoersEuro":"33000.000000","wisselkoersDollar":"24000.000000"},
-        // {"assetNaam":"Solana","wisselkoersEuro":"29000.000000","wisselkoersDollar":"28000.000000"},
-        // {"assetNaam":"Litecoin","wisselkoersEuro":"30000.000000","wisselkoersDollar":"27000.000000"},
-        // {"assetNaam":"Cronos","wisselkoersEuro":"31000.000000","wisselkoersDollar":"26000.000000"},
-        // {"assetNaam":"Shiba-Inu","wisselkoersEuro":"32000.000000","wisselkoersDollar":"25000.000000"},
-        // {"assetNaam":"Leo","wisselkoersEuro":"33000.000000","wisselkoersDollar":"24000.000000"},
-        // {"assetNaam":"nr11","wisselkoersEuro":"29000.000000","wisselkoersDollar":"28000.000000"},
-        // {"assetNaam":"nr12","wisselkoersEuro":"30000.000000","wisselkoersDollar":"27000.000000"},
-        // {"assetNaam":"nr13","wisselkoersEuro":"31000.000000","wisselkoersDollar":"26000.000000"},
-        // {"assetNaam":"nr14","wisselkoersEuro":"32000.000000","wisselkoersDollar":"25000.000000"},
-        // {"assetNaam":"nr15","wisselkoersEuro":"33000.000000","wisselkoersDollar":"24000.000000"},
-        // {"assetNaam":"nr16","wisselkoersEuro":"29000.000000","wisselkoersDollar":"28000.000000"},
-        // {"assetNaam":"nr17","wisselkoersEuro":"30000.000000","wisselkoersDollar":"27000.000000"},
-        // {"assetNaam":"nr18","wisselkoersEuro":"31000.000000","wisselkoersDollar":"26000.000000"},
-        // {"assetNaam":"nr19","wisselkoersEuro":"32000.000000","wisselkoersDollar":"25000.000000"},
-        // {"assetNaam":"nr20","wisselkoersEuro":"33000.000000","wisselkoersDollar":"24000.000000"}
-        // ]
-        // `
-        // let assetKoersen = JSON.parse(assetKoersenString)
-
 
         const assetTable = document.createElement('table')
 
@@ -214,7 +182,11 @@
             buyButton.innerHTML = "BUY " + `${e.assetNaam}`
             buyButton.id = `${e.assetNaam}` + "Button";
 
-            //document.querySelector(`#${e.assetNaam}`).addEventListener("click", buyAsset)
+            buyButton.addEventListener("click",
+                () => {
+                    buyAsset(`${e.assetNaam}`);
+                })
+
             row.appendChild(buyButton)
 
             const amount = document.createElement("input");
@@ -222,17 +194,14 @@
             amount.setAttribute("type", "text");
             row.appendChild(amount);
 
-
-
         });
         assetTable.setAttribute("border", "0")
         const iets = document.querySelector('#iets')
         iets.appendChild(assetTable)
     }
 
-    let Tether = "Tether";
-    console.log("saldkjfhsakdljfh" + document.querySelector('#TetherButton'));
-
+    // let Tether = "Tether";
+    // console.log("saldkjfhsakdljfh" + document.querySelector('#TetherButton'));
 
 
 
