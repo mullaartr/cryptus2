@@ -119,7 +119,10 @@
         ).then(json => {
 
                 maakAssetList(json);
-
+                document.querySelector(`#TetherButton`).addEventListener("click", () => {
+                    console.log("SDKFS:DKFSDFKSD>:FK");
+                    buyAsset(Tether);
+                })
 
 
             }
@@ -169,24 +172,22 @@
             cellAssetNaam.innerHTML = e.assetNaam
             row.appendChild(cellAssetNaam )
 
-            const cellWisselkoersEuro = document.createElement("td")
-            cellWisselkoersEuro.innerHTML = e.wisselkoersEuro
-            row.appendChild(cellWisselkoersEuro)
+            const cellkoersInEuro = document.createElement("td")
+            cellkoersInEuro.innerHTML = e.koersInEuro
+            row.appendChild(cellkoersInEuro)
 
-            const cellWisselkoersDollar = document.createElement("td")
-            cellWisselkoersDollar.innerHTML = e.wisselkoersDollar
-            row.appendChild(cellWisselkoersDollar)
+            const cellKoersInDollar = document.createElement("td")
+            cellKoersInDollar.innerHTML = e.KoersInDollars
+            row.appendChild(cellKoersInDollar)
 
             const buyButton = document.createElement("button")
             buyButton.classList.add("buttons")
             buyButton.innerHTML = "BUY " + `${e.assetNaam}`
             buyButton.id = `${e.assetNaam}` + "Button";
-
             buyButton.addEventListener("click",
                 () => {
                     buyAsset(`${e.assetNaam}`);
                 })
-
             row.appendChild(buyButton)
 
             const amount = document.createElement("input");
@@ -219,16 +220,13 @@
                 body: JSON.stringify(buyParams)
                 //the POST aan de Java-kant returns null, should that change?
             }).then((response) => {
-                    if(response.status === 200){
-                        return response.json();
-                    } else {
-                        alert(response.stringify);
-                    }
-                 //pop up: transactie geslaagd
-
+            if (response.status === 200) {
+                return response.json(); //pop up: transactie geslaagd
+            } else {
+                //pop up: onvoldoende saldo
+            }
         }).then(json => {
-
-            alert(json.stringify);
+            return json;
         })
             .catch((error) => {
                 console.error('Foutje', error); // pop up: transactie gefaald
