@@ -70,29 +70,31 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         Portefeuille portefeuille = null;
         try{
             portefeuille = jdbcTemplate.queryForObject(Sql, rowMapper, id);
-            portefeuille.setAssetLijst(findAssetsByPortefeuille(id).orElse(null));
+            portefeuille.setAssetLijst(findAssetsByPortefeuille(id));
         }catch (DataAccessException exception){
             logger.info("portefeuille was not found");
         }
         return Optional.ofNullable(portefeuille);
     }
 
-    private Optional <List<Asset>> findAssetsByPortefeuille(int id){
-        String sql = "select * from portefeuille_Regel po join asset a on a.assetId = po.assetId  where po.portefeuilleId = ?";
-        List<Asset> assetLijst = null;
+    private List<Asset> findAssetsByPortefeuille(int id){
+        String sql = "select * from portefeuille_regel po join asset a on a" +
+                ".assetId = po.assetId  where po.portefeuilleId = ?";
+        List<Asset> assetLijst = new ArrayList<>();
         try {
             assetLijst = jdbcTemplate.query(sql, assetResultExtractor, id);
         }catch (DataAccessException exception){
-            logger.info("no assets where found found");
+            logger.info("no assets where found");
+            logger.info(exception.getMessage());
         }
-        return Optional.ofNullable(assetLijst);
+        return assetLijst;
     }
 
     @Override
-    public Optional<List<Portefeuille>> findPortefeuilles(){
+    public List<Portefeuille> findPortefeuilles(){
         String sql = "select * from portefeuille";
         String sql2 = "select * from portefeuille_regel po join asset a on a.assetId = po.assetId where portefeuilleId = ?";
-        List<Portefeuille> portefeuilles = null;
+        List<Portefeuille> portefeuilles = new ArrayList<>();
         try {
             portefeuilles = jdbcTemplate.query(sql, portefeuilleResultExtractor);
             for (int i = 0; i < portefeuilles.size(); i++) {
@@ -103,7 +105,7 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
             logger.info("portefeuille was not found");
         }
 
-        return Optional.of(portefeuilles);
+        return portefeuilles;
     }
 
 

@@ -22,7 +22,7 @@ import java.util.*;
 
 
 @Configuration
-//@EnableScheduling
+@EnableScheduling
 public class CoinGeckoAPIService{
 
     private final Logger logger = LogManager.getLogger(CoinGeckoAPIService.class);

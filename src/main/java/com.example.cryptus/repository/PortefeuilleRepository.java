@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,24 +34,24 @@ public class PortefeuilleRepository {
         portefeuilleDAO.store(portefeuille);
     }
 
-    public Optional<List<Portefeuille>> findAllPortefeuilles(){
-        Optional<List<Portefeuille>> portefeuilles = portefeuilleDAO.findPortefeuilles();
+    public List<Portefeuille> findAllPortefeuilles(){
+        List<Portefeuille>  portefeuilles = portefeuilleDAO.findPortefeuilles();
 
         if(portefeuilles.isEmpty()){
-            return Optional.empty();
+            return new ArrayList<>();
         }
 
-        List<Portefeuille> portefeuilles1 = portefeuilles.get();
+        List<Portefeuille> portefeuilles1 = portefeuilles;
         for (int i = 0; i < portefeuilles1.size(); i++) {
             Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(portefeuilles1.get(i).getPortefeuilleId());
             if (customerOptional.isEmpty()) {
-                return Optional.empty();
+                return  new ArrayList<>();
             }
             Customer customer = customerOptional.get();
             portefeuilles1.get(i).setOwner(customer);
             //customer.setPortefeuille(portefeuilles1.get(i));
         }
-        return Optional.of(portefeuilles1);
+        return portefeuilles1;
     }
 
     public Optional<Portefeuille> findPortefeuilleWithCustomerById(int id){
