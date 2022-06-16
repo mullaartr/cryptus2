@@ -92,18 +92,23 @@ public class TransactionDaoJdbc implements TransactionDao {
     };
     ResultSetExtractor<Customer> customerResultSetExtractor = rs -> {
         Customer customer = new Customer();
-        customer.setUserId(rs.getInt("userId"));
+        while ( rs.next() ) {
+            customer.setUserId(rs.getInt("userId"));
+        }
         return customer;
     };
     ResultSetExtractor<Asset> assetResultExtractor = rs -> {
         Asset asset = new Asset();
-        asset.setAssetId(rs.getInt("assetId"));
-        asset.setAssetNaam(rs.getString("naam"));
-        asset.setAssetAfkorting(rs.getString("afkorting"));
+        while ( rs.next() ) {
+            asset.setAssetId(rs.getInt("assetId"));
+            asset.setAssetNaam(rs.getString("naam"));
+            asset.setAssetAfkorting(rs.getString("afkorting"));
+        }
         return asset;
     };
     private Optional<Customer> getCustomer(int transactionId, String sql) {
-        Customer customer = null;
+        //15-6-2022: Customer customer = null aangepast in;
+        Customer customer = new Customer();
         try {
             customer = jdbcTemplate.query(sql, customerResultSetExtractor, transactionId);
         } catch (DataAccessException exception) {
@@ -131,9 +136,11 @@ public class TransactionDaoJdbc implements TransactionDao {
         else return customer;
     }
     private Optional<Asset> findAssetByTransaction(int transactionId) {
-        String sql = "SELECT debitassetId FROM transactie JOIN bankrekening on " +
+        String sql = "SELECT assetId, naam, afkorting  FROM transactie JOIN " +
+                "bankrekening join asset on " +
                 "bankrekening.iban = transactie.creditiban OR bankrekening" +
-                ".iban = transactie.debitiban WHERE" +
+                ".iban = transactie.debitiban WHERE assetId = " +
+                "debitAssetId and " +
                 " transactieId = ?";
         Asset asset = new Asset();
         try {

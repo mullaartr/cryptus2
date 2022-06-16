@@ -81,13 +81,8 @@ public class TransactionRepository {
     public void deleteTransaction(int id) {
     }
     public Optional<Transaction> findTransactionById(int transactionId) {
-        Optional<Transaction> opt =
-                transactionDao.findTransactionById(transactionId);
-        if(opt.isEmpty()){
-            return Optional.empty();
+        return transactionDaoJdbc.findTransactionById(transactionId);
+        // eerste transactieDao
 
-        }else{
-            return transactionDao.findTransactionById(transactionId);
-        }
     }
 }

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -130,5 +131,4 @@ public class TransactionService {
     public Optional<Transaction> findTransactionById(int transactionId) {
         return transactionRepository.findTransactionById(transactionId);
     }
-
 }
