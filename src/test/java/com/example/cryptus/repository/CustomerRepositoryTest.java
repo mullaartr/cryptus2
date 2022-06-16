@@ -1,8 +1,9 @@
 package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
-import com.example.cryptus.model.Address;
-import com.example.cryptus.model.Customer;
+import com.example.cryptus.dao.PortefeuilleDAO;
+import com.example.cryptus.dao.PortefeuilleDAOJdbc;
+import com.example.cryptus.model.*;
 import com.example.cryptus.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,12 +23,17 @@ class CustomerRepositoryTest {
     Customer testCustomer;
     //CustomerDao mockDao;
     CustomerDaoJdbc mockDao;
+    PortefeuilleDAOJdbc mockPortefeuilleDAO;
+    PortefeuilleRepository portefeuilleRepositoryUnderTest;
+
 
 
     @BeforeEach
     public void initTest(){
         mockDao = Mockito.mock(CustomerDaoJdbc.class);
+        mockPortefeuilleDAO= Mockito.mock(PortefeuilleDAOJdbc.class);
         customerRepositoryUnderTest = new CustomerRepository(mockDao);
+        portefeuilleRepositoryUnderTest = new PortefeuilleRepository(mockPortefeuilleDAO,mockDao);
 
 
         testCustomer = new Customer(3,"John","gg","mekky","password","username"
@@ -85,16 +91,29 @@ class CustomerRepositoryTest {
         Optional<Customer> actual = customerRepositoryUnderTest.findCustomerByUsernamePassword("username");
         Optional<Customer> expected = Optional.of(testCustomer);
         assertThat(actual).isNotNull().isEqualTo(expected);
+
+
     }
 
     @Test
     @DisplayName("Testing find customer by name method")
     void findCustomerByName() {
+//        testCustomer = new Customer(3,"John","gg","mekky","password","username",new ArrayList<>(),new BankAccount("111111",500,3),new Portefeuille()
+//                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"email","");
+        testCustomer = new Customer(3,"John","gg","mekky","password","username"
+                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"email","");
+
+        Portefeuille portefeuille =  new Portefeuille( 5,testCustomer,new ArrayList<>());
+        portefeuille.setOwner(testCustomer);
+
 
         Mockito.when(mockDao.findCustomerByName("John")).thenReturn(Optional.of(testCustomer));
+        Mockito.when(mockPortefeuilleDAO.findPortefeuilleById(3)).thenReturn(Optional.of(portefeuille));
         Optional<Customer> actual = customerRepositoryUnderTest.findCustomerByName("John");
         Optional<Customer> expected = Optional.of(testCustomer);
         assertThat(actual).isNotNull().isEqualTo(expected);
+
+
     }
 
     @Test

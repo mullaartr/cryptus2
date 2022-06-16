@@ -203,7 +203,8 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     @Override
-    public Optional<Customer> getCustomerById(int id) {String sql ="select * from klant JOIN user u on u.userId = klant.userId where u.userId = ?";
+    public Optional<Customer> getCustomerById(int id) {
+        String sql ="select * from klant JOIN user on userId = klant.userId where userId = ?";
         Customer customer = null;
         try{
             customer = jdbcTemplate.queryForObject(sql,rowMapper,id);
