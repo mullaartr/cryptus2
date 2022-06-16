@@ -65,8 +65,8 @@ class BankAccountServiceTest {
     @Test
     void delete() {
 
-        serviceUnderTest.delete(6);
-        Mockito.doNothing().when(mockRepository).delete(2);
+        serviceUnderTest.delete("NL73 INGB 123 456 78 00");
+        Mockito.doNothing().when(mockRepository).delete("NL73 INGB 123 456 78 00");
         Optional<BankAccount> actual = serviceUnderTest.findBankaccountByUserId(2);
         assertThat(actual.isEmpty()).isTrue();
     }

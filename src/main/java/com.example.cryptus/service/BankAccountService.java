@@ -47,8 +47,8 @@ public class BankAccountService {
         return bankAccountRepository.list();
     }
 
-    public void delete(int userId){
-        bankAccountRepository.delete(userId);
+    public void delete(String iban){
+        bankAccountRepository.delete(iban);
     }
 
     public void addFunds(double amount, int id){

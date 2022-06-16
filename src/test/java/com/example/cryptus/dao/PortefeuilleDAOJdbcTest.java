@@ -92,7 +92,8 @@ class PortefeuilleDAOJdbcTest {
     @Test
     @Order(2)
     void findAll(){
-        List<Portefeuille> actual = portefeuilleDaoJDBCUnderTest.findPortefeuilles().orElse(null);
+        List<Portefeuille> actual =
+                portefeuilleDaoJDBCUnderTest.findPortefeuilles();
         List<Portefeuille> expected = portefeuilles;
         assertThat(actual).isNotNull().isEqualTo(expected);
     }

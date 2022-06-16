@@ -26,6 +26,7 @@ public class Customer extends User {
         this.phone = phone;
         this.address = address;
     }
+
     public Customer(BankAccount bankAccount){
             super();
     }

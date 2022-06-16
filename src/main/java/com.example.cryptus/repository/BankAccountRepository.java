@@ -47,8 +47,8 @@ public class BankAccountRepository {
         return bankAccountDao.list();
     }
 
-    public void delete(int userId){
-        bankAccountDao.delete(userId);
+    public void delete(String iban){
+        bankAccountDao.delete(iban);
     }
 
     public void addFunds(double amount, int id){

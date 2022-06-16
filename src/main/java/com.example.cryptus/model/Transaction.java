@@ -3,6 +3,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Transaction{
     private final Logger logger = LoggerFactory.getLogger(Transaction.class);
@@ -107,6 +108,19 @@ public class Transaction{
 
     public double calcCommission(){
         return (euroamount)*(feePercentage /100.00);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && buyer.equals(that.buyer) && seller.equals(that.seller) && asset.equals(that.asset) && Objects.equals(timestamp, that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionId, buyer, seller, asset, assetamount, euroamount, feePercentage, timestamp);
     }
 
     @Override
