@@ -54,6 +54,8 @@ class TransactionServiceTest {
     // klant en bank wijzigigen daarbij op de juiste wijze en de bankrekening
     // saldo's wijzigen daarbij
 //    @Test
+
+ //   @Test
 //    void buyFromBank() {
 //        testSetup();
 //        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
