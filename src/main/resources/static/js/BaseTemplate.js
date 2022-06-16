@@ -19,7 +19,7 @@ document.querySelector('.tickerwrapper').addEventListener("click", () => {
 function koersOphaler(){
     let token = localStorage.getItem('token')
 
-    fetch('http://localhost:8080/koers/meest-recent',
+    fetch('/koers/meest-recent',
         {
             method: 'GET',
             headers: {
@@ -36,12 +36,15 @@ function koersOphaler(){
             koersen = json;
             koersen.forEach(koersen => vullLijstEuro(koersen));
             maakTekstLint();
+            return json;
 
         }
     ).catch(ex => {
         console.log(ex)
     })
 }
+
+
 function vullLijstEuro(json){
     const naam = `#${json.assetNaam}`;
     const e = document.querySelector(naam)
