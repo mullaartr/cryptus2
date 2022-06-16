@@ -2,11 +2,15 @@ package com.example.cryptus.dao;
 
 import com.example.cryptus.model.Address;
 import com.example.cryptus.model.Customer;
+import com.example.cryptus.model.Portefeuille;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class CustomerDaoTest {
@@ -34,6 +38,7 @@ class CustomerDaoTest {
 
     @Test
     void list() {
+
     }
 
     @Test

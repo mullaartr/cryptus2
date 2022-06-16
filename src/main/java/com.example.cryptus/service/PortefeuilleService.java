@@ -22,7 +22,7 @@ public class PortefeuilleService {
         logger.info("new PortefeuilleService");
     }
 
-    public Optional<List<Portefeuille>> findAll(){
+    public List<Portefeuille>  findAll(){
         return portefeuilleRepository.findAllPortefeuilles();
     }
 

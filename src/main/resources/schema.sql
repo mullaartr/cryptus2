@@ -1,8 +1,8 @@
 -- -----------------------------------------------------
 -- Schema cryptus
 -- -----------------------------------------------------
- CREATE SCHEMA IF NOT EXISTS `cryptus`  ;
- USE `cryptus` ;
+CREATE SCHEMA IF NOT EXISTS `cryptus`  ;
+USE `cryptus` ;
 -- -----------------------------------------------------
 -- Table `cryptus`.`user`
 -- -----------------------------------------------------
@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
     `saldo`          DECIMAL(16, 6) NOT NULL,
     PRIMARY KEY (`portefeuille_regel_Id`),
     INDEX `verzinzelf5_idx` (`assetId`) ,
+    index `kutIndex` (`portefeuilleID`, `assetId`),
     CONSTRAINT `portefeuilleregel_portefeuille`
         FOREIGN KEY (`portefeuilleID`)
             REFERENCES `cryptus`.`portefeuille` (`portefeuilleID`)

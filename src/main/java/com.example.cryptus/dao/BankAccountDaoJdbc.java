@@ -141,8 +141,8 @@ public class BankAccountDaoJdbc implements BankAccountDao {
     }
 
     @Override
-    public void delete(int userId) {
-        jdbcTemplate.update("DELETE FROM bankrekening WHERE userId= ?", userId);
+    public void delete(String iban) {
+        jdbcTemplate.update("DELETE FROM bankrekening WHERE iban= ?", iban);
         logger.info("BankAccount deleted");
 
     }

@@ -15,7 +15,6 @@ public class AssetDTO {
         this.assetId = asset.getAssetId();
         this.assetNaam = asset.getAssetNaam();
         this.assetAfkorting = asset.getAssetAfkorting();
-        this.koersDTO = new KoersDto(asset.getKoers());
         this.saldo = asset.getSaldo();
     }
 

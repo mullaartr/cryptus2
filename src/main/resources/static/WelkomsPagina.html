@@ -11,11 +11,50 @@
 
     <style>
 
+        #klantGegevens{
+            grid-column-start: 3;
+            grid-column-end: 8;
+            grid-row-start: 3;
+
+        }
+
+        .coinLijst{
+            grid-area: main;
+        }
+
+        #coinLijst1{
+            grid-column-start: 3;
+            grid-column-end: 4;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+        #coinLijst2{
+            grid-column-start: 5;
+            grid-column-end: 6;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+        #coinLijst3{
+            grid-column-start: 7;
+            grid-column-end: 8;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+        #coinLijst4 {
+            grid-column-start: 9;
+            grid-column-end: 10;
+            grid-row-start: 4;
+            grid-row-end: 8;
+        }
+
+
+
         #adresGegevens{
             grid-column-start: 8;
             grid-column-end: 10;
             grid-row-start: 3;
-
         }
 
         td:nth-child(2n + 2) {background: #CCC}
@@ -53,11 +92,44 @@
 
     </div>
     <div class="main" id="iets">
-        <div id="klantGegevens"></div>
 
     </div>
-    <div id="adresGegevens"></div>
 
+    <div class="main" id="klantGegevens"></div>
+    <div class="main" id="adresGegevens"></div>
+
+
+     <table class="coinLijst" id="coinLijst1">
+        <tr><td><img src="Assets/bitcoin.webp"> BTC:</td><td  id='BitcoinT'>0</td></tr>
+        <tr><td><img src="Assets/ethereum.webp">  ETH :</td><td id="EthereumT">0</td></tr>
+        <tr><td><img src="Assets/Tether.webp">     USDT :</td><td id="TetherT">0</td></tr>
+        <tr><td><img src="Assets/USD-Coin.webp">USDC :</td><td id="SD-CoinT">0</td></tr>
+        <tr><td><img src="Assets/BinanceCoin.webp">      BNB :</td><td id="BinanceCoinT">0</td></tr>
+    </table>
+
+    <table class="coinLijst" id="coinLijst2">
+        <tr><td><img src="Assets/Cardano.webp">    ADA :</td><td id="CardanoT">0</td></tr>
+        <tr><td><img src="Assets/Ripple.webp">    XRP :</td><td id="RippleT">0</td></tr>
+        <tr><td><img src="Assets/Binance-USD.webp">   BUSD :</td><td id="Binance-USDT">0</td></tr>
+        <tr><td><img src="Assets/Solana.webp">  SOL :</td><td id="SolanaT">0</td></tr>
+        <tr><td><img src="Assets/Dogecoin.webp"> DOGE :</td><td id="DogecoinT">0</td></tr>
+    </table>
+
+    <table class="coinLijst" id="coinLijst3">
+        <tr><td><img src="Assets/Polkadot.webp"> DOT :</td><td
+                id="PolkadotT">0</td></tr>
+        <tr><td><img src="Assets/Wrapped-Bitcoin.webp">    ADA :</td><td id="Wrapped-BitcoinT">0</td></tr>
+        <tr><td><img src="Assets/Staked-Ether.webp">    XRP :</td><td id="Staked-EtherT">0</td></tr>
+        <tr><td><img src="Assets/TRON.webp">   BUSD :</td><td id="TRONT">0</td></tr>
+        <tr><td><img src="Assets/Avalanche-2.webp">  SOL :</td><td id="Avalanche-2T">0</td></tr>
+    </table>
+    <table class="coinLijst" id="coinLijst4">
+        <tr><td><img src="Assets/Dai.webp">    XRP :</td><td id="DaiT">0</td></tr>
+        <tr><td><img src="Assets/Shiba-Inu.webp">   BUSD :</td><td id="Shiba-InuT">0</td></tr>
+        <tr><td><img src="Assets/Leo.webp">  SOL :</td><td id="LeoT">0</td></tr>
+        <tr><td><img src="Assets/Cronos.webp"> DOGE :</td><td id="CronosT">0</td></tr>
+        <tr><td><img src="Assets/Litecoin.webp"> DOT :</td><td id="LitecoinT">0</td></tr>
+    </table>
 
     <div class="item7">
         <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>
@@ -84,12 +156,17 @@
           window.location.href = "register.html";
       })
 
+    document.querySelector('#item2').addEventListener("click", () => {
+        window.location.href = "BuyAssetsFromBank.html";
+    })
+
+
 
 
     function klantOphaler() {
         let token = localStorage.getItem('token')
         //let klantnaam = `${klantNaamOphaler()}`
-            fetch(`http://localhost:8080/klant/findByUsernamePassword`,
+            fetch(`/klant/findByUsernamePassword`,
             {
                 method: 'GET',
                 headers: {
@@ -107,6 +184,7 @@
             console.log(json);
                 tabelKlantGegevens(json);
                 adresGegevens(json.address);
+                portefeuilleToner(json.portefeuilleDTO)
                 console.log(json.portefeuilleDTO)
 
 
@@ -191,6 +269,15 @@
     }
 
     function portefeuilleToner(json){
+        const assets = json.assets;
+        for(const asset of assets){
+            const tabelRij =  document.querySelector(`#${asset.assetNaam}T`)
+            if(asset.saldo !== 0){
+                tabelRij.innerText = asset.saldo;
+            }
+
+        }
+
 
     }
 

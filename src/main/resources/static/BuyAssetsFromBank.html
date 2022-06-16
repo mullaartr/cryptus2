@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/BaseTemplate.css">
+    <script src="js/BaseTemplate.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"
+            integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w=="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineMax.min.js"
+            integrity="sha512-0xrMWUXzEAc+VY7k48pWd5YT6ig03p4KARKxs4Bqxb9atrcn2fV41fWs+YXTKb8lD2sbPAmZMjKENiyzM/Gagw=="
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        col:nth-child(2n +1) {
+            background: #FFF
+        }
+
+        /* heb ik dit nodig? */
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px">
+        <h2 class="item0">"Bless the Bytes"</h2>
+    </div>
+    <div class="tickerwrapper">
+        <ul class='list'>
+            <li class='listitem' id="Bitcoin"></li>
+            <li class='listitem' id="Ethereum"></li>
+            <li class='listitem' id="Tether"></li>
+            <li class='listitem' id="USD-Coin"></li>
+            <li class='listitem' id="BinanceCoin"></li>
+            <li class='listitem' id="Cardano"></li>
+            <li class='listitem' id="Ripple"></li>
+            <li class='listitem' id="Binance-USD"></li>
+            <li class='listitem' id="Solana"></li>
+            <li class='listitem' id="Dogecoin"></li>
+            <li class='listitem' id="Polkadot"></li>
+            <li class='listitem' id="Wrapped-Bitcoin"></li>
+            <li class='listitem' id="Staked-Ether"></li>
+            <li class='listitem' id="Tron"></li>
+            <li class='listitem' id="Avalanche-2"></li>
+            <li class='listitem' id="Dai"></li>
+            <li class='listitem' id="Shiba-Inu"></li>
+            <li class='listitem' id="Leo"></li>
+            <li class='listitem' id="Cronos"></li>
+            <li class='listitem' id="Litecoin"></li>
+        </ul>
+    </div>
+
+    <div class="main" id="iets"></div>
+
+    <div class="item7">
+        <button id="item1" class="buttons" type="button">Hoofdpagina</button>
+    </div>
+
+    <div class="voetje"></div>
+</div>
+</body>
+<script>
+
+    document.querySelector('#item1').addEventListener("click", () => {
+        window.location.href = "WelkomsPagina.html";//andere pagina?
+    })
+
+
+
+    koersOphaler2()
+
+
+
+    // let koersen;
+    // let euroOfDollar = true;
+
+    function klantNaamOphaler() {
+        let token = localStorage.getItem('token');
+        fetch('/klant',
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+
+            }).then((response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+            }
+        ).then(json => {
+                return json;
+            }
+        )
+    }
+
+    // hoe dit via template doen als ik maakAssetList(koersen) wil aanroepen in koersOphaler()?
+
+    function koersOphaler2(){
+        let token = localStorage.getItem('token')
+
+        fetch('/koers/meest-recent',
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+
+            }).then((response) => {
+                console.log(response)
+                if (response.status === 200) {
+                    return response.json();
+                }
+            }
+        ).then(json => {
+
+                maakAssetList(json);
+                document.querySelector(`#TetherButton`).addEventListener("click", () => {
+                    console.log("SDKFS:DKFSDFKSD>:FK");
+                    buyAsset(Tether);
+                })
+
+
+            }
+        ).catch(ex => {
+            console.log(ex)
+        })
+    }
+
+
+
+
+    function klantOphaler() {
+        let token = localStorage.getItem('token')
+        //let klantnaam = `${klantNaamOphaler()}`
+        fetch(`/klant/findByUsernamePassword/`,
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then((response) => {
+                console.log(response)
+                if (response.status === 200) {
+                    console.log("We zien hier")
+                    return response.json();
+                }
+            }
+        ).then(json => {
+                const p = document.querySelector(`#iets`);
+                p.innerHTML = json.firstName;
+            }
+        ).catch(ex => {
+            console.log(ex)
+        })
+    }
+
+    function maakAssetList(assetKoersen) {
+        console.log(assetKoersen)
+
+        const assetTable = document.createElement('table')
+
+        assetKoersen.forEach(e => {
+            const row = document.createElement("tr")
+            assetTable.appendChild(row)
+
+            const cellAssetNaam = document.createElement("td")
+            cellAssetNaam.innerHTML = e.assetNaam
+            row.appendChild(cellAssetNaam )
+
+            const cellkoersInEuro = document.createElement("td")
+            cellkoersInEuro.innerHTML = e.koersInEuro
+            row.appendChild(cellkoersInEuro)
+
+            const cellKoersInDollar = document.createElement("td")
+            cellKoersInDollar.innerHTML = e.koersInDollars
+            row.appendChild(cellKoersInDollar)
+
+            const buyButton = document.createElement("button")
+            buyButton.classList.add("buttons")
+            buyButton.innerHTML = "BUY " + `${e.assetNaam}`
+            buyButton.id = `${e.assetNaam}` + "Button";
+            buyButton.addEventListener("click",
+                () => {
+                    buyAsset(`${e.assetNaam}`);
+                })
+            row.appendChild(buyButton)
+
+            const amount = document.createElement("input");
+            amount.id = "amountOf" + `${e.assetNaam}`
+            amount.setAttribute("type", "text");
+            row.appendChild(amount);
+
+        });
+        assetTable.setAttribute("border", "0")
+        const iets = document.querySelector('#iets')
+        iets.appendChild(assetTable)
+    }
+
+    // let Tether = "Tether";
+    // console.log("saldkjfhsakdljfh" + document.querySelector('#TetherButton'));
+
+
+
+    function buyAsset(assetNaam) {
+        let amount = document.querySelector(`#amountOf${assetNaam}`).value;
+        let buyParams = {"assetName": `${assetNaam}`, "assetAmount": parseInt(`${amount}`)}
+        let token = localStorage.getItem('token');
+        fetch('/transactions/buytransaction_bank', //ik heb deze POST-request niet in Postman
+            {
+                method: 'POST',
+                headers: {
+                    'content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`// correct header?
+                },
+                body: JSON.stringify(buyParams)
+                //the POST aan de Java-kant returns null, should that change?
+            }).then((response) => {
+            response.text().then(text => alert(text))//pop up: onvoldoende saldo
+        }).catch((error) => {
+
+                console.error('Foutje', error); // pop up: transactie gefaald
+            });
+    }
+</script>
+
+
+</html>
+
