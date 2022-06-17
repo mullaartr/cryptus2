@@ -29,29 +29,29 @@
     <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px">
         <h2 class="item0">"Bless the Bytes"</h2>
     </div>
-    <div class="tickerwrapper">
-        <ul class='list'>
-            <li class='listitem' id="Bitcoin"></li>
-            <li class='listitem' id="Ethereum"></li>
-            <li class='listitem' id="Tether"></li>
-            <li class='listitem' id="USD-Coin"></li>
-            <li class='listitem' id="BinanceCoin"></li>
-            <li class='listitem' id="Cardano"></li>
-            <li class='listitem' id="Ripple"></li>
-            <li class='listitem' id="Binance-USD"></li>
-            <li class='listitem' id="Solana"></li>
-            <li class='listitem' id="Dogecoin"></li>
-            <li class='listitem' id="Polkadot"></li>
-            <li class='listitem' id="Wrapped-Bitcoin"></li>
-            <li class='listitem' id="Staked-Ether"></li>
-            <li class='listitem' id="Tron"></li>
-            <li class='listitem' id="Avalanche-2"></li>
-            <li class='listitem' id="Dai"></li>
-            <li class='listitem' id="Shiba-Inu"></li>
-            <li class='listitem' id="Leo"></li>
-            <li class='listitem' id="Cronos"></li>
-            <li class='listitem' id="Litecoin"></li>
-        </ul>
+    <div class="tickerwrapper"> <ul class='list'>
+        <li class='listitem' id="Bitcoin"></li>
+        <li class='listitem' id="Ethereum"></li>
+        <li class='listitem' id="Tether"></li>
+        <li class='listitem' id="USD-Coin"></li>
+        <li class='listitem' id="BinanceCoin"></li>
+        <li class='listitem' id="Cardano"></li>
+        <li class='listitem' id="Ripple"></li>
+        <li class='listitem' id="Binance-USD"></li>
+        <li class='listitem' id="Solana"></li>
+        <li class='listitem' id="Dogecoin"></li>
+        <li class='listitem' id="Polkadot"></li>
+        <li class='listitem' id="Wrapped-Bitcoin"></li>
+        <li class='listitem' id="Staked-Ether"></li>
+        <li class='listitem' id="TRON"></li>
+        <li class='listitem' id="Avalanche-2"></li>
+        <li class='listitem' id="Dai"></li>
+        <li class='listitem' id="Shiba-Inu"></li>
+        <li class='listitem' id="Leo"></li>
+        <li class='listitem' id="Cronos"></li>
+        <li class='listitem' id="Litecoin"></li>
+    </ul>
+
     </div>
 
     <div class="main" id="iets"></div>
@@ -208,7 +208,7 @@
 
     function buyAsset(assetNaam) {
         let amount = document.querySelector(`#amountOf${assetNaam}`).value;
-        let buyParams = {"assetName": `${assetNaam}`, "assetAmount": parseInt(`${amount}`)}
+        let buyParams = {"assetName": `${assetNaam}`, "assetAmount": parseFloat(`${amount}`)}
         let token = localStorage.getItem('token');
         fetch('/transactions/buytransaction_bank', //ik heb deze POST-request niet in Postman
             {

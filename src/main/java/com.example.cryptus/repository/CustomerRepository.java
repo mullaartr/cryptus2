@@ -121,7 +121,7 @@ public class CustomerRepository  {
     };
 
     private CustomerDao customerDao;
-    private PortefeuilleDAO portefeuilleDAO;
+    private PortefeuilleRepository portefeuilleRepository;
     private BankAccountDao bankaccountDAO;
     private TransactionRepository transactionRepository;
 
@@ -130,11 +130,11 @@ public class CustomerRepository  {
     }
 
     @Autowired
-    public CustomerRepository(CustomerDao customerDao, PortefeuilleDAO portefeuilleDAO,
+    public CustomerRepository(CustomerDao customerDao, PortefeuilleRepository portefeuilleRepository,
                               BankAccountDao bankaccountDAO,
                               TransactionRepository transactionRepository) {
         this.customerDao = customerDao;
-        this.portefeuilleDAO = portefeuilleDAO;
+        this.portefeuilleRepository = portefeuilleRepository;
         this.bankaccountDAO = bankaccountDAO;
         this.transactionRepository= transactionRepository;
         Logger logger = LogManager.getLogger(CustomerRepository.class);
@@ -259,9 +259,10 @@ public class CustomerRepository  {
 
         private Optional<Customer> volledigeCustomer(Optional<Customer> customerOptional){
             int id = customerOptional.get().getUserId();
-            Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+            Portefeuille portefeuille = portefeuilleRepository.findPortefeuilleOfCustomer(id).orElse(null);
             Customer customer = customerOptional.orElse(null);
             customer.setPortefeuille(portefeuille);
+            portefeuille.setOwner(customer);
             assert portefeuille != null;
             portefeuille.setOwner(customer);
             BankAccount account =

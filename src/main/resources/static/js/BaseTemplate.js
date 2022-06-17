@@ -10,7 +10,7 @@ let listWidth;
 document.querySelector('.tickerwrapper').addEventListener("click", () => {
     euroOfDollar = !euroOfDollar;
     koersen.forEach(koersen => vullLijstEuro(koersen));
-    $tickerWrapper.clear();
+
 
 })
 
@@ -36,7 +36,7 @@ function koersOphaler(){
             koersen = json;
             koersen.forEach(koersen => vullLijstEuro(koersen));
             maakTekstLint();
-            return json;
+
 
         }
     ).catch(ex => {
@@ -51,14 +51,17 @@ function vullLijstEuro(json){
     const plaatje = `Assets/${json.assetNaam}.webp`
     if(euroOfDollar) {
         e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} € ${json.koersInEuro}`;
+
     } else {
         e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} : $ ${json.koersInDollars}`;
+
     }
 
 }
 
 
 function maakTekstLint() {
+
      $tickerWrapper = $(".tickerwrapper");
     $list = $tickerWrapper.find("ul.list");
     $clonedList = $list.clone();

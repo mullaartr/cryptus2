@@ -5,7 +5,7 @@ INSERT INTO `bankinstelling`
 VALUES ('percentage', '15');
 
 INSERT INTO `user`
-VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476'),
+VALUES (1, 'cryptus', NULL, 'bank', 'cryptus@admin.nl', '$10$/nJxiT/jw7BLaO4Z9sXjpOorbphJG4gW0vYq2e0lBl9gvTTYwXwbG'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345'),
        (3, 'Jan', 'van', 'Zevenaar', 'zeven', '12345'),
        (4, 'Gerard', NULL, 'Klaasen', 'klaas', '12345'),

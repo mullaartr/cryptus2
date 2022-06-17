@@ -1,6 +1,7 @@
 package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.CustomerDao;
+import com.example.cryptus.dao.KoersDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
@@ -18,11 +19,13 @@ public class PortefeuilleRepository {
 
     private final PortefeuilleDAO portefeuilleDAO;
     private final CustomerDao customerDao;
+    private final KoersDao koersDao;
     private final Logger logger = LogManager.getLogger();
 
-    public PortefeuilleRepository(PortefeuilleDAO portefeuilleDAO, CustomerDao customerDao) {
+    public PortefeuilleRepository(PortefeuilleDAO portefeuilleDAO, CustomerDao customerDao, KoersDao koersDao) {
         this.portefeuilleDAO = portefeuilleDAO;
         this.customerDao = customerDao;
+        this.koersDao = koersDao;
         logger.info("new PortefeuilleRepository created");
     }
 
@@ -54,6 +57,12 @@ public class PortefeuilleRepository {
         return portefeuilles1;
     }
 
+    public Optional<Portefeuille> findPortefeuilleOfCustomer(int id){
+        Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+        portefeuille.getAssetLijst().stream().forEach(asset -> asset.setKoers(koersDao.findMostRecentKoersByAssetNaam(asset.getAssetNaam()).get()));
+        return Optional.of(portefeuille);
+    }
+
     public Optional<Portefeuille> findPortefeuilleWithCustomerById(int id){
         Optional<Portefeuille> portefeuilleOptional = portefeuilleDAO.findPortefeuilleById(id);
 
@@ -69,7 +78,7 @@ public class PortefeuilleRepository {
         }
         Customer customer = customerOptional.get();
         portefeuille.setOwner(customer);
-        //customer.setPortefeuille(portefeuille);
+        customer.setPortefeuille(portefeuille);
 
         return Optional.of(portefeuille);
     }
