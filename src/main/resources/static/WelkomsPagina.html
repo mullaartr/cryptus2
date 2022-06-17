@@ -1,100 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>WelkomsPagina</title>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/BaseTemplate.css">
+    <link rel="stylesheet" href="css/WelkomsPagina.css">
     <script src="js/BaseTemplate.js" defer></script>
+    <script src="js/WelkomsPagina.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js" integrity="sha512-DkPsH9LzNzZaZjCszwKrooKwgjArJDiEjA5tTgr3YX4E6TYv93ICS8T41yFHJnnSmGpnf0Mvb5NhScYbwvhn2w==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineMax.min.js" integrity="sha512-0xrMWUXzEAc+VY7k48pWd5YT6ig03p4KARKxs4Bqxb9atrcn2fV41fWs+YXTKb8lD2sbPAmZMjKENiyzM/Gagw==" crossorigin="anonymous"></script>
 
-
-    <style>
-
-        #klantGegevens{
-            grid-column-start: 3;
-            grid-column-end: 8;
-            grid-row-start: 3;
-
-        }
-
-        .coinLijst{
-            grid-area: main;
-        }
-
-        #coinLijst1{
-            grid-column-start: 3;
-            grid-column-end: 5;
-            grid-row-start: 4;
-            grid-row-end: 8;
-        }
-
-        #coinLijst2{
-            grid-column-start: 5;
-            grid-column-end: 7;
-            grid-row-start: 4;
-            grid-row-end: 8;
-        }
-        #coinLijst3{
-            grid-column-start: 7;
-            grid-column-end: 9;
-            grid-row-start: 4;
-            grid-row-end: 8;
-        }
-
-        #coinLijst4 {
-            grid-column-start: 9;
-            grid-column-end: 11;
-            grid-row-start: 4;
-            grid-row-end: 8;
-        }
-
-
-
-        #adresGegevens{
-            grid-column-start: 8;
-            grid-column-end: 10;
-            grid-row-start: 3;
-        }
-
-        td:nth-child(2n + 2) {background: #CCC}
-
-
-
-
-    </style>
 </head>
 <body>
 <div class="wrapper">
     <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px"><h2 class="item0">"Bless the Bytes"</h2></div>
-    <div class="tickerwrapper"> <ul class='list'>
-        <li class='listitem' id="Bitcoin"></li>
-        <li class='listitem' id="Ethereum"></li>
-        <li class='listitem' id="Tether"></li>
-        <li class='listitem' id="USD-Coin"></li>
-        <li class='listitem' id="BinanceCoin"></li>
-        <li class='listitem' id="Cardano"></li>
-        <li class='listitem' id="Ripple"></li>
-        <li class='listitem' id="Binance-USD"></li>
-        <li class='listitem' id="Solana"></li>
-        <li class='listitem' id="Dogecoin"></li>
-        <li class='listitem' id="Polkadot"></li>
-        <li class='listitem' id="Wrapped-Bitcoin"></li>
-        <li class='listitem' id="Staked-Ether"></li>
-        <li class='listitem' id="TRON"></li>
-        <li class='listitem' id="Avalanche-2"></li>
-        <li class='listitem' id="Dai"></li>
-        <li class='listitem' id="Shiba-Inu"></li>
-        <li class='listitem' id="Leo"></li>
-        <li class='listitem' id="Cronos"></li>
-        <li class='listitem' id="Litecoin"></li>
-    </ul>
-
-    </div>
-    <div class="main" id="iets">
-
-    </div>
-
+    <div class="tickerwrapper"></div>
+    <div class="main" id="iets"></div>
     <div class="main" id="klantGegevens"></div>
     <div class="main" id="adresGegevens"></div>
 
@@ -133,7 +55,6 @@
         <tr><td><img src="Assets/Cronos.webp"> DOGE :</td><td id="CronosT">0</td><td id="CronosWaarde">0</td></tr>
         <tr><td><img src="Assets/Litecoin.webp"> DOT :</td><td id="LitecoinT">0</td><td id="LitecoinWaarde">0</td></tr>
     </table>
-
     <div class="item7">
         <button id="item1" class="buttons" type="button">Af- en bijschrijvingen</button>
         <button id="item2" class="buttons">Crypto's kopen</button>
@@ -143,155 +64,9 @@
         <button id="item6" class="buttons">Bless me!</button>
         <button id="item8" class="buttons">Zelf regelen</button>
     </div>
-
-
-
     <div class="voetje"></div>
 </div>
 </body>
-<script>
-
-
-
-    klantOphaler()
-
-      document.querySelector('#item1').addEventListener("click", () => {
-          window.location.href = "register.html";
-      })
-
-    document.querySelector('#item2').addEventListener("click", () => {
-        window.location.href = "BuyAssetsFromBank.html";
-    })
-
-
-
-
-    function klantOphaler() {
-        let token = localStorage.getItem('token')
-        //let klantnaam = `${klantNaamOphaler()}`
-            fetch(`/klant/findByUsernamePassword`,
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-
-            }).then((response) => {
-                console.log(response)
-                if (response.status === 200) {
-                    console.log("We zien hier")
-                    return response.json();
-                }
-            }
-        ).then(json => {
-            console.log(json);
-                tabelKlantGegevens(json);
-                adresGegevens(json.address);
-                portefeuilleToner(json.portefeuilleDTO)
-                console.log(json.portefeuilleDTO)
-
-
-            }
-        ).catch(ex => {
-            console.log(ex)
-        })
-    }
-    function tabelKlantGegevens(json) {
-        const table = document.createElement('table');
-        const main = document.querySelector('#klantGegevens')
-        table.style.padding = '3px';
-        let header = table.createTHead();
-        header.style.fontWeight = 'Bold';
-        header.style.fontSize = '1.5em';
-        let rij1 = table.insertRow(0);
-        let rij2 = table.insertRow(1);
-
-        let rij1Cell1 = rij1.insertCell(0);
-        let rij1cel2 = rij1.insertCell(1);
-        let rij2cel1 = rij2.insertCell(0);
-        let rij2cel2 = rij2.insertCell(1);
-        let rij3Cell1 = rij1.insertCell(2);
-        let rij3Cell2 = rij1.insertCell(3);
-        let rij4Cell1 = rij2.insertCell(2)
-        let rij4Cell2 = rij2.insertCell(3);
-        let rij5Cell1 = rij1.insertCell(4)
-        let rij5Cell2 = rij1.insertCell(5);
-        let rij6Cell1 = rij2.insertCell(4);
-        let rij6Cell2 = rij2.insertCell(5);
-
-
-        header.innerText = 'Gegevens:'
-        rij1Cell1.innerText = 'Voornaam:';
-        rij1cel2.innerText = json.firstName;
-        rij2cel1.innerText = 'Achternaam:';
-        rij2cel2.innerText = json.preposition +  " " + json.lastName;
-        rij3Cell1.innerText = 'Geboortedatum:';
-        rij3Cell2.innerText = json.birthDate;
-        rij4Cell1.innerText = 'E-mail:';
-        rij4Cell2.innerText =  json.email;
-        rij5Cell1.innerText = 'Telefoon Nummer:';
-        rij5Cell2.innerText = json.phone;
-        rij6Cell1.innerText = 'BSN:';
-        rij6Cell2.innerText = json.bsn;
-        main.appendChild(table);
-    }
-
-    function adresGegevens(json){
-        const table = document.createElement('table');
-        const main = document.querySelector('#adresGegevens')
-        table.style.padding = '3px';
-        let header = table.createTHead();
-        header.style.fontWeight = 'Bold';
-        header.style.fontSize = '1.5em';
-        let rij1 = table.insertRow(0);
-        let rij2 = table.insertRow(1);
-
-        let rij1Cell1 = rij1.insertCell(0);
-        let rij1cel2 = rij1.insertCell(1);
-        let rij1Cell3 = rij1.insertCell(2);
-        let rij1cel4 = rij1.insertCell(3);
-        let rij2cel1 = rij2.insertCell(0);
-        let rij2cel2 = rij2.insertCell(1);
-        let rij2cel3 = rij2.insertCell(2);
-        let rij2cel4 = rij2.insertCell(3);
-
-        header.innerText = 'Adres:'
-        rij1Cell1.innerText = 'Straat:';
-        rij1cel2.innerText = json.street
-        rij2cel1.innerText = 'huisnr';
-        rij2cel2 .innerText = json.houseNumber;
-        rij2cel3.innerText = 'postcode:';
-        rij2cel4.innerText = json.postcode;
-        rij1Cell3.innerText = 'Stad: ';
-        rij1cel4.innerText = json.city;
-        main.appendChild(table);
-    }
-
-    function bankRekening(json){
-
-    }
-
-    function portefeuilleToner(json){
-        const assets = json.assets;
-        for(const asset of assets){
-            const tabelRij =  document.querySelector(`#${asset.assetNaam}T`)
-            const waardePlaatsing =  document.querySelector(`#${asset.assetNaam}Waarde`)
-            if(asset.saldo !== 0){
-                let koersen = asset.koersDTO;
-                let koersInEuro = koersen.koersInEuro;
-                    let waarde = koersInEuro * asset.saldo;
-                    tabelRij.innerText = asset.saldo;
-                    waardePlaatsing.innerText = waarde.toFixed(2);
-
-            }
-
-        }
-
-
-    }
-
-
-</script>
 
 
 </html>
