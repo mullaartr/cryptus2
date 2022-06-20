@@ -12,7 +12,7 @@
 
 
      function register() {
-     window.location.href = "Register.html"
+     window.location.href = "register.html"
 
  }
 

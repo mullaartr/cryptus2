@@ -244,20 +244,6 @@ document.querySelector('#btnRegister').addEventListener('click', (e) => {
             body: JSON.stringify(data)
 
         })
-
-
-        .then((response) => {
-            response.text().then(text => alert(text))//pop up: onvoldoende saldo
-        }).catch((error) => {
-
-        console.error('Foutje', error); // pop up: transactie gefaald
-    })
-
-
-
-
-
-
         .then((response) => { // callback
             console.log(response)
             if (response.status === 200) {
