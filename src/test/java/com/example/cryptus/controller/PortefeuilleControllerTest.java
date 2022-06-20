@@ -90,7 +90,7 @@ class PortefeuilleControllerTest {
     @Test
     void portefeuilles() {
 
-        when(portefeuilleService.findAll()).thenReturn(Optional.of(new ArrayList<Portefeuille>()));
+        when(portefeuilleService.findAll()).thenReturn((new ArrayList<Portefeuille>()));
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/portefeuille");
         try {
             ResultActions response = mockMvc.perform(request);

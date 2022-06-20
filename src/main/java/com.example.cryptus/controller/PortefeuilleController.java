@@ -47,7 +47,7 @@ public class PortefeuilleController {
 
     @GetMapping
     @ResponseBody public ResponseEntity<List<PortefeuilleDTO>> portefeuilles(){
-        List<Portefeuille> portefeuilles = portefeuilleService.findAll().orElse(null);
+        List<Portefeuille> portefeuilles = portefeuilleService.findAll();
         List<PortefeuilleDTO> portefeuilleDTO = new ArrayList<>();
         portefeuilles.stream().forEach(portefeuille -> portefeuilleDTO.add(new PortefeuilleDTO(portefeuille)));
         return ResponseEntity.ok().body(portefeuilleDTO);

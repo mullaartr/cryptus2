@@ -1,6 +1,7 @@
 package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.dao.KoersDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.dao.PortefeuilleDAOJdbc;
 import com.example.cryptus.model.*;
@@ -25,6 +26,7 @@ class CustomerRepositoryTest {
     CustomerDaoJdbc mockDao;
     PortefeuilleDAOJdbc mockPortefeuilleDAO;
     PortefeuilleRepository portefeuilleRepositoryUnderTest;
+    private KoersDao mockKoersDao;
 
 
 
@@ -32,8 +34,10 @@ class CustomerRepositoryTest {
     public void initTest(){
         mockDao = Mockito.mock(CustomerDaoJdbc.class);
         mockPortefeuilleDAO= Mockito.mock(PortefeuilleDAOJdbc.class);
+        mockKoersDao = Mockito.mock(KoersDao.class);
         customerRepositoryUnderTest = new CustomerRepository(mockDao);
-        portefeuilleRepositoryUnderTest = new PortefeuilleRepository(mockPortefeuilleDAO,mockDao);
+        portefeuilleRepositoryUnderTest = new PortefeuilleRepository(mockPortefeuilleDAO,mockDao, mockKoersDao);
+
 
 
         testCustomer = new Customer(3,"John","gg","mekky","password","username"
@@ -108,7 +112,7 @@ class CustomerRepositoryTest {
 
 
         Mockito.when(mockDao.findCustomerByName("John")).thenReturn(Optional.of(testCustomer));
-        Mockito.when(mockPortefeuilleDAO.findPortefeuilleById(3)).thenReturn(Optional.of(portefeuille));
+        Mockito.when(portefeuilleRepositoryUnderTest.findPortefeuilleOfCustomer(5)).thenReturn(Optional.of(portefeuille));
         Optional<Customer> actual = customerRepositoryUnderTest.findCustomerByName("John");
         Optional<Customer> expected = Optional.of(testCustomer);
         assertThat(actual).isNotNull().isEqualTo(expected);

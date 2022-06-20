@@ -1,6 +1,7 @@
 package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.CustomerDao;
+import com.example.cryptus.dao.KoersDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
@@ -9,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +19,13 @@ public class PortefeuilleRepository {
 
     private final PortefeuilleDAO portefeuilleDAO;
     private final CustomerDao customerDao;
+    private final KoersDao koersDao;
     private final Logger logger = LogManager.getLogger();
 
-    public PortefeuilleRepository(PortefeuilleDAO portefeuilleDAO, CustomerDao customerDao) {
+    public PortefeuilleRepository(PortefeuilleDAO portefeuilleDAO, CustomerDao customerDao, KoersDao koersDao) {
         this.portefeuilleDAO = portefeuilleDAO;
         this.customerDao = customerDao;
+        this.koersDao = koersDao;
         logger.info("new PortefeuilleRepository created");
     }
 
@@ -33,24 +37,34 @@ public class PortefeuilleRepository {
         portefeuilleDAO.store(portefeuille);
     }
 
-    public Optional<List<Portefeuille>> findAllPortefeuilles(){
-        Optional<List<Portefeuille>> portefeuilles = portefeuilleDAO.findPortefeuilles();
+    public List<Portefeuille> findAllPortefeuilles(){
+        List<Portefeuille>  portefeuilles = portefeuilleDAO.findPortefeuilles();
 
         if(portefeuilles.isEmpty()){
-            return Optional.empty();
+            return new ArrayList<>();
         }
 
-        List<Portefeuille> portefeuilles1 = portefeuilles.get();
+        List<Portefeuille> portefeuilles1 = portefeuilles;
         for (int i = 0; i < portefeuilles1.size(); i++) {
             Optional<Customer> customerOptional = customerDao.findCustomerByPortefeuilleId(portefeuilles1.get(i).getPortefeuilleId());
             if (customerOptional.isEmpty()) {
-                return Optional.empty();
+                return  new ArrayList<>();
             }
             Customer customer = customerOptional.get();
             portefeuilles1.get(i).setOwner(customer);
-            //customer.setPortefeuille(portefeuilles1.get(i));
+            customer.setPortefeuille(portefeuilles1.get(i));
         }
-        return Optional.of(portefeuilles1);
+        return portefeuilles1;
+    }
+
+    public Optional<Portefeuille> findPortefeuilleOfCustomer(int id){
+        Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
+        assert portefeuille != null;
+        if(portefeuille.getAssetLijst() != null){
+            portefeuille.getAssetLijst().forEach(asset -> asset.setKoers(koersDao.findMostRecentKoersByAssetNaam(asset.getAssetNaam()).get()));
+        }
+        return Optional.of(portefeuille);
+
     }
 
     public Optional<Portefeuille> findPortefeuilleWithCustomerById(int id){
@@ -68,8 +82,8 @@ public class PortefeuilleRepository {
         }
         Customer customer = customerOptional.get();
         portefeuille.setOwner(customer);
-        //customer.setPortefeuille(portefeuille);
-
+        customer.setPortefeuille(portefeuille);
+        portefeuille.getAssetLijst().forEach(asset -> asset.setKoers(koersDao.findMostRecentKoersByAssetNaam(asset.getAssetNaam()).get()));
         return Optional.of(portefeuille);
     }
 
@@ -82,7 +96,7 @@ public class PortefeuilleRepository {
     }
 
 
-    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
+    public void storeAssets(Portefeuille portefeuille, Asset asset){
         portefeuilleDAO.storePortefeuilleRegel(portefeuille, asset);
     }
 }

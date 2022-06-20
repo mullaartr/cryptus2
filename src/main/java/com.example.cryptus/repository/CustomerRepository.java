@@ -121,7 +121,7 @@ public class CustomerRepository  {
     };
 
     private CustomerDao customerDao;
-    private PortefeuilleDAO portefeuilleDAO;
+    private PortefeuilleRepository portefeuilleRepository;
     private BankAccountDao bankaccountDAO;
     private TransactionRepository transactionRepository;
 
@@ -130,11 +130,11 @@ public class CustomerRepository  {
     }
 
     @Autowired
-    public CustomerRepository(CustomerDao customerDao, PortefeuilleDAO portefeuilleDAO,
+    public CustomerRepository(CustomerDao customerDao, PortefeuilleRepository portefeuilleRepository,
                               BankAccountDao bankaccountDAO,
                               TransactionRepository transactionRepository) {
         this.customerDao = customerDao;
-        this.portefeuilleDAO = portefeuilleDAO;
+        this.portefeuilleRepository = portefeuilleRepository;
         this.bankaccountDAO = bankaccountDAO;
         this.transactionRepository= transactionRepository;
         Logger logger = LogManager.getLogger(CustomerRepository.class);
@@ -248,24 +248,41 @@ public class CustomerRepository  {
 
 
         private Optional<Customer> volledigeCustomer(Optional<Customer> customerOptional){
-            int id = customerOptional.get().getUserId();
-            Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
             Customer customer = customerOptional.orElse(null);
+
+            Portefeuille portefeuille = portefeuilleVanKlant(customer);
             customer.setPortefeuille(portefeuille);
-            assert portefeuille != null;
-            portefeuille.setOwner(customer);
-            BankAccount account =
-                    bankaccountDAO.findBankAccountByUserId(id).orElse( null );
-            assert account != null;
-            account.setAccountHolder(customer);
+
+            BankAccount account = bankAccountVanKlant(customer);
             customer.setBankAccount( account );
-            List<Transaction> list  =
-                    transactionRepository.getBuyTransactionsFromUser( id );
-            List<Transaction> sellList  =
-                    transactionRepository.getSellTransactionsFromUser( id );
-            list.addAll( sellList );
-            customer.setTransactionList( list );
+
+            customer.setTransactionList(transactieLijst(customer.getUserId()));
             return Optional.of(customer);
         }
+
+    private List<Transaction> transactieLijst(int id){
+        List<Transaction> list  =
+                transactionRepository.getBuyTransactionsFromUser( id );
+        List<Transaction> sellList  =
+                transactionRepository.getSellTransactionsFromUser( id );
+        list.addAll( sellList );
+        return list;
     }
+
+    private Portefeuille portefeuilleVanKlant(Customer customer){
+        Portefeuille portefeuille = portefeuilleRepository.findPortefeuilleOfCustomer(customer.getUserId()).orElse(null);
+        assert portefeuille != null;
+        portefeuille.setOwner(customer);
+        return portefeuille;
+    }
+
+    private BankAccount bankAccountVanKlant(Customer customer){
+        BankAccount account = bankaccountDAO.findBankAccountByUserId(customer.getUserId()).orElse( null );
+        assert account != null;
+        account.setAccountHolder(customer);
+        return account;
+    }
+}
+
+
 

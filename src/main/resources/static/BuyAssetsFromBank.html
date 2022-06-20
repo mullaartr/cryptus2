@@ -29,29 +29,29 @@
     <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px">
         <h2 class="item0">"Bless the Bytes"</h2>
     </div>
-    <div class="tickerwrapper">
-        <ul class='list'>
-            <li class='listitem' id="Bitcoin"></li>
-            <li class='listitem' id="Ethereum"></li>
-            <li class='listitem' id="Tether"></li>
-            <li class='listitem' id="USD-Coin"></li>
-            <li class='listitem' id="BinanceCoin"></li>
-            <li class='listitem' id="Cardano"></li>
-            <li class='listitem' id="Ripple"></li>
-            <li class='listitem' id="Binance-USD"></li>
-            <li class='listitem' id="Solana"></li>
-            <li class='listitem' id="Dogecoin"></li>
-            <li class='listitem' id="Polkadot"></li>
-            <li class='listitem' id="Wrapped-Bitcoin"></li>
-            <li class='listitem' id="Staked-Ether"></li>
-            <li class='listitem' id="Tron"></li>
-            <li class='listitem' id="Avalanche-2"></li>
-            <li class='listitem' id="Dai"></li>
-            <li class='listitem' id="Shiba-Inu"></li>
-            <li class='listitem' id="Leo"></li>
-            <li class='listitem' id="Cronos"></li>
-            <li class='listitem' id="Litecoin"></li>
-        </ul>
+    <div class="tickerwrapper"> <ul class='list'>
+        <li class='listitem' id="Bitcoin"></li>
+        <li class='listitem' id="Ethereum"></li>
+        <li class='listitem' id="Tether"></li>
+        <li class='listitem' id="USD-Coin"></li>
+        <li class='listitem' id="BinanceCoin"></li>
+        <li class='listitem' id="Cardano"></li>
+        <li class='listitem' id="Ripple"></li>
+        <li class='listitem' id="Binance-USD"></li>
+        <li class='listitem' id="Solana"></li>
+        <li class='listitem' id="Dogecoin"></li>
+        <li class='listitem' id="Polkadot"></li>
+        <li class='listitem' id="Wrapped-Bitcoin"></li>
+        <li class='listitem' id="Staked-Ether"></li>
+        <li class='listitem' id="TRON"></li>
+        <li class='listitem' id="Avalanche-2"></li>
+        <li class='listitem' id="Dai"></li>
+        <li class='listitem' id="Shiba-Inu"></li>
+        <li class='listitem' id="Leo"></li>
+        <li class='listitem' id="Cronos"></li>
+        <li class='listitem' id="Litecoin"></li>
+    </ul>
+
     </div>
 
     <div class="main" id="iets"></div>
@@ -66,7 +66,7 @@
 <script>
 
     document.querySelector('#item1').addEventListener("click", () => {
-        window.location.href = "register.html";//andere pagina?
+        window.location.href = "WelkomsPagina.html";//andere pagina?
     })
 
 
@@ -80,7 +80,7 @@
 
     function klantNaamOphaler() {
         let token = localStorage.getItem('token');
-        fetch('http://localhost:8080/klant',
+        fetch('/klant',
             {
                 method: 'GET',
                 headers: {
@@ -103,7 +103,7 @@
     function koersOphaler2(){
         let token = localStorage.getItem('token')
 
-        fetch('http://localhost:8080/koers/meest-recent',
+        fetch('/koers/meest-recent',
             {
                 method: 'GET',
                 headers: {
@@ -137,7 +137,7 @@
     function klantOphaler() {
         let token = localStorage.getItem('token')
         //let klantnaam = `${klantNaamOphaler()}`
-        fetch(`http://localhost:8080/klant/findByUsernamePassword/`,
+        fetch(`/klant/findByUsernamePassword/`,
             {
                 method: 'GET',
                 headers: {
@@ -177,7 +177,7 @@
             row.appendChild(cellkoersInEuro)
 
             const cellKoersInDollar = document.createElement("td")
-            cellKoersInDollar.innerHTML = e.KoersInDollars
+            cellKoersInDollar.innerHTML = e.koersInDollars
             row.appendChild(cellKoersInDollar)
 
             const buyButton = document.createElement("button")
@@ -208,9 +208,9 @@
 
     function buyAsset(assetNaam) {
         let amount = document.querySelector(`#amountOf${assetNaam}`).value;
-        let buyParams = {"assetName": `${assetNaam}`, "assetAmount": parseInt(`${amount}`)}
+        let buyParams = {"assetName": `${assetNaam}`, "assetAmount": parseFloat(`${amount}`)}
         let token = localStorage.getItem('token');
-        fetch('http://localhost:8080/transactions/buytransaction_bank', //ik heb deze POST-request niet in Postman
+        fetch('/transactions/buytransaction_bank', //ik heb deze POST-request niet in Postman
             {
                 method: 'POST',
                 headers: {
@@ -220,15 +220,9 @@
                 body: JSON.stringify(buyParams)
                 //the POST aan de Java-kant returns null, should that change?
             }).then((response) => {
-            if (response.status === 200) {
-                return response.json(); //pop up: transactie geslaagd
-            } else {
-                //pop up: onvoldoende saldo
-            }
-        }).then(json => {
-            return json;
-        })
-            .catch((error) => {
+            response.text().then(text => alert(text))//pop up: onvoldoende saldo
+        }).catch((error) => {
+
                 console.error('Foutje', error); // pop up: transactie gefaald
             });
     }
