@@ -28,7 +28,6 @@ public class TransactionService <T>{
     private static final int BANK = 1;
     private static final double PERCENTAGE = 100.00;
 
-
     public TransactionService(TransactionRepository transactionRepository,
                               CustomerRepository customerRepository,
                               PortefeuilleRepository portefeuilleRepository,
@@ -47,15 +46,12 @@ public class TransactionService <T>{
 
         logger.info("Nieuwe transactieservice");
     }
-
     public List<Transaction> getBuyTransactionsFromUser(int userId) {
         return transactionRepository.getBuyTransactionsFromUser(userId);
     }
-
     public List<Transaction> getSellTransactionsFromUser(int userId) {
         return transactionRepository.getSellTransactionsFromUser(userId);
     }
-
     public Boolean buyFromBank(Customer buyer, String assetNaam, double assetAmount)
             throws NotEnoughSaldoException, NotEnoughAssetsAcception {
         Optional<Customer> seller = customerRepository.findCustomerById(BANK);
