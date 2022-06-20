@@ -47,7 +47,6 @@ public class CustomerDaoJdbc implements CustomerDao {
         address.setPostcode(rs.getString("postcode"));
         address.setCity(rs.getString("woonplaats"));
         customer.setBSN(rs.getString("BSN"));
-        customer.setEmail(rs.getString("emailadres"));
         customer.setPhone(rs.getString("telefoon"));
 
 
@@ -155,10 +154,10 @@ public class CustomerDaoJdbc implements CustomerDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertUserStatement(customer, connection), keyHolder);
         int newKey = keyHolder.getKey().intValue();
-        String sql = "INSERT into klant(userId, geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, emailadres, telefoon) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT into klant(userId, geboortedatum, straat, huisnummer, postcode, woonplaats, bsn, telefoon) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?)";
         int insert = jdbcTemplate.update(sql,newKey, customer.getBirthDate(), address.getStreet(), address.getHouseNumber(), address.getPostcode(),
-                address.getCity(), customer.getBSN(), customer.getEmail(), customer.getPhone());
+                address.getCity(), customer.getBSN(), customer.getPhone());
 
 
         if (insert == 1) {
@@ -185,10 +184,10 @@ public class CustomerDaoJdbc implements CustomerDao {
         int update2 = jdbcTemplate.update(sql,customer.getFirstName(), customer.getPreposition(), customer.getLastName(), customer.getUserName(),
                 customer.getPassword());
         String sql1 =  "UPDATE klant " +
-                "SET geboortedatum = ?, straat = ?, huisnummer = ?, postcode = ?, woonplaats = ?, bsn = ?, emailadres = ?," +
+                "SET geboortedatum = ?, straat = ?, huisnummer = ?, postcode = ?, woonplaats = ?, bsn = ?," +
                 " telefoon = ?, geboorteDatum = ?, BSN =?  WHERE userId = ?" ;
         int update = jdbcTemplate.update(sql1,customer.getBirthDate(),address.getStreet(),address.getHouseNumber(), address.getPostcode(),address.getCity(),
-                customer.getBSN(),customer.getEmail(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
+                customer.getBSN(),customer.getPhone(),customer.getBirthDate(),customer.getBSN());
         if(update ==1 && update2 == 1){
             logger.info("Customer updated" + customer.getUserId());
 
@@ -264,20 +263,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         return Optional.ofNullable(customer);
     }
 
-    @Override
-    public Optional<Customer> findCustomerByEmail(String email) {
-        String sql ="select * from klant where emailadres = ?";
-        Customer customer = null;
-        try{
 
-            customer = jdbcTemplate.queryForObject(sql,userRowMapper,email);
-
-        }catch (DataAccessException exception){
-            logger.info("A new customer");
-        }
-        return Optional.ofNullable(customer);
-
-    }
 
     //Daan: I added this method to check if an email is already in use
    @Override

@@ -15,7 +15,6 @@ public class CustomerDTO {
     private String lastName;
     private Date birthDate;
     private String BSN;
-    private String email;
     private String phone;
     private Address address;
     private PortefeuilleDTO portefeuilleDTO;
@@ -34,7 +33,6 @@ public class CustomerDTO {
         this.lastName = customer.getLastName();
         this.birthDate = (Date) customer.getBirthDate();
         this.BSN = customer.getBSN();
-        this.email = customer.getEmail();
         this.phone = customer.getPhone();
         this.address = customer.getAddress();
         this.portefeuilleDTO = new PortefeuilleDTO(customer.getPortefeuille());
@@ -93,13 +91,6 @@ public class CustomerDTO {
         this.BSN = BSN;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPhone() {
         return phone;

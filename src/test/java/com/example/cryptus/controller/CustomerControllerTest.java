@@ -62,7 +62,7 @@ class CustomerControllerTest {
     void setUp(){
         customer1 = new Customer(12,"John","gg","mekky","'","",
                 Date.valueOf("2015-03-31"),"",
-                new Address(0,"","",""),"","122");
+                new Address(0,"","",""),"122");
         portefeuille1 = new Portefeuille(3, customer1, new ArrayList<>());
         portefeuilleDTO = new PortefeuilleDTO(portefeuille1);
     }

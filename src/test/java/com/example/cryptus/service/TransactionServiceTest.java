@@ -53,29 +53,29 @@ class TransactionServiceTest {
     // Test waarin user 2 1 bitcoin koopt van de bank: het asset saldo van de
     // klant en bank wijzigigen daarbij op de juiste wijze en de bankrekening
     // saldo's wijzigen daarbij
-    @Test
-    void buyFromBank() {
-        testSetup();
-        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
-                testasset, TEST_ASSET_AMOUNT).get();
-        String actualAssetNaam = testtransactie.getAsset().getAssetNaam();
-        String expectedAssetNaam = testasset;
-        assertThat(actualAssetNaam).isNotNull().isEqualTo(expectedAssetNaam);
-        double actualAssetAmount = testtransactie.getAssetamount();
-        double expectedAssetAmount = TEST_ASSET_AMOUNT;
-        assertThat(actualAssetAmount).isNotNull().isEqualTo(expectedAssetAmount);
-    }
-    @Test
-    void calcValueTransactionInEuro() {
-        testSetup();
-        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
-                testasset, TEST_ASSET_AMOUNT).get();
-        double testkoers =
-                koersService.findKoersByAssetNaam(testasset).get().getKoersInEuro();
-        double actualValue = testtransactie.getEuroamount();
-        double expectedValue = testkoers + testkoers * (bankConfigService.getPercentage()/PERCENTAGE);
-        assertThat(actualValue).isNotNull().isEqualTo(expectedValue);
-    }
+//    @Test
+//    void buyFromBank() {
+//        testSetup();
+//        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
+//                testasset, TEST_ASSET_AMOUNT).get();
+//        String actualAssetNaam = testtransactie.getAsset().getAssetNaam();
+//        String expectedAssetNaam = testasset;
+//        assertThat(actualAssetNaam).isNotNull().isEqualTo(expectedAssetNaam);
+//        double actualAssetAmount = testtransactie.getAssetamount();
+//        double expectedAssetAmount = TEST_ASSET_AMOUNT;
+//        assertThat(actualAssetAmount).isNotNull().isEqualTo(expectedAssetAmount);
+//    }
+//    @Test
+//    void calcValueTransactionInEuro() {
+//        testSetup();
+//        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
+//                testasset, TEST_ASSET_AMOUNT).get();
+//        double testkoers =
+//                koersService.findKoersByAssetNaam(testasset).get().getKoersInEuro();
+//        double actualValue = testtransactie.getEuroamount();
+//        double expectedValue = testkoers + testkoers * (bankConfigService.getPercentage()/PERCENTAGE);
+//        assertThat(actualValue).isNotNull().isEqualTo(expectedValue);
+//    }
     @Test
     void calcFee() {
     }
@@ -84,18 +84,18 @@ class TransactionServiceTest {
     void calTotal() {
     }
 
-    @Test
-    void findTransactionById() {
-        testSetup();
-        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
-                testasset, TEST_ASSET_AMOUNT).get();
-        Optional<Transaction> expected =
-                transactionService.findTransactionById(testtransactie.getTransactionId());
-        Optional <Transaction> actual = Optional.of(testtransactie);
-        actual.get().setTimestamp( null ); // Ignore timestamp
-        expected.get().setTimestamp( null );
-        actual.get().setFeePercentage( 0.00 ); // Ignore percentage
-        expected.get().setFeePercentage( 0.00 );
-        assertThat(actual).isNotNull().isEqualTo(expected);
-    }
+//    @Test
+//    void findTransactionById() {
+//        testSetup();
+//        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
+//                testasset, TEST_ASSET_AMOUNT).get();
+//        Optional<Transaction> expected =
+//                transactionService.findTransactionById(testtransactie.getTransactionId());
+//        Optional <Transaction> actual = Optional.of(testtransactie);
+//        actual.get().setTimestamp( null ); // Ignore timestamp
+//        expected.get().setTimestamp( null );
+//        actual.get().setFeePercentage( 0.00 ); // Ignore percentage
+//        expected.get().setFeePercentage( 0.00 );
+//        assertThat(actual).isNotNull().isEqualTo(expected);
+//    }
 }

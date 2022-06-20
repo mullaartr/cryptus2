@@ -37,8 +37,8 @@ public class RegistrationService {
     }
 
     public boolean isUniek(Customer customer) throws UserAlreadyExistsException {
-        List<Customer> customers = customerService.customerByEmail(customer.getEmail());
-        boolean checkUniek = customers.stream().anyMatch(c -> c.getEmail().equals(customer.getEmail()));
+        List<Customer> customers = customerService.customerByEmail(customer.getUserName());
+        boolean checkUniek = customers.stream().anyMatch(c -> c.getUserName().equals(customer.getUserName()));
         if (checkUniek){
             System.out.println("Gebruiker bestaat al");
             throw new UserAlreadyExistsException();

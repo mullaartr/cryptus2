@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`klant`
     `postcode`      VARCHAR(10) NOT NULL,
     `woonplaats`    VARCHAR(45) NOT NULL,
     `bsn`           VARCHAR(45) NOT NULL,
-    `emailadres`    VARCHAR(45) NOT NULL,
     `telefoon`      VARCHAR(10) NOT NULL,
     PRIMARY KEY (`userId`),
     UNIQUE INDEX `userId_UNIQUE` (`userId` ),

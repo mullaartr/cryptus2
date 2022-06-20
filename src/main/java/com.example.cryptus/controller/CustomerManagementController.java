@@ -24,7 +24,7 @@ public class CustomerManagementController {
                     Date.valueOf("1982-12-12"),
                     "12345678",
                     new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-                    "adam@hilversum.von",
+
                     "067373837463"),
             new Customer(
                     2,
@@ -36,7 +36,7 @@ public class CustomerManagementController {
                     Date.valueOf("1982-12-12"),
                     "12345678",
                     new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-                    "adam@hilversum.von",
+
                     "067373837463"),
             new Customer(
                     3,
@@ -48,7 +48,7 @@ public class CustomerManagementController {
                     Date.valueOf("1982-12-12"),
                     "12345678",
                     new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-                    "adam@hilversum.von",
+
                     "067373837463"),
             new Customer(
                     4,
@@ -60,7 +60,7 @@ public class CustomerManagementController {
                     Date.valueOf("1982-12-12"),
                     "12345678",
                     new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-                    "adam@hilversum.von",
+
                     "067373837463"),
             new Customer(
                     5,
@@ -72,7 +72,7 @@ public class CustomerManagementController {
                     Date.valueOf("1982-12-12"),
                     "12345678",
                     new Address(11, "Suchlaan", "1234BC", "Hilversum"),
-                    "adam@hilversum.von",
+
                     "067373837463")
     );
 

@@ -26,7 +26,6 @@ public class CustomerConvertor {
         customerDTO.setLastName(customer.getLastName());
         customerDTO.setBirthDate((Date) customer.getBirthDate());
         customerDTO.setBSN(customer.getBSN());
-        customerDTO.setEmail(customer.getEmail());
         customerDTO.setPhone(customer.getPhone());
         customerDTO.setAddress(customer.getAddress());
 
@@ -50,7 +49,6 @@ public class CustomerConvertor {
         customer.setLastName(customerDTO.getLastName());
         customer.setBirthDate(customerDTO.getBirthDate());
         customer.setBSN(customerDTO.getBSN());
-        customer.setEmail(customerDTO.getEmail());
         customer.setPhone(customerDTO.getPhone());
         customer.setAddress(customerDTO.getAddress());
 

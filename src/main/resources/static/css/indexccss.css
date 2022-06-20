@@ -4,19 +4,26 @@ h1{
 height:4vh;
 line-height: 4vh;
   color: #fcedd8;
-  background: #e1732a;
+  /*background: #e1732a;*/
      font-family: 'Niconne', cursive;
   font-weight: 50;
-text-shadow: 5px 5px 0px #eb452b, 
-            10px 10px 0px #efa032, 
-            15px 15px 0px #46b59b, 
-            20px 20px 0px #017e7f, 
-            25px 25px 0px #052939, 
-            30px 30px 0px #c11a2b, 
-            35px 35px 0px #c11a2b, 
-            40px 40px 0px #c11a2b, 
+text-shadow: 5px 5px 0px #eb452b,
+            10px 10px 0px #efa032,
+            15px 15px 0px #46b59b,
+            20px 20px 0px #017e7f,
+            25px 25px 0px #052939,
+            30px 30px 0px #c11a2b,
+            35px 35px 0px #c11a2b,
+            40px 40px 0px #c11a2b,
             45px 45px 0px #c11a2b;
 }
+
+
+
+
+
+
+
 
 p{
 text-align: center;
@@ -35,8 +42,18 @@ font-size: 1.2rem;
 
 body {
     margin: 0px;
-    background-color: #e1732a;
-    color: #f7f7f7;
+    /*background-color: #e1732a;*/
+    /*background: linear-gradient(110deg, #e1732a 60%, #ffed4b 60%);*/
+    background: linear-gradient(110deg, #fa7c30 30%, rgba(0, 0, 0, 0) 70%);
+
+    /*background: linear-gradient(110deg, #fdcd3b  60%, #ffed4b 60%);*/
+
+
+    /*background: -webkit-linear-gradient(110deg, #e1732a 60%, #ffed4b 60%);*/
+    /*background: -o-linear-gradient(110deg, #e1732a 60%, #ffed4b 60%);*/
+    /*background: -moz-linear-gradient(110deg, #e1732a 60%, #ffed4b 60%);*/
+    /*background: linear-gradient(110deg, #e1732a 60%, #ffed4b 60%);*/
+
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -49,32 +66,31 @@ body {
     padding-left: 10px;
     margin-top: 100px;
     border-top: 3px double #f1f1f1;
-    border-bottom: 3px double #f1f1f1;
+    /*border-bottom: 3px double #f1f1f1;*/
     padding-top: 20px;
 }
 
 #main table {
-    font-family: "Comic Sans MS", cursive;
+    font-family: "TISA", TISA;
 }
 
 /* css code for textbox */
 #main .tb {
     height: 28px;
     width: 239px;
-    border: 1px solid #27a465;
     color: #e1732a;
     font-weight: bold;
-    border-left: 5px solid #f7f7f7;
+    border: 1px solid black;
     opacity: 0.9;
 }
 
 /* css code for button*/
 #main .btn {
-    width: 80px;
+    width: 122px;
     height: 32px;
     outline: none;
     font-weight: bold;
-    border: 0px solid #27a465;
+    border: 1px solid black;
     text-shadow: 0px 0.5px 0.5px #fff;
     border-radius: 2px;
     font-weight: 600;
@@ -84,6 +100,7 @@ body {
     -webkit-transition: 1s;
     -moz-transition: 1s;
     transition: 1s;
+    background-color:black
 }
 
 #main .btn:hover {
@@ -93,4 +110,52 @@ body {
     color: #f1f1f1;
     border: 1px solid #f1f1f1;
 }
+
+
+
+
+
+
+.flipY {
+    animation-name: spin, depth;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 6s;
+}
+@keyframes spin {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(-360deg);
+    }
+}
+@keyframes depth {
+    0% {
+        text-shadow: 0 0 black;
+    }
+    25% {
+        text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black;
+    }
+    50% {
+        text-shadow: 0 0 black;
+    }
+    75% {
+        text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black,
+        -5px 0 black;
+    }
+    100% {
+        text-shadow: 0 0 black;
+    }
+}
+
+
+
+
+
+
+
+
+
+
 

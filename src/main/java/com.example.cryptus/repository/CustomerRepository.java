@@ -222,17 +222,7 @@ public class CustomerRepository  {
 
         }
 
-        public Optional<Customer> findCustomerByEmail (String email){
-            Optional<Customer> customerOptional = customerDao.findCustomerByEmail(email);
-            if (customerOptional.isEmpty()) {
-                return Optional.empty();
 
-            } else {
-                return customerDao.findCustomerByEmail(email);
-
-            }
-
-        }
 
         //Daan: I added this method to check if an email is already in use
         //todo werkt nog niet

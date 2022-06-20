@@ -39,10 +39,10 @@ class CustomerDaoJdbcTest {
     void init(){
 
         customer = new Customer(28,"John","gg","mekky","password","username",Date.valueOf("2015-03-31"),"bsn",
-                new Address(10,"street","10690","Utrecht"),"seb@seb.com","1234567891");
+                new Address(10,"street","10690","Utrecht"),"1234567891");
 
         customer1 = new Customer(3, "Jan", "van", "Zevenaar", "zeven", "12345",Date.valueOf("1950-09-10"),"156677882",
-                new Address(1,"Rokin","1001AA","Amsterdam"),"harry.kreeft@lumc.nl","0647186543");
+                new Address(1,"Rokin","1001AA","Amsterdam"),"0647186543");
 
 
 
