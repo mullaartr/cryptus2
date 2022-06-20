@@ -44,32 +44,28 @@ public class TransactionController <T> {
                 transactionService.getSellTransactionsFromUser(userId);
         return lijst;
     }
-
-    // respons
     @PostMapping("/buytransaction_bank")
     public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) throws NotEnoughSaldoException {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         int userIdBuyer =
                 customerService.customerByEmail(username).get(0).getUserId();
-                Customer buyer =
+        Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
-                try {
-                    Boolean aankoopGeslaagd = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
-                    if (aankoopGeslaagd) {
-                        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
-                    }
-                }catch (NotEnoughSaldoException notEnoughSaldoException){
-                    return new ResponseEntity<>("je hebt op dit moment niet genoeg saldo op je bankrekening", HttpStatus.NOT_ACCEPTABLE);
-                } catch (NotEnoughAssetsAcception notEnoughAssetsAcception){
-                    return new ResponseEntity<>("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit", HttpStatus.NOT_ACCEPTABLE);
-                }
-                return null;
-
-
-
-
+        try {
+            Boolean aankoopGeslaagd = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
+            if (aankoopGeslaagd) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
+            }
+        }catch (NotEnoughSaldoException notEnoughSaldoException){
+            return new ResponseEntity<>("Je hebt op dit moment niet genoeg " +
+                    "saldo op je bankrekening", HttpStatus.NOT_ACCEPTABLE);
+        } catch (NotEnoughAssetsAcception notEnoughAssetsAcception){
+            return new ResponseEntity<>("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return null;
     }
+
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
                                                @PathVariable("transactionid") int transactionId) {

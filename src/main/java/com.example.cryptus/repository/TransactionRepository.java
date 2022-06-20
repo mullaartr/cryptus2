@@ -16,12 +16,10 @@ import java.util.Optional;
 
 @Repository
 public class TransactionRepository {
-
     private TransactionDao transactionDao;
     private final TransactionDaoJdbc transactionDaoJdbc;
     private final CustomerDaoJdbc customerDaoJdbc;
     private final AssetDaoJdbc assetDaoJdbc;
-
     @Autowired
     public TransactionRepository(TransactionDaoJdbc transactionDaoJdbc,
                                  CustomerDaoJdbc customerDaoJdbc,
@@ -38,15 +36,12 @@ public class TransactionRepository {
         return result;
     }
     public List<Transaction> getSellTransactionsFromUser(int userId) {
-
         List<Transaction> result = new ArrayList<>();
         List<Transaction> transactions =
                 transactionDaoJdbc.findSellTransactionsByUser(userId);
-
         fillInTransactionDetails(result, transactions);
         return result;
     }
-
     private void fillInTransactionDetails(List<Transaction> result, List<Transaction> transactions) {
         for (Transaction t : transactions) {
             Optional<Customer> buyer =
