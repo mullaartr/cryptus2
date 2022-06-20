@@ -55,8 +55,7 @@ public class TransactionService <T>{
     public List<Transaction> getSellTransactionsFromUser(int userId) {
         return transactionRepository.getSellTransactionsFromUser(userId);
     }
-    public Boolean buyFromBank(Customer buyer, String assetNaam, double assetAmount) throws NotEnoughSaldoException, NotEnoughAssetsAcception{
-
+    public Transaction buyFromBank(Customer buyer, String assetNaam, double assetAmount) throws NotEnoughSaldoException, NotEnoughAssetsAcception{
         Optional<Customer> seller =
                 customerRepository.findCustomerById(BANK);//mock
         Optional<Asset> assetBought =
@@ -76,8 +75,7 @@ public class TransactionService <T>{
         } else {
             throw new NotEnoughSaldoException();
         }
-        Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
-        return true;
+        return createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
     }
     private Transaction createNewTransaction(Customer buyer, double assetAmount, Optional<Customer> seller, Optional<Asset> assetBought, double totalValue, double percentage) {
         Transaction transaction = new Transaction(buyer, seller.get(),
@@ -129,8 +127,8 @@ public class TransactionService <T>{
     public double calTotal(double valueInEuro, double feeInEuro) {
         return valueInEuro + feeInEuro;
     }
-    public Optional<Transaction> updateTransaction(Transaction transaction, int transactionId) {
-        transactionRepository.updateTransaction(transaction, transactionId);
+    public Optional<Transaction> updateTransaction(Transaction transaction) {
+        transactionRepository.updateTransaction(transaction);
         return Optional.empty();
     }
     public void deleteTransaction(int transactionId) {

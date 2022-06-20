@@ -1,20 +1,14 @@
 package com.example.cryptus.controller;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
-import com.example.cryptus.dao.TransactionDaoJdbc;
+import com.example.cryptus.dao.VolledigeTransactionDaoJdbc;
 import com.example.cryptus.model.Customer;
-import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.mindrot.jbcrypt.BCrypt.gensalt;
 
 public class TestControllerLasha {
     private static CustomerDaoJdbc customerDaoJdbc;
-    private static TransactionDaoJdbc transactionDaoJdbc;
+    private static VolledigeTransactionDaoJdbc transactionDaoJdbc;
     public static void main(String[] args) {
         String password = "abracadabra";
         String candidate = "abracadabra";

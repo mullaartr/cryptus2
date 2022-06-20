@@ -1,9 +1,6 @@
 package com.example.cryptus.repository;
 
-import com.example.cryptus.dao.AssetDaoJdbc;
-import com.example.cryptus.dao.CustomerDaoJdbc;
-import com.example.cryptus.dao.TransactionDao;
-import com.example.cryptus.dao.TransactionDaoJdbc;
+import com.example.cryptus.dao.*;
 import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
@@ -18,18 +15,47 @@ import java.util.Optional;
 public class TransactionRepository {
 
     private TransactionDao transactionDao;
-    private final TransactionDaoJdbc transactionDaoJdbc;
+    private final TransactionDao transactionDaoJdbc;
+    private final KoopTransactieDaoJDBC koopTransactieDaoJDBC;
+    private final PortefeuilleDAO portefeuilleDAO;
+
     private final CustomerDaoJdbc customerDaoJdbc;
     private final AssetDaoJdbc assetDaoJdbc;
+    private final BankConfigRepository bankConfigRepository;
 
     @Autowired
-    public TransactionRepository(TransactionDaoJdbc transactionDaoJdbc,
+    public TransactionRepository(VolledigeTransactionDaoJdbc transactionDaoJdbc,
                                  CustomerDaoJdbc customerDaoJdbc,
-                                 AssetDaoJdbc assetDaoJdbc) {
+                                 AssetDaoJdbc assetDaoJdbc, KoopTransactieDaoJDBC koopTransactieDaoJDBC, PortefeuilleDAO portefeuilleDAO, BankConfigRepository bankConfigRepository) {
         this.transactionDaoJdbc = transactionDaoJdbc;
+        this.portefeuilleDAO = portefeuilleDAO;
+        this.koopTransactieDaoJDBC = koopTransactieDaoJDBC;
         this.customerDaoJdbc = customerDaoJdbc;
         this.assetDaoJdbc = assetDaoJdbc;
+        this.bankConfigRepository = bankConfigRepository;
     }
+
+    public List<Transaction> findKoopTransactions(){
+        List<Transaction> transactions = koopTransactieDaoJDBC.findTransactions();
+        for (Transaction transaction: transactions) {
+            Customer buyer = customerDaoJdbc.findBuyerByTransactionId(transaction.getTransactionId()).orElse(null);
+            Asset asset = portefeuilleDAO.findAssetOfTransactie(transaction.getTransactionId()).orElse(null);
+            transaction.setBuyer(buyer);
+            transaction.setAsset(asset);
+            transaction.setFeePercentage(bankConfigRepository.getPercentage());
+        }
+        return transactions;
+    }
+
+    public void createKoopTransactie(Transaction transaction){
+        koopTransactieDaoJDBC.createTransaction(transaction);
+    }
+
+    public void updateKoopTransactie(Transaction transaction){
+        koopTransactieDaoJDBC.update(transaction);
+    }
+
+
     public List<Transaction> getBuyTransactionsFromUser(int userId) {
         List<Transaction> result = new ArrayList<>();
         List<Transaction> transactions =
@@ -74,9 +100,8 @@ public class TransactionRepository {
     public void createTransaction(Transaction transaction) {
         transactionDaoJdbc.createTransaction(transaction);
     }
-    public void updateTransaction(Transaction transaction,
-                                  int transactionId) {
-        transactionDao.update(transaction,transactionId);
+    public void updateTransaction(Transaction transaction) {
+        transactionDao.update(transaction);
     }
     public void deleteTransaction(int id) {
     }

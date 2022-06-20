@@ -55,8 +55,8 @@ public class TransactionController <T> {
                 Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
                 try {
-                    Boolean aankoopGeslaagd = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
-                    if (aankoopGeslaagd) {
+                    Transaction aankoopGeslaagd = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
+                    if (aankoopGeslaagd != null) {
                         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
                     }
                 }catch (NotEnoughSaldoException notEnoughSaldoException){
@@ -65,16 +65,13 @@ public class TransactionController <T> {
                     return new ResponseEntity<>("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit", HttpStatus.NOT_ACCEPTABLE);
                 }
                 return null;
-
-
-
-
     }
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
                                                @PathVariable("transactionid") int transactionId) {
+        transaction.setTransactionId(transactionId);
         Optional<Transaction> opt =
-                transactionService.updateTransaction(transaction, transactionId);
+                transactionService.updateTransaction(transaction);
         if (opt.isPresent())
             return ResponseEntity.ok().body(transaction);
         else {

@@ -248,7 +248,7 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public Optional<Customer> findCustomerByPortefeuilleId(int portefeuilleId) {
-        String sql ="select * from user JOIN portefeuille p on user.userId = p.userId join klant k on k.userId = user.userId  where p.portefeuilleID = ?";
+        String sql ="select * from user u JOIN portefeuille p on u.userId = p.userId join klant k on k.userId = u.userId  where p.portefeuilleID = ?";
         Customer customer = null;
 
         try{
@@ -260,9 +260,17 @@ public class CustomerDaoJdbc implements CustomerDao {
 
         }catch (DataAccessException exception){
             logger.info("Customer was not found");
+            exception.getMessage();
         }
         return Optional.ofNullable(customer);
     }
+
+    public Optional<Customer> findBuyerOfTransactie(int id){
+        int debitportefeuilleID = jdbcTemplate.queryForObject("select " +
+                "debitportefeuilleID from transactie where transactieId = ?", Integer.class, id);
+        return findCustomerByPortefeuilleId(debitportefeuilleID);
+    }
+
 
     @Override
     public Optional<Customer> findCustomerByEmail(String email) {

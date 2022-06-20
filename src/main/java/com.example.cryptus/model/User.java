@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,6 +48,11 @@ public abstract class User implements Serializable {
         this.portefeuille = portefeuille;
         //logger.info("User created with all-args constructor");
     }
+
+    public User(int userId, String firstName, String preposition, String lastName, String userName, String password, BankAccount bankAccount, Portefeuille portefeuille) {
+        this(userId, firstName, preposition, lastName, userName, password, new ArrayList<>(), bankAccount, portefeuille);
+    }
+
     //Daan: I created this no-args constructor
     public User() {
         super();

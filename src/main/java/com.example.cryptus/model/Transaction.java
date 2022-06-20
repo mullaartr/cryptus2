@@ -43,6 +43,13 @@ public class Transaction{
         logger.info("Nieuwe transactie die de arg constructor voor de DB " +
                 "gebruikt.");
     }
+
+    public Transaction(int transactionId, Customer buyer, Asset asset, double assetamount, double euroamount, double feePercentage, LocalDateTime timestamp) {
+        this(transactionId, buyer, null, asset, assetamount, euroamount, feePercentage, timestamp);
+    }
+
+
+
     public int getTransactionId() {
         return transactionId;
     }
@@ -115,7 +122,7 @@ public class Transaction{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && buyer.equals(that.buyer) && seller.equals(that.seller) && asset.equals(that.asset) && Objects.equals(timestamp, that.timestamp);
+        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && Objects.equals(timestamp, that.timestamp);
     }
 
     @Override
