@@ -102,7 +102,7 @@ public class KoersDaoJdbc implements KoersDao {
         Koers koers = null;
         try {
             koers = jdbcTemplate.queryForObject(sql, koersRowMapper, naam);
-            koers.setAsset(findAssetByAssetNaam(naam).orElse(null));
+           // koers.setAsset(findAssetByAssetNaam(naam).orElse(null));
         } catch (DataAccessException exception){
             logger.info("Koers was not found");
         }

@@ -33,14 +33,14 @@ public class RegisterCustomerController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //return ResponseEntity.badRequest().body( e.getMessage() );//is geen bad request!
-    @PostMapping
-    public ResponseEntity<?> registration(@RequestBody RegisterDto registerDto) {
-        Customer customer = new Customer(registerDto);
-        customer.setPassword(hashpw(customer.getPassword(), gensalt(12) + forUser.getPEPPER()));
-        registrationService.checkRegistration(customer);
-        return ResponseEntity.ok().body(registerDto);
-    }
+//    //return ResponseEntity.badRequest().body( e.getMessage() );//is geen bad request!
+//    @PostMapping
+//    public ResponseEntity<?> registration(@RequestBody RegisterDto registerDto) {
+//        Customer customer = new Customer(registerDto);
+//        customer.setPassword(hashpw(customer.getPassword(), gensalt(12) + forUser.getPEPPER()));
+//        registrationService.checkRegistration(customer);
+//        return ResponseEntity.ok().body(registerDto);
+//    }
 
     @PostMapping(path = "/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
