@@ -4,6 +4,8 @@ import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.repository.*;
+import com.example.cryptus.service.Exceptions.NotEnoughAssetsAcception;
+import com.example.cryptus.service.Exceptions.NotEnoughSaldoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -54,7 +55,7 @@ public class TransactionService <T>{
     public List<Transaction> getSellTransactionsFromUser(int userId) {
         return transactionRepository.getSellTransactionsFromUser(userId);
     }
-    public <T> T buyFromBank(Customer buyer, String assetNaam, double assetAmount) {
+    public Boolean buyFromBank(Customer buyer, String assetNaam, double assetAmount) throws NotEnoughSaldoException, NotEnoughAssetsAcception{
 
         Optional<Customer> seller =
                 customerRepository.findCustomerById(BANK);//mock
@@ -68,15 +69,15 @@ public class TransactionService <T>{
         if (seller.get().getPortefeuille().hasEnoughAssets(assetNaam, assetAmount)) {
             addAndWithdrawAssets(buyer, assetNaam, assetAmount, seller);
         } else{
-            return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit");
+            throw new NotEnoughAssetsAcception();
         }
         if (buyer.getBankAccount().hasSufficientFunds(totalValue)) {
             addAndWithdrawEuros(buyer, seller, totalValue);
         } else {
-            return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("je hebt op dit moment niet genoeg saldo op je bankrekening");
+            throw new NotEnoughSaldoException();
         }
         Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
-        return (T)ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
+        return true;
     }
     private Transaction createNewTransaction(Customer buyer, double assetAmount, Optional<Customer> seller, Optional<Asset> assetBought, double totalValue, double percentage) {
         Transaction transaction = new Transaction(buyer, seller.get(),
@@ -95,7 +96,7 @@ public class TransactionService <T>{
         assert assetSeller != null;
         assetSeller.setSaldo(assetSeller.getSaldo() - assetAmount);
         if(assetSeller ==  null){
-            portefeuilleRepository.storePortefeuilleRegel(seller.get().getPortefeuille(), assetSeller);//mock
+            portefeuilleRepository.storeAssets(seller.get().getPortefeuille(), assetSeller);//mock
         } else {
             portefeuilleRepository.updatePortefeuille(seller.get().getPortefeuille(),
                     assetSeller);
@@ -114,7 +115,7 @@ public class TransactionService <T>{
         Asset nieuweAsset = assetRepository.findAssetByAssetNaam(assetNaam).get();
         nieuweAsset.setSaldo(assetAmount);
         buyer.getPortefeuille().getAssetLijst().add(nieuweAsset);
-        portefeuilleRepository.storePortefeuilleRegel(buyer.getPortefeuille(), nieuweAsset);
+        portefeuilleRepository.storeAssets(buyer.getPortefeuille(), nieuweAsset);
     }
     public double calcValueTransactionInEuro(String assetNaam,double assetAmount) {
         double koersAsset = koersRepository.findKoersByAssetNaam(assetNaam).get().getKoersInEuro();

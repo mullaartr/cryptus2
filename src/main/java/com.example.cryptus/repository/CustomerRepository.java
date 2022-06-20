@@ -258,25 +258,41 @@ public class CustomerRepository  {
 
 
         private Optional<Customer> volledigeCustomer(Optional<Customer> customerOptional){
-            int id = customerOptional.get().getUserId();
-            Portefeuille portefeuille = portefeuilleRepository.findPortefeuilleOfCustomer(id).orElse(null);
             Customer customer = customerOptional.orElse(null);
+
+            Portefeuille portefeuille = portefeuilleVanKlant(customer);
             customer.setPortefeuille(portefeuille);
-            portefeuille.setOwner(customer);
-            assert portefeuille != null;
-            portefeuille.setOwner(customer);
-            BankAccount account =
-                    bankaccountDAO.findBankAccountByUserId(id).orElse( null );
-            assert account != null;
-            account.setAccountHolder(customer);
+
+            BankAccount account = bankAccountVanKlant(customer);
             customer.setBankAccount( account );
-            List<Transaction> list  =
-                    transactionRepository.getBuyTransactionsFromUser( id );
-            List<Transaction> sellList  =
-                    transactionRepository.getSellTransactionsFromUser( id );
-            list.addAll( sellList );
-            customer.setTransactionList( list );
+
+            customer.setTransactionList(transactieLijst(customer.getUserId()));
             return Optional.of(customer);
         }
+
+    private List<Transaction> transactieLijst(int id){
+        List<Transaction> list  =
+                transactionRepository.getBuyTransactionsFromUser( id );
+        List<Transaction> sellList  =
+                transactionRepository.getSellTransactionsFromUser( id );
+        list.addAll( sellList );
+        return list;
     }
+
+    private Portefeuille portefeuilleVanKlant(Customer customer){
+        Portefeuille portefeuille = portefeuilleRepository.findPortefeuilleOfCustomer(customer.getUserId()).orElse(null);
+        assert portefeuille != null;
+        portefeuille.setOwner(customer);
+        return portefeuille;
+    }
+
+    private BankAccount bankAccountVanKlant(Customer customer){
+        BankAccount account = bankaccountDAO.findBankAccountByUserId(customer.getUserId()).orElse( null );
+        assert account != null;
+        account.setAccountHolder(customer);
+        return account;
+    }
+}
+
+
 

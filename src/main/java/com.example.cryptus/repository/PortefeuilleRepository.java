@@ -52,15 +52,19 @@ public class PortefeuilleRepository {
             }
             Customer customer = customerOptional.get();
             portefeuilles1.get(i).setOwner(customer);
-            //customer.setPortefeuille(portefeuilles1.get(i));
+            customer.setPortefeuille(portefeuilles1.get(i));
         }
         return portefeuilles1;
     }
 
     public Optional<Portefeuille> findPortefeuilleOfCustomer(int id){
         Portefeuille portefeuille = portefeuilleDAO.findPortefeuilleOf(id).orElse(null);
-        portefeuille.getAssetLijst().stream().forEach(asset -> asset.setKoers(koersDao.findMostRecentKoersByAssetNaam(asset.getAssetNaam()).get()));
+        assert portefeuille != null;
+        if(portefeuille.getAssetLijst() != null){
+            portefeuille.getAssetLijst().forEach(asset -> asset.setKoers(koersDao.findMostRecentKoersByAssetNaam(asset.getAssetNaam()).get()));
+        }
         return Optional.of(portefeuille);
+
     }
 
     public Optional<Portefeuille> findPortefeuilleWithCustomerById(int id){
@@ -79,7 +83,7 @@ public class PortefeuilleRepository {
         Customer customer = customerOptional.get();
         portefeuille.setOwner(customer);
         customer.setPortefeuille(portefeuille);
-
+        portefeuille.getAssetLijst().forEach(asset -> asset.setKoers(koersDao.findMostRecentKoersByAssetNaam(asset.getAssetNaam()).get()));
         return Optional.of(portefeuille);
     }
 
@@ -92,7 +96,7 @@ public class PortefeuilleRepository {
     }
 
 
-    public void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset){
+    public void storeAssets(Portefeuille portefeuille, Asset asset){
         portefeuilleDAO.storePortefeuilleRegel(portefeuille, asset);
     }
 }
