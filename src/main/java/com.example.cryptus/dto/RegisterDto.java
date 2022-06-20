@@ -22,7 +22,7 @@ public class RegisterDto {
     BankAccount bankAccount;
 
     public RegisterDto(String firstName, String preposition, String lastName, BankAccount bankAccount, java.sql.Date birthDate, String BSN,
-                       Address address, String phone, String email, String password, String username) {
+                       Address address, String phone, String password, String username) {
         this.firstName = firstName;
         this.preposition = preposition;
         this.lastName = lastName;
@@ -31,9 +31,8 @@ public class RegisterDto {
         this.BSN = BSN;
         this.address = address;
         this.phone = phone;
-        this.email = email;
         this.password = password;
-        this.username = email;
+        this.username = username;
     }
 
     public BankAccount getBankAccount() {

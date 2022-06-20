@@ -66,8 +66,8 @@ function underAgeValidate(birthday) {
     let myAge = ~~((Date.now(currentDate) - myBirthday) / (31557600000));
 
     if (myAge < 18) {
-        return false;
-        alert("You need to be at least 18 years old");
+        // return false;
+        // alert("You need to be at least 18 years old");
 
     } else {
         return true;
@@ -146,11 +146,11 @@ document.querySelector('#btnRegister').addEventListener('click', (e) => {
     }
 
 
-    if(underAgeValidate(dOB)){
-        alert("You need to be at least 18 years old");
-        return;
-
-    }
+    // if(underAgeValidate(dOB)){
+    //     alert("You need to be at least 18 years old");
+    //     return;
+    //
+    // }
 
 
     if (houseNumber == '') {
@@ -244,6 +244,19 @@ document.querySelector('#btnRegister').addEventListener('click', (e) => {
             body: JSON.stringify(data)
 
         })
+
+
+        .then((response) => {
+            response.text().then(text => alert(text))//pop up: onvoldoende saldo
+        }).catch((error) => {
+
+        console.error('Foutje', error); // pop up: transactie gefaald
+    })
+
+
+
+
+
 
         .then((response) => { // callback
             console.log(response)
