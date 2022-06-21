@@ -123,9 +123,9 @@ public class KoopTransactieDaoJDBC implements TransactionDao{
 
     @Override
     public void update(Transaction transaction) {
-        String sql = "Update transactie SET creditportefeuilleID = ? and creditassetId = ?" +
-                " where transactieId = ?";
-        int update = jdbcTemplate.update(sql, transaction.getSeller().getPortefeuille().getPortefeuilleId(), transaction.getAsset().getAssetId(), transaction.getTransactionId());
+        String sql = "Update transactie SET creditportefeuilleID = ?, creditassetId = ?, creditIban = ?, euroammount = ?, kosten = ? where transactieId = ?";
+        int update = jdbcTemplate.update(sql, transaction.getBuyer().getPortefeuille().getPortefeuilleId(), transaction.getAsset().getAssetId(),
+                transaction.getBuyer().getBankAccount().getIban(), transaction.getEuroamount(), transaction.getFeePercentage(), transaction.getTransactionId());
         if (update == 1) {
             logger.info("Transactie updated");
         }

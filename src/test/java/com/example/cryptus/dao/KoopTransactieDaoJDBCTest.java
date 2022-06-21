@@ -85,7 +85,7 @@ class KoopTransactieDaoJDBCTest {
     @Test
     void update() {
         transaction1.setSeller(customer2);
-        koopTransactieDaoJDBCUnderTest.update(transaction1, transaction1.getTransactionId());
+        koopTransactieDaoJDBCUnderTest.update(transaction1);
 
     }
 }

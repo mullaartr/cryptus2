@@ -51,47 +51,86 @@
 //    }
 //    @Test
 
- //   @Test
-//    void buyFromBank() {
-//        testSetup();
-//        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
-//                testasset, TEST_ASSET_AMOUNT).get();
-//        String actualAssetNaam = testtransactie.getAsset().getAssetNaam();
-//        String expectedAssetNaam = testasset;
-//        assertThat(actualAssetNaam).isNotNull().isEqualTo(expectedAssetNaam);
-//        double actualAssetAmount = testtransactie.getAssetamount();
-//        double expectedAssetAmount = TEST_ASSET_AMOUNT;
-//        assertThat(actualAssetAmount).isNotNull().isEqualTo(expectedAssetAmount);
-//    }
-//    @Test
-//    void calcValueTransactionInEuro() {
-//        testSetup();
-//        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
-//                testasset, TEST_ASSET_AMOUNT).get();
-//        double testkoers =
-//                koersService.findKoersByAssetNaam(testasset).get().getKoersInEuro();
-//        double actualValue = testtransactie.getEuroamount();
-//        double expectedValue = testkoers + testkoers * (bankConfigService.getPercentage()/PERCENTAGE);
-//        assertThat(actualValue).isNotNull().isEqualTo(expectedValue);
-//    }
-//    @Test
-//    void calcFee() {
-//    }
-//    @Test
-//    void calTotal() {
-//    }
-//    @Test
-//    void findTransactionById() {
-//        testSetup();
-//        Transaction testtransactie = transactionService.buyFromBank(testbuyer,
-//                testasset, TEST_ASSET_AMOUNT).get();
-//        Optional<Transaction> expected =
-//                transactionService.findTransactionById(testtransactie.getTransactionId());
-//        Optional <Transaction> actual = Optional.of(testtransactie);
-//        actual.get().setTimestamp( null ); // Ignore timestamp
-//        expected.get().setTimestamp( null );
-//        actual.get().setFeePercentage( 0.00 ); // Ignore percentage
-//        expected.get().setFeePercentage( 0.00 );
-//        assertThat(actual).isNotNull().isEqualTo(expected);
-//    }
-//}
+package com.example.cryptus.service;
+
+import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.dao.KoopTransactieDaoJDBC;
+import com.example.cryptus.dao.PortefeuilleDAO;
+import com.example.cryptus.dto.AssetDTO;
+import com.example.cryptus.dto.TransactionDTO;
+import com.example.cryptus.model.*;
+import com.example.cryptus.repository.BankConfigRepository;
+import com.example.cryptus.repository.TransactionRepository;
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@SpringBootTest
+
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class TransactionServiceTest {
+    private Transaction transaction;
+    private Asset asset;
+    private List<Transaction> transactionList;
+    private TransactionDTO transactionDTO;
+    private List<Asset> assets;
+    private Transaction transaction1;
+    private Customer customer1;
+    private Portefeuille portefeuille;
+    private BankAccount bankAccount;
+    private Customer customer2;
+    private Portefeuille portefeuille2;
+    private BankAccount bankAccount2;
+
+    private final TransactionService transactionServiceUnderTest;
+
+    @Autowired
+    public TransactionServiceTest(TransactionService transactionService){
+        super();
+        transactionServiceUnderTest = transactionService;
+    }
+
+    @BeforeEach
+    void setup(){
+        asset = new Asset(1, "Bitcoin", "BTC", null, 25.0);
+        transaction1 = new Transaction(3, null, null, 20.00, 300.00, 0.00, LocalDateTime.parse("2022-05-19T01:14:07.00"));
+        customer1 = new Customer(3, "Jan", "van", "Zevenaar", "zeven", "12345", Date.valueOf("1950-09-10"),"156677882",
+                new Address(1,"Rokin","1001AA","Amsterdam"),"harry.kreeft@lumc.nl","0647186543");
+        portefeuille = new Portefeuille(1, null, new ArrayList<>());
+        portefeuille2 = new Portefeuille(2, null, new ArrayList<>());
+        customer1.setPortefeuille(portefeuille);
+        assets = new ArrayList<>();
+        assets.add(asset);
+        portefeuille2.setAssetLijst(assets);
+        bankAccount = new BankAccount("1234567891",1000000.00,1);
+        bankAccount2 = new BankAccount("9876543211",1000,2);
+        customer1.setBankAccount(bankAccount);
+        transactionList = new ArrayList<>();
+        transactionList.add(transaction);
+        transactionList.add(transaction1);
+        customer2 = new Customer(2, "Frits", null, "Botersprits", "boter", "12345", Date.valueOf("1973-06-16"), "163647895", new Address(1, "1011ZH", "dam", "Amsterdam"), "0647176156","joop.jansen@knp.nl");
+        customer2.setPortefeuille(portefeuille2);
+        customer2.setBankAccount(bankAccount2);
+        transactionDTO = new TransactionDTO(0, new AssetDTO(asset), 20, 300);
+
+
+    }
+
+    @Test
+    void doSale() {
+        Transaction actual = transactionServiceUnderTest.maakKoopTransactie(transactionDTO, customer2);
+        Transaction expected = null;
+    }
+}
+
+

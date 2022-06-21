@@ -131,7 +131,7 @@ class PortefeuilleDAOJdbcTest {
 
     @Test
     void findAssetOfTransactie() {
-        Asset actual = portefeuilleDaoJDBCUnderTest.findAssetOfTransactie(1).orElse(null);
+        Asset actual = portefeuilleDaoJDBCUnderTest.findAssetOfVerkoopTransactie(1).orElse(null);
         Asset expected = asset5;
         assertThat(actual).isNotNull().isEqualTo(expected);
     }

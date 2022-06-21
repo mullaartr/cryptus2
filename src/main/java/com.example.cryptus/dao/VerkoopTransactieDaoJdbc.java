@@ -120,9 +120,9 @@ public class VerkoopTransactieDaoJdbc implements TransactionDao{
 
     @Override
     public void update(Transaction transaction) {
-        String sql = "Update transactie SET debitportefeuilleID = ? and debitassetId = ?" +
-                " where transactieId = ?";
-        int update = jdbcTemplate.update(sql, transaction.getSeller().getPortefeuille().getPortefeuilleId(), transaction.getAsset().getAssetId(), transaction.getTransactionId());
+        String sql = "Update transactie SET debitportefeuilleID = ?, debitassetId = ?, debitIban = ?, euroammount = ?, kosten = ? where transactieId = ?";
+        int update = jdbcTemplate.update(sql, transaction.getSeller().getPortefeuille().getPortefeuilleId(), transaction.getAsset().getAssetId(),
+                transaction.getSeller().getBankAccount().getIban(), transaction.getEuroamount(),  transaction.getFeePercentage(), transaction.getTransactionId());
         if (update == 1) {
             logger.info("Transactie updated");
         }

@@ -68,7 +68,7 @@ class TransactionRepositoryTest {
 
 
         Mockito.when(mockKoopTransactieDaoJdbc.findTransactions()).thenReturn(transactionList);
-        Mockito.when(mockPortefeuilleDAO.findAssetOfTransactie(1)).thenReturn(Optional.ofNullable(asset));
+        Mockito.when(mockPortefeuilleDAO.findAssetOfVerkoopTransactie(1)).thenReturn(Optional.ofNullable(asset));
         Mockito.when(mockCustomerDAO.findBuyerByTransactionId(3)).thenReturn(Optional.ofNullable(customer1));
         Mockito.when(mockBankConfigRepository.getPercentage()).thenReturn(6.00);
 

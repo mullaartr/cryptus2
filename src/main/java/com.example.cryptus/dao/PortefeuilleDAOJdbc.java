@@ -150,12 +150,21 @@ public class PortefeuilleDAOJdbc  implements PortefeuilleDAO{
         return findPortefeuilleById(portefeuilleId);
     }
 
-    public Optional<Asset> findAssetOfTransactie(int id){
+    public Optional<Asset> findAssetOfKoopTransactie(int id){
         int assetId = jdbcTemplate.queryForObject("select debitassetId" +
                 " from transactie where transactieId = ?", Integer.class, id);
         int debbitPortefeuilleId = jdbcTemplate.queryForObject("select " +
                 "debitportefeuilleID from transactie where transactieId = ?", Integer.class, id);
         Asset asset = findAssetsByPortefeuille(debbitPortefeuilleId).stream().filter(asset1 -> asset1.getAssetId() == assetId).findAny().orElse(null);
+        return Optional.of(asset);
+    }
+
+    public Optional<Asset> findAssetOfVerkoopTransactie(int id){
+        int assetId = jdbcTemplate.queryForObject("select creditassetId" +
+                " from transactie where transactieId = ?", Integer.class, id);
+        int creditPortefeuilleId = jdbcTemplate.queryForObject("select " +
+                "creditportefeuilleID from transactie where transactieId = ?", Integer.class, id);
+        Asset asset = findAssetsByPortefeuille(creditPortefeuilleId).stream().filter(asset1 -> asset1.getAssetId() == assetId).findAny().orElse(null);
         return Optional.of(asset);
     }
 

@@ -2,6 +2,7 @@ package com.example.cryptus.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -47,6 +48,9 @@ public class Transaction{
     public Transaction(int transactionId, Customer buyer, Asset asset, double assetamount, double euroamount, double feePercentage, LocalDateTime timestamp) {
         this(transactionId, buyer, null, asset, assetamount, euroamount, feePercentage, timestamp);
     }
+    public Transaction(Customer buyer, Asset asset, double assetamount, double euroamount) {
+        this(0, buyer, null, asset, assetamount, euroamount, 0.0, LocalDateTime.now());
+    }
 
 
 
@@ -58,15 +62,16 @@ public class Transaction{
         this.transactionId = transactionId;
     }
 
-    public User getBuyer() {
-        return buyer;
-    }
 
     public void setBuyer(Customer buyer) {
         this.buyer = buyer;
     }
 
-    public User getSeller() {
+    public Customer getBuyer() {
+        return buyer;
+    }
+
+    public Customer getSeller() {
         return seller;
     }
 

@@ -92,6 +92,7 @@ VALUES (1, '2022-05-19 01:14:07.00', 5.00, '1234567891', '9876543211', 300, 2,
         1,
         20, 2, 1);
 INSERT INTO `transactie` (`transactieId`, `datumtijd`, `kosten`, `debitiban`, `euroammount`, `debitportefeuilleID`, `debitassetId`, `assetammount`) VALUES (3, '2022-05-19 01:14:07.00', 6.00, '1234567891', 300.00, 1, 1, 20.000000);
+INSERT INTO `transactie` (`transactieId`, `datumtijd`, `kosten`, `creditiban`, `euroammount`, `creditportefeuilleID`, `creditassetId`, `assetammount`) VALUES (4, '2022-05-19 01:14:07.00', 6.00, '1234567891', 300.00, 1, 1, 20.000000);
 
 
 INSERT INTO `koers`

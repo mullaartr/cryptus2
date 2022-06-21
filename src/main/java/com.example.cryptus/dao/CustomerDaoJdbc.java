@@ -103,10 +103,10 @@ public class CustomerDaoJdbc implements CustomerDao {
     }
 
     public Optional<Customer> findSellerByTransactionId( int transactionId) {
-        String sql ="select * from klant JOIN user u JOIN bankrekening b JOIN" +
-                " transactie t on b.iban = t.creditiban and b.userId = u" +
-                ".userId and "+
-                " u.userId = klant.userId where t.transactieId = ?";
+        String sql ="select * from klant k JOIN user u on u.userId = k.userId" +
+                " join bankrekening b on b.userId = u.userId" +
+                " join transactie t on b.iban = t.creditiban" +
+                " where t.transactieId = ?";
         Customer customer = null;
         try{
             customer = jdbcTemplate.queryForObject(sql,rowMapper,transactionId);
@@ -263,12 +263,6 @@ public class CustomerDaoJdbc implements CustomerDao {
             exception.getMessage();
         }
         return Optional.ofNullable(customer);
-    }
-
-    public Optional<Customer> findBuyerOfTransactie(int id){
-        int debitportefeuilleID = jdbcTemplate.queryForObject("select " +
-                "debitportefeuilleID from transactie where transactieId = ?", Integer.class, id);
-        return findCustomerByPortefeuilleId(debitportefeuilleID);
     }
 
 
