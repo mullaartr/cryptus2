@@ -1,5 +1,6 @@
 package com.example.cryptus.security;
 
+import com.example.cryptus.repository.JwtFakeRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,11 +23,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
+    private JwtFakeRepo jwtFakeRepo;
 
-    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
+    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey, JwtFakeRepo jwtFakeRepo) {
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
         this.secretKey = secretKey;
+        this.jwtFakeRepo = jwtFakeRepo;
     }
 
     @Override
@@ -61,6 +64,12 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays())))
                 .signWith(secretKey)
                 .compact();
+        jwtFakeRepo.removeJwtFromRepo(authResult.getName());
+        if(jwtFakeRepo.containsKey(authResult.getName())){
+            System.out.println("Entry was not removed from the map!");
+        }else {
+            System.out.println("Entry was REMOVED from the map!");
+        }
 
         response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
     }

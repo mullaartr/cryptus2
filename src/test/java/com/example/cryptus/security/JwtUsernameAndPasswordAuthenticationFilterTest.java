@@ -5,21 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import javax.security.auth.kerberos.EncryptionKey;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 
+import com.example.cryptus.repository.JwtFakeRepo;
 import org.apache.catalina.connector.Response;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 
 class JwtUsernameAndPasswordAuthenticationFilterTest {
@@ -30,8 +26,9 @@ class JwtUsernameAndPasswordAuthenticationFilterTest {
         authenticationProviderList.add(new RunAsImplAuthenticationProvider());
         ProviderManager authenticationManager = new ProviderManager(authenticationProviderList);
         JwtConfig jwtConfig = new JwtConfig();
+        JwtFakeRepo jwtFakeRepo = new JwtFakeRepo();
         JwtUsernameAndPasswordAuthenticationFilter jwtUsernameAndPasswordAuthenticationFilter = new JwtUsernameAndPasswordAuthenticationFilter(
-                authenticationManager, jwtConfig, new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1));
+                authenticationManager, jwtConfig, new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1), jwtFakeRepo);
         MockHttpServletRequest request = new MockHttpServletRequest();
         assertThrows(RuntimeException.class,
                 () -> jwtUsernameAndPasswordAuthenticationFilter.attemptAuthentication(request, new Response()));
@@ -40,8 +37,9 @@ class JwtUsernameAndPasswordAuthenticationFilterTest {
     @Test
     void testAttemptAuthentication2() throws UnsupportedEncodingException, AuthenticationException {
         JwtConfig jwtConfig = new JwtConfig();
+        JwtFakeRepo jwtFakeRepo = new JwtFakeRepo();
         JwtUsernameAndPasswordAuthenticationFilter jwtUsernameAndPasswordAuthenticationFilter = new JwtUsernameAndPasswordAuthenticationFilter(
-                null, jwtConfig, new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1));
+                null, jwtConfig, new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1), jwtFakeRepo);
         MockHttpServletRequest request = new MockHttpServletRequest();
         assertThrows(RuntimeException.class,
                 () -> jwtUsernameAndPasswordAuthenticationFilter.attemptAuthentication(request, new Response()));
@@ -53,8 +51,9 @@ class JwtUsernameAndPasswordAuthenticationFilterTest {
         authenticationProviderList.add(new RunAsImplAuthenticationProvider());
         ProviderManager authenticationManager = new ProviderManager(authenticationProviderList);
         JwtConfig jwtConfig = new JwtConfig();
+        JwtFakeRepo jwtFakeRepo = new JwtFakeRepo();
         JwtUsernameAndPasswordAuthenticationFilter actualJwtUsernameAndPasswordAuthenticationFilter = new JwtUsernameAndPasswordAuthenticationFilter(
-                authenticationManager, jwtConfig, new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1));
+                authenticationManager, jwtConfig, new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1), jwtFakeRepo);
 
         assertEquals("username", actualJwtUsernameAndPasswordAuthenticationFilter.getUsernameParameter());
         assertTrue(actualJwtUsernameAndPasswordAuthenticationFilter

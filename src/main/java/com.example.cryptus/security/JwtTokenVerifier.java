@@ -1,5 +1,6 @@
 package com.example.cryptus.security;
 
+import com.example.cryptus.repository.JwtFakeRepo;
 import com.google.common.base.Strings;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -26,51 +27,48 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
+    private JwtFakeRepo jwtFakeRepo;
 
     public JwtTokenVerifier(SecretKey secretKey,
-                            JwtConfig jwtConfig) {
+                            JwtConfig jwtConfig, JwtFakeRepo jwtFakeRepo) {
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
+        this.jwtFakeRepo = jwtFakeRepo;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
-
         if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
             filterChain.doFilter(request, response);
             return;
         }
-
         String token = authorizationHeader.replace( jwtConfig.getTokenPrefix(), "");
         Jws<Claims> claimsJws;
-
         try {
              claimsJws = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                      .build()
                      .parseClaimsJws(token);
-
             Claims body = claimsJws.getBody();
-
             String username = body.getSubject();
+            if(jwtFakeRepo.containsKey(username)){
+                throw new IllegalStateException(String.format("You have been logged out. Please log in again."));
+            }else {
+                var authorities = (List<Map<String, String>>) body.get("authorities");
+                Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
+                        .map(m -> new SimpleGrantedAuthority("authority"))
+                        .collect(Collectors.toSet());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        username,
+                        null,
+                        simpleGrantedAuthorities
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
 
-            var authorities = (List<Map<String, String>>) body.get("authorities");
-
-            Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
-                    .map(m -> new SimpleGrantedAuthority("authority"))
-                    .collect(Collectors.toSet());
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    username,
-                    null,
-                    simpleGrantedAuthorities
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException e) {
             throw new IllegalStateException(String.format("Token %s cannot be trusted",  token));
         }
