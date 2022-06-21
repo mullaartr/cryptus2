@@ -69,13 +69,6 @@ public class TransactionDTO {
         this.kosten = kosten;
     }
 
-    public boolean isEuroOfDollar() {
-        return euroOfDollar;
-    }
-
-    public void setEuroOfDollar(boolean euroOfDollar) {
-        this.euroOfDollar = euroOfDollar;
-    }
 
     public void setKosten(int kosten) {
         this.kosten = kosten;

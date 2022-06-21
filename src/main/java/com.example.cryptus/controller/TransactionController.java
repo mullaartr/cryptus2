@@ -57,7 +57,7 @@ public class TransactionController <T> {
 
     @GetMapping(value = "marktplaatsOpkoop")
     public List<TransactionDTO> vulMarktplaatsOpbod(){
-        List<Transaction> openstaandeTransacties = transactionService.toonAanbod();
+        List<Transaction> openstaandeTransacties = transactionService.toonOpbod();
         List<TransactionDTO> transactionDTOS = new ArrayList<>();
         openstaandeTransacties.forEach(transaction -> transactionDTOS.add(new TransactionDTO(transaction)));
         return transactionDTOS;
