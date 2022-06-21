@@ -74,8 +74,8 @@ public class TransactionController <T> {
         Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
         try {
-            Boolean aankoopGeslaagd = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
-            if (aankoopGeslaagd) {
+            Transaction transaction = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
+            if (transaction != null) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
             }
         }catch (NotEnoughSaldoException notEnoughSaldoException){

@@ -264,15 +264,6 @@ public class CustomerDaoJdbc implements CustomerDao {
         return Optional.ofNullable(customer);
     }
 
-<<<<<<< HEAD
-=======
-
-    @Override
-    public Optional<Customer> findCustomerByEmail(String email) {
-        String sql ="select * from klant where emailadres = ?";
-        Customer customer = null;
-        try{
->>>>>>> marktplaarsAchterkant
 
 
     //Daan: I added this method to check if an email is already in use
