@@ -1,69 +1,47 @@
 package com.example.cryptus.dto;
+import com.example.cryptus.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
 public class TransactionDTO {
-    private final Logger logger = LoggerFactory.getLogger(TransactionDTO.class);
-    private int transactionId;
-    private String koperIban;
-    private String verkoperIban;
-    private int asset;
+    int transactieId;
+    private AssetDTO asset;
     private double assetammount;
     private double euroammount;
-    private int commisionPercentage;
+    private double kosten;
     private LocalDateTime creationTimestamp;
 
-    public TransactionDTO() {
-        super();
-        logger.info("Nieuwe transactieDTO die de no arg constructor gebruikt.");
+
+
+    public TransactionDTO(Transaction transaction) {
+        this.transactieId = transaction.getTransactionId();
+        this.asset = new AssetDTO(transaction.getAsset());
+        this.assetammount = transaction.getEuroamount();
+        this.euroammount = transaction.getEuroamount();
     }
-    public TransactionDTO(int transactionId, String koper, String verkoper,
-                          int asset, double assetammount, double euroammount,
-                          int commisionPercentage, LocalDateTime creationTimestamp) {
-        this.transactionId = transactionId;
-        this.koperIban = koper;
-        this.verkoperIban = verkoper;
+
+    public TransactionDTO(int transactieId, AssetDTO asset, double assetammount, double euroammount) {
+        this.transactieId = transactieId;
         this.asset = asset;
         this.assetammount = assetammount;
         this.euroammount = euroammount;
-        this.commisionPercentage = commisionPercentage;
-        this.creationTimestamp = creationTimestamp;
-        logger.info("Nieuwe transactieDTO die de all arg constructor gebruikt" +
-                ".");
     }
 
-
-    public int getTransactionId() {
-        return transactionId;
+    public int getTransactieId() {
+        return transactieId;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public void setTransactieId(int transactieId) {
+        this.transactieId = transactieId;
     }
 
-    public String getKoperIban() {
-        return koperIban;
-    }
-
-    public void setKoperIban(String koperIban) {
-        this.koperIban = koperIban;
-    }
-
-    public String getVerkoperIban() {
-        return verkoperIban;
-    }
-
-    public void setVerkoperIban(String verkoperIban) {
-        this.verkoperIban = verkoperIban;
-    }
-
-    public int getAsset() {
+    public AssetDTO getAsset() {
         return asset;
     }
 
-    public void setAsset(int asset) {
+    public void setAsset(AssetDTO asset) {
         this.asset = asset;
     }
 
@@ -83,12 +61,17 @@ public class TransactionDTO {
         this.euroammount = euroammount;
     }
 
-    public int getCommisionPercentage() {
-        return commisionPercentage;
+    public double getKosten() {
+        return kosten;
     }
 
-    public void setCommisionPercentage(int commisionPercentage) {
-        this.commisionPercentage = commisionPercentage;
+    public void setKosten(double kosten) {
+        this.kosten = kosten;
+    }
+
+
+    public void setKosten(int kosten) {
+        this.kosten = kosten;
     }
 
     public LocalDateTime getCreationTimestamp() {
@@ -102,13 +85,9 @@ public class TransactionDTO {
     @Override
     public String toString() {
         return "TransactionDTO{" +
-                "transactionId=" + transactionId +
-                ", koperIban='" + koperIban + '\'' +
-                ", verkoperIban='" + verkoperIban + '\'' +
-                ", asset=" + asset +
                 ", assetammount=" + assetammount +
                 ", euroammount=" + euroammount +
-                ", commisionPercentage=" + commisionPercentage +
+                ", commisionPercentage=" + kosten +
                 ", timestamp=" + creationTimestamp +
                 '}';
     }

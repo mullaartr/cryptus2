@@ -12,6 +12,8 @@ public interface PortefeuilleDAO {
     Optional<Portefeuille> findPortefeuilleOf(int id);
     List<Portefeuille> findPortefeuilles();
     void store(Portefeuille portefeuille);
+    Optional<Asset> findAssetOfKoopTransactie(int id);
+    public Optional<Asset> findAssetOfVerkoopTransactie(int id);
 
     void storePortefeuilleRegel(Portefeuille portefeuille, Asset asset);
     void update(Portefeuille portefeuille, Asset asset);

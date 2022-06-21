@@ -3,6 +3,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -45,6 +46,16 @@ public class Transaction{
         logger.info("Nieuwe transactie die de arg constructor voor de DB " +
                 "gebruikt.");
     }
+
+    public Transaction(int transactionId, Customer buyer, Asset asset, double assetamount, double euroamount, double feePercentage, LocalDateTime timestamp) {
+        this(transactionId, buyer, null, asset, assetamount, euroamount, feePercentage, timestamp);
+    }
+    public Transaction(Customer buyer, Asset asset, double assetamount, double euroamount) {
+        this(0, buyer, null, asset, assetamount, euroamount, 0.0, LocalDateTime.now());
+    }
+
+
+
     public int getTransactionId() {
         return transactionId;
     }
@@ -53,15 +64,16 @@ public class Transaction{
         this.transactionId = transactionId;
     }
 
-    public User getBuyer() {
-        return buyer;
-    }
 
     public void setBuyer(Customer buyer) {
         this.buyer = buyer;
     }
 
-    public User getSeller() {
+    public Customer getBuyer() {
+        return buyer;
+    }
+
+    public Customer getSeller() {
         return seller;
     }
 
@@ -117,7 +129,7 @@ public class Transaction{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && buyer.equals(that.buyer) && seller.equals(that.seller) && asset.equals(that.asset) && Objects.equals(timestamp, that.timestamp);
+        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && Objects.equals(timestamp, that.timestamp);
     }
 
     @Override

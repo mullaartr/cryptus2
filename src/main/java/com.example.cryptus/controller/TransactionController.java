@@ -17,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "transactions")
@@ -44,6 +46,25 @@ public class TransactionController <T> {
                 transactionService.getSellTransactionsFromUser(userId);
         return lijst;
     }
+
+
+    @GetMapping(value = "marktplaatsAankoop")
+    public List<TransactionDTO> vulMarktplaatsAanbod(){
+        List<Transaction> openstaandeTransacties = transactionService.toonAanbod();
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+        openstaandeTransacties.forEach(transaction -> transactionDTOS.add(new TransactionDTO(transaction)));
+        return transactionDTOS;
+    }
+
+    @GetMapping(value = "marktplaatsOpkoop")
+    public List<TransactionDTO> vulMarktplaatsOpbod(){
+        List<Transaction> openstaandeTransacties = transactionService.toonOpbod();
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+        openstaandeTransacties.forEach(transaction -> transactionDTOS.add(new TransactionDTO(transaction)));
+        return transactionDTOS;
+    }
+
+    // respons
     @PostMapping("/buytransaction_bank")
     public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) throws NotEnoughSaldoException {
         var username =
@@ -66,11 +87,13 @@ public class TransactionController <T> {
         return null;
     }
 
+
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
                                                @PathVariable("transactionid") int transactionId) {
+        transaction.setTransactionId(transactionId);
         Optional<Transaction> opt =
-                transactionService.updateTransaction(transaction, transactionId);
+                transactionService.updateTransaction(transaction);
         if (opt.isPresent())
             return ResponseEntity.ok().body(transaction);
         else {

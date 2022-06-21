@@ -1,17 +1,24 @@
 package com.example.cryptus.controller;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
-import com.example.cryptus.dao.TransactionDaoJdbc;
+import com.example.cryptus.dao.VolledigeTransactionDaoJdbc;
 import com.example.cryptus.model.Customer;
+<<<<<<< HEAD
 import com.example.cryptus.repository.JwtFakeRepo;
+=======
+>>>>>>> marktplaarsAchterkant
 
 import static org.mindrot.jbcrypt.BCrypt.gensalt;
 
 public class TestControllerLasha {
     private static CustomerDaoJdbc customerDaoJdbc;
+<<<<<<< HEAD
     private static TransactionDaoJdbc transactionDaoJdbc;
     private static StatusController statusController;
 
+=======
+    private static VolledigeTransactionDaoJdbc transactionDaoJdbc;
+>>>>>>> marktplaarsAchterkant
     public static void main(String[] args) {
         String password = "abracadabra";
         String candidate = "abracadabra";

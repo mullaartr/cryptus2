@@ -28,6 +28,8 @@ class CustomerDaoJdbcTest {
     Customer customer;
     Customer customer1;
 
+    private Customer customer3;
+
 
     @Autowired
     public CustomerDaoJdbcTest(CustomerDaoJdbc customerDaoJdbc) {
@@ -44,7 +46,7 @@ class CustomerDaoJdbcTest {
         customer1 = new Customer(3, "Jan", "van", "Zevenaar", "zeven", "12345",Date.valueOf("1950-09-10"),"156677882",
                 new Address(1,"Rokin","1001AA","Amsterdam"),"0647186543");
 
-
+        customer3 = new Customer(2);
 
 
     }
@@ -77,4 +79,11 @@ class CustomerDaoJdbcTest {
 
 
     }
+
+/*    @Test
+    void findBuyerOfTransactie() {
+        Customer actual= customerDaoJdbcUnderTest.findBuyerOfTransactie(1).orElse(null);
+        Customer expected = customer3;
+        assertThat(actual).isNotNull().isEqualTo(expected);
+    }*/
 }
