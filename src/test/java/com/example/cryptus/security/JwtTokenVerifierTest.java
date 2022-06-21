@@ -11,6 +11,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import com.example.cryptus.repository.JwtFakeRepo;
 import io.jsonwebtoken.JwtException;
 
 import java.io.IOException;
@@ -21,7 +22,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 
 import org.apache.catalina.connector.Response;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -31,7 +31,8 @@ class JwtTokenVerifierTest {
         EncryptionKey encryptionKey = new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1);
 
         JwtConfig jwtConfig = new JwtConfig();
-        JwtTokenVerifier actualJwtTokenVerifier = new JwtTokenVerifier(encryptionKey, jwtConfig);
+        JwtFakeRepo jwtFakeRepo = new JwtFakeRepo();
+        JwtTokenVerifier actualJwtTokenVerifier = new JwtTokenVerifier(encryptionKey, jwtConfig, jwtFakeRepo);
 
         assertTrue(actualJwtTokenVerifier
                 .getEnvironment() instanceof org.springframework.web.context.support.StandardServletEnvironment);
@@ -50,8 +51,9 @@ class JwtTokenVerifierTest {
     @Test
     void testDoFilterInternal() throws IOException, ServletException {
         EncryptionKey secretKey = new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1);
+        JwtFakeRepo jwtFakeRepo = new JwtFakeRepo();
 
-        JwtTokenVerifier jwtTokenVerifier = new JwtTokenVerifier(secretKey, new JwtConfig());
+        JwtTokenVerifier jwtTokenVerifier = new JwtTokenVerifier(secretKey, new JwtConfig(), jwtFakeRepo);
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
         Response response = new Response();
         FilterChain filterChain = mock(FilterChain.class);
@@ -85,8 +87,9 @@ class JwtTokenVerifierTest {
     @Test
     void testDoFilterInternal4() throws IOException, ServletException {
         EncryptionKey secretKey = new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1);
+        JwtFakeRepo jwtFakeRepo = new JwtFakeRepo();
 
-        JwtTokenVerifier jwtTokenVerifier = new JwtTokenVerifier(secretKey, new JwtConfig());
+        JwtTokenVerifier jwtTokenVerifier = new JwtTokenVerifier(secretKey, new JwtConfig(), jwtFakeRepo);
         MockHttpServletRequest request = new MockHttpServletRequest();
         Response response = new Response();
         FilterChain filterChain = mock(FilterChain.class);

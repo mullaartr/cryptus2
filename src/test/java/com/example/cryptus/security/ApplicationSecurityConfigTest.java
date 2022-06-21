@@ -5,16 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.repository.JwtFakeRepo;
 import com.example.cryptus.service.ApplicationUserService;
 
 import java.io.UnsupportedEncodingException;
 
-import java.util.HashMap;
-
 import javax.crypto.SecretKey;
 import javax.security.auth.kerberos.EncryptionKey;
-
-import org.junit.jupiter.api.Disabled;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +26,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -65,6 +61,9 @@ class ApplicationSecurityConfigTest {
     private ObjectPostProcessor<Object> objectPostProcessor;
 
     @MockBean
+    private JwtFakeRepo jwtFakeRepo;
+
+    @MockBean
     private PasswordEncoder passwordEncoder;
 
     @MockBean
@@ -89,7 +88,7 @@ class ApplicationSecurityConfigTest {
         EncryptionKey secretKey = new EncryptionKey("AAAAAAAA".getBytes("UTF-8"), 1);
 
         DaoAuthenticationProvider actualDaoAuthenticationProviderResult = (new ApplicationSecurityConfig(passwordEncoder,
-                customerDaoJdbc, applicationUserService, secretKey, new JwtConfig())).daoAuthenticationProvider();
+                customerDaoJdbc, applicationUserService, secretKey, new JwtConfig(), jwtFakeRepo)).daoAuthenticationProvider();
         assertTrue(actualDaoAuthenticationProviderResult
                 .getUserCache() instanceof org.springframework.security.core.userdetails.cache.NullUserCache);
         assertTrue(actualDaoAuthenticationProviderResult.isHideUserNotFoundExceptions());

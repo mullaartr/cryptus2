@@ -27,7 +27,8 @@ public class RegisterCustomerController {
     Account forUser = new Account("password");
 
     @Autowired
-    public RegisterCustomerController(CustomerService customerService, RegistrationService registrationService, PasswordEncoder passwordEncoder) {
+    public RegisterCustomerController(CustomerService customerService, RegistrationService registrationService,
+                                      PasswordEncoder passwordEncoder) {
         this.customerService = customerService;
         this.registrationService = registrationService;
         this.passwordEncoder = passwordEncoder;
