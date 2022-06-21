@@ -2,6 +2,7 @@ package com.example.cryptus.model;
 
 import com.example.cryptus.dto.RegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -9,35 +10,35 @@ public class Customer extends User {
 
     private Date birthDate;
     private String BSN;
-    private String email;
+
     private String phone;
     private Address address;
 
 
-        @Autowired
-
-        public Customer(int userId, String firstName, String preposition, String lastName, String password,
-                        String userName, Date birthDate, String BSN,
-                        Address address, String email, String phone) {
+    @Autowired
+    public Customer(int userId, String firstName, String preposition, String lastName, String password,
+                    String userName, Date birthDate, String BSN,
+                    Address address, String phone) {
         super(userId, firstName, preposition, lastName, userName, password);
         this.birthDate = birthDate;
         this.BSN = BSN;
-        this.email = email;
         this.phone = phone;
         this.address = address;
     }
 
-    public Customer(BankAccount bankAccount){
-            super();
+    public Customer(BankAccount bankAccount) {
+        super();
     }
-    public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password, List<Transaction> transactionList, BankAccount bankAccount, Portefeuille portefeuille, Date birthDate, String BSN, String email, String phone, Address address) {
+
+    public Customer(int userId, String firstName, String preposition, String lastName, String userName, String password, List<Transaction> transactionList,
+                    BankAccount bankAccount, Portefeuille portefeuille, Date birthDate, String BSN, String phone, Address address) {
         super(userId, firstName, preposition, lastName, userName, password, transactionList, bankAccount, portefeuille);
         this.birthDate = birthDate;
         this.BSN = BSN;
-        this.email = email;
         this.phone = phone;
         this.address = address;
     }
+
     public Customer(int userId, Address address) {
         super(userId);
         this.address = address;
@@ -50,12 +51,12 @@ public class Customer extends User {
     //Daan: constructor for registerDto
     public Customer(RegisterDto registerDto) {
         super(registerDto.getFirstName(), registerDto.getPreposition(), registerDto.getLastName(),
-                registerDto.getUsername(), registerDto.getPassword(), registerDto.getBankAccount());
+                registerDto.getUserName(), registerDto.getPassword(), registerDto.getBankAccount());
         this.birthDate = registerDto.getBirthDate();
         this.BSN = registerDto.getBSN();
         this.address = registerDto.getAddress();
         this.phone = registerDto.getPhone();
-        this.email = registerDto.getEmail();
+
     }
 
     //Daan: for registration
@@ -129,9 +130,7 @@ public class Customer extends User {
         return birthDate;
     }
 
-    public String getEmail() {
-        return email;
-    }
+
 
     public String getPhone() {
         return phone;
@@ -141,9 +140,7 @@ public class Customer extends User {
         this.phone = phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
@@ -162,7 +159,6 @@ public class Customer extends User {
         return "Customer{" +
                 "birthDate=" + birthDate +
                 ", BSN='" + BSN + '\'' +
-                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
                 '}';

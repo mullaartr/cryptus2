@@ -5,7 +5,7 @@ INSERT INTO `bankinstelling`
 VALUES ('percentage', '15');
 
 INSERT INTO `user`
-VALUES (1, 'Rogier', NULL, 'Mullaart', 'mullaart', '3f2b04468dffbaa00ae5651d8ff2586b2b6c7568e0f4796a61a01c883ecd9476'),
+VALUES (1, 'cryptus', NULL, 'bank', 'cryptus@admin.nl', '$10$/nJxiT/jw7BLaO4Z9sXjpOorbphJG4gW0vYq2e0lBl9gvTTYwXwbG'),
        (2, 'Frits', NULL, 'Botersprits', 'boter', '12345'),
        (3, 'Jan', 'van', 'Zevenaar', 'zeven', '12345'),
        (4, 'Gerard', NULL, 'Klaasen', 'klaas', '12345'),
@@ -25,25 +25,24 @@ VALUES (11, 123456789);
 
 INSERT INTO `klant`
 VALUES (1, '1969-08-13', 'Justine de Gouwerhof', 6, '2011GP', 'Haarlem',
-        '163647861', 'rogier.mullaart@gmail.com', '0647185165'),
-       (2, '1973-06-16', 'Dam', 1, '1011ZH', 'Amsterdam', '163647895',
-        'joop.jansen@knp.nl', '0647176156'),
-       (3, '1950-09-10', 'Rokin', 1, '1001AA', 'Amsterdam', '156677882',
-        'harry.kreeft@lumc.nl', '0647186543'),
+        '163647861', '0647185165'),
+       (2, '1973-06-16', 'Dam', 1, '1011ZH', 'Amsterdam', '163647895'
+        , '0647176156'),
+       (3, '1950-09-10', 'Rokin', 1, '1001AA', 'Amsterdam', '156677882', '0647186543'),
        (4, '1945-01-10', 'Kleine houtstraat', 1, '2010AP', 'Haarlem',
-        '122365477', 'harry.kreeft@lumc.nl', '0647186544'),
-       (5, '1960-10-13', 'Rokin', 2, '2010AP', 'Groningen', '123564564',
-        'harry.kreeft@lumc.nl', '0647186543'),
+        '122365477', '0647186544'),
+       (5, '1960-10-13', 'Rokin', 2, '2010AP', 'Groningen', '123564564'
+        , '0647186543'),
        (6, '1969-08-13', 'Justine de Gouwerhof', 3, '2010AP', 'Leiden',
-        '534543533', 'harry.kreeft@lumc.nl', '0647186543'),
+        '534543533', '0647186543'),
        (7, '1969-08-13', 'Kleine houtstraat', 4, '2010AP', 'Den Haag',
-        '354353453', 'harry.kreeft@lumc.nl', '0647186543'),
-       (8, '1969-08-13', 'Rokin', 5, '2010AP', 'Haarlem', '325324234',
-        'harry.kreeft@lumc.nl', '0647186543'),
-       (9, '1969-08-13', 'Dam', 6, '2010AP', 'Leiden', '234224323',
-        'harry.kreeft@lumc.nl', '0647186543'),
+        '354353453', '0647186543'),
+       (8, '1969-08-13', 'Rokin', 5, '2010AP', 'Haarlem', '325324234'
+        , '0647186543'),
+       (9, '1969-08-13', 'Dam', 6, '2010AP', 'Leiden', '234224323'
+        , '0647186543'),
        (10, '1954-08-13', 'Kleine houtstraat', 7, '2010AP', 'Den Haag',
-        '234232444', 'harry.kreeft@lumc.nl', '0647186543');
+        '234232444', '0647186543');
 
 INSERT INTO `bankrekening`
 VALUES ('1234567891', 1000000.00, 1),

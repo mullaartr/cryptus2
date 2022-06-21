@@ -2,19 +2,9 @@ koersOphaler()
 
 
 let euroOfDollar = true;
-let $tickerWrapper;
-let $list;
-let $clonedList;
-let listWidth;
-
-document.querySelector('.tickerwrapper').addEventListener("click", () => {
-    euroOfDollar = !euroOfDollar;
-    koersen.forEach(koersen => vullLijstEuro(koersen));
-    $tickerWrapper.clear();
-
-})
-
-
+const ul = document.createElement("ul")
+ul.setAttribute("class", "list")
+let koersen;
 
 function koersOphaler(){
     let token = localStorage.getItem('token')
@@ -34,9 +24,12 @@ function koersOphaler(){
         }
     ).then(json => {
             koersen = json;
-            koersen.forEach(koersen => vullLijstEuro(koersen));
+
+            koersen.forEach(koersen => vullLijstEuro(koersen, ul));
+            const element = document.querySelector('.tickerwrapper')
+            element.appendChild(ul);
             maakTekstLint();
-            return json;
+
 
         }
     ).catch(ex => {
@@ -45,24 +38,26 @@ function koersOphaler(){
 }
 
 
-function vullLijstEuro(json){
-    const naam = `#${json.assetNaam}`;
-    const e = document.querySelector(naam)
+function vullLijstEuro(json, element){
+    const e = document.createElement("li")
+    e.setAttribute("class", "listitem")
     const plaatje = `Assets/${json.assetNaam}.webp`
-    if(euroOfDollar) {
-        e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} € ${json.koersInEuro}`;
-    } else {
-        e.innerHTML = `<img src="${plaatje}" style="margin-top: 2px"> ${json.assetNaam} : $ ${json.koersInDollars}`;
-    }
+    /*if(euroOfDollar) {*/
+        e.innerHTML = `<img src="${plaatje}" style="margin-top:"> ${json.assetNaam} € ${json.koersInEuro} : $ ${json.koersInDollars}`;
+   /* } else {
+        e.innerHTML = `<img src="${plaatje}" style="margin-top:"> ${json.assetNaam} : $ ${json.koersInDollars}`;
 
+    }*/
+    element.appendChild(e);
 }
 
 
 function maakTekstLint() {
-     $tickerWrapper = $(".tickerwrapper");
-    $list = $tickerWrapper.find("ul.list");
-    $clonedList = $list.clone();
-    listWidth = 20;
+
+    let $tickerWrapper = $(".tickerwrapper");
+    let $list = $tickerWrapper.find("ul.list");
+    let $clonedList = $list.clone();
+    let listWidth = 20;
 
     $list.find("li").each(function (i) {
         listWidth += $(this, i).outerWidth(true);
@@ -94,3 +89,14 @@ function maakTekstLint() {
         infinite.play();
     });
 }
+
+/*document.querySelector('.tickerwrapper').addEventListener("click", () => {
+    euroOfDollar = !euroOfDollar;
+    document.querySelector('.tickerwrapper').innerHTML = "";
+    koersen.forEach(koersen => vullLijstEuro(koersen, ul));
+    const element = document.querySelector('.tickerwrapper')
+    element.appendChild(ul);
+
+
+
+})*/

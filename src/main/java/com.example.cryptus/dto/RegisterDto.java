@@ -18,11 +18,11 @@ public class RegisterDto {
     String phone;
     String email;
     String password;
-    String username;
+    String userName;
     BankAccount bankAccount;
 
     public RegisterDto(String firstName, String preposition, String lastName, BankAccount bankAccount, java.sql.Date birthDate, String BSN,
-                       Address address, String phone, String email, String password, String username) {
+                       Address address, String phone, String password, String userName) {
         this.firstName = firstName;
         this.preposition = preposition;
         this.lastName = lastName;
@@ -31,9 +31,8 @@ public class RegisterDto {
         this.BSN = BSN;
         this.address = address;
         this.phone = phone;
-        this.email = email;
         this.password = password;
-        this.username = email;
+        this.userName = userName;
     }
 
     public BankAccount getBankAccount() {
@@ -44,12 +43,13 @@ public class RegisterDto {
         this.bankAccount = bankAccount;
     }
 
-    public String getUsername() {
-        return username;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFirstName() {
@@ -108,13 +108,7 @@ public class RegisterDto {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPassword() {
         return password;

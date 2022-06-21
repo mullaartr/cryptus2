@@ -1,6 +1,7 @@
 package com.example.cryptus.repository;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.dao.KoersDao;
 import com.example.cryptus.dao.PortefeuilleDAO;
 import com.example.cryptus.dao.PortefeuilleDAOJdbc;
 import com.example.cryptus.model.*;
@@ -25,6 +26,7 @@ class CustomerRepositoryTest {
     CustomerDaoJdbc mockDao;
     PortefeuilleDAOJdbc mockPortefeuilleDAO;
     PortefeuilleRepository portefeuilleRepositoryUnderTest;
+    private KoersDao mockKoersDao;
 
 
 
@@ -32,12 +34,14 @@ class CustomerRepositoryTest {
     public void initTest(){
         mockDao = Mockito.mock(CustomerDaoJdbc.class);
         mockPortefeuilleDAO= Mockito.mock(PortefeuilleDAOJdbc.class);
+        mockKoersDao = Mockito.mock(KoersDao.class);
         customerRepositoryUnderTest = new CustomerRepository(mockDao);
-        portefeuilleRepositoryUnderTest = new PortefeuilleRepository(mockPortefeuilleDAO,mockDao);
+        portefeuilleRepositoryUnderTest = new PortefeuilleRepository(mockPortefeuilleDAO,mockDao, mockKoersDao);
+
 
 
         testCustomer = new Customer(3,"John","gg","mekky","password","username"
-                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"email","");
+                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"");
 
     }
 
@@ -73,11 +77,11 @@ class CustomerRepositoryTest {
     @DisplayName("Testing update customer method")
     void update() {
         Customer actual = new Customer(11,"John","gg","mekky","'","",
-                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","122");
+                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"122");
         actual.setLastName("James");
         customerRepositoryUnderTest.update(actual);
         Customer expected = new Customer(11,"John","gg","James","'","",
-                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"","122");
+                Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"122");
 
         System.out.println(actual);
 
@@ -101,14 +105,14 @@ class CustomerRepositoryTest {
 //        testCustomer = new Customer(3,"John","gg","mekky","password","username",new ArrayList<>(),new BankAccount("111111",500,3),new Portefeuille()
 //                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"email","");
         testCustomer = new Customer(3,"John","gg","mekky","password","username"
-                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"email","");
+                , Date.valueOf("2015-03-31"),"",new Address(0,"","",""),"");
 
         Portefeuille portefeuille =  new Portefeuille( 5,testCustomer,new ArrayList<>());
         portefeuille.setOwner(testCustomer);
 
 
         Mockito.when(mockDao.findCustomerByName("John")).thenReturn(Optional.of(testCustomer));
-        Mockito.when(mockPortefeuilleDAO.findPortefeuilleById(3)).thenReturn(Optional.of(portefeuille));
+        Mockito.when(portefeuilleRepositoryUnderTest.findPortefeuilleOfCustomer(5)).thenReturn(Optional.of(portefeuille));
         Optional<Customer> actual = customerRepositoryUnderTest.findCustomerByName("John");
         Optional<Customer> expected = Optional.of(testCustomer);
         assertThat(actual).isNotNull().isEqualTo(expected);
@@ -116,14 +120,7 @@ class CustomerRepositoryTest {
 
     }
 
-    @Test
-    @DisplayName("Testing find customer by email method")
-    void findCustomerByEmail() {
-        Mockito.when(mockDao.findCustomerByEmail("email")).thenReturn(Optional.of(testCustomer));
-        Optional<Customer> actual = customerRepositoryUnderTest.findCustomerByEmail("email");
-        Optional<Customer> expected = Optional.of(testCustomer);
-        assertThat(actual).isNotNull().isEqualTo(expected);
-    }
+
 
     @Test
     @DisplayName("Testing Customer list is not empty")

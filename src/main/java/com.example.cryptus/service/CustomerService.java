@@ -76,9 +76,6 @@ public class CustomerService {
     }
 
 
-    public Optional<Customer> findCustomerByEmail(String email){
-        return customerRepository.findCustomerByEmail(email);
-    }
 
     //Daan: added this to check registration
     public List<Customer> customerByEmail(String email){

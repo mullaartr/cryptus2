@@ -4,13 +4,19 @@ import com.example.cryptus.dto.buyAssetDTO;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.service.CustomerService;
+import com.example.cryptus.service.Exceptions.NotEnoughAssetsAcception;
+import com.example.cryptus.service.Exceptions.NotEnoughSaldoException;
 import com.example.cryptus.service.TransactionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -38,19 +44,28 @@ public class TransactionController <T> {
                 transactionService.getSellTransactionsFromUser(userId);
         return lijst;
     }
-
-    // respons
     @PostMapping("/buytransaction_bank")
-    public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) {
+    public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) throws NotEnoughSaldoException {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         int userIdBuyer =
                 customerService.customerByEmail(username).get(0).getUserId();
-                Customer buyer =
+        Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
-
-        return (ResponseEntity<?>) transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
+        try {
+            Boolean aankoopGeslaagd = transactionService.buyFromBank(buyer, buyAssetDTO.getAssetName(), buyAssetDTO.getAssetAmount());
+            if (aankoopGeslaagd) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
+            }
+        }catch (NotEnoughSaldoException notEnoughSaldoException){
+            return new ResponseEntity<>("Je hebt op dit moment niet genoeg " +
+                    "saldo op je bankrekening", HttpStatus.NOT_ACCEPTABLE);
+        } catch (NotEnoughAssetsAcception notEnoughAssetsAcception){
+            return new ResponseEntity<>("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return null;
     }
+
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
                                                @PathVariable("transactionid") int transactionId) {

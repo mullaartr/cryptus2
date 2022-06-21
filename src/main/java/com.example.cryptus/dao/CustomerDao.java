@@ -22,7 +22,6 @@ public interface CustomerDao {
 
     Optional<Customer>findCustomerByPortefeuilleId(int portefeuilleId);
 
-    Optional<Customer> findCustomerByEmail(String email);
 
     //Daan: I added this method to check if an email is already in use
     List<Customer> customerByEmail(String email);

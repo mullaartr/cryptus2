@@ -4,7 +4,7 @@ h1{
 height:4vh;
 line-height: 4vh;
   color: #fcedd8;
-  background: #e1732a;
+  /*background: #e1732a;*/
      font-family: 'Niconne', cursive;
   font-weight: 50;
 text-shadow: 5px 5px 0px #eb452b, 
@@ -36,8 +36,12 @@ font-size: 1.2rem;
 
 body {
     margin: 0px;
-    background-color: #e1732a;
-    color: #f7f7f7;
+    /*background-color: #e1732a;*/
+    /*background: linear-gradient(110deg, #e1732a 60%, #ffed4b 60%);*/
+    background: linear-gradient(110deg, #fa7c30 30%, rgba(0, 0, 0, 0) 70%);
+
+    /*color: #f7f7f7;*/
+
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -55,32 +59,33 @@ body {
 }
 
 #main table {
-    font-family: "Comic Sans MS", cursive;
+    font-family: "TISA", TISA;
+
+
+
 }
 
 /* css code for textbox */
 #main .tb {
     height: 28px;
     width: 239px;
-    border: 1px solid #27a465;
     color: #e1732a;
     font-weight: bold;
-   
+    border: 1px solid black;
     opacity: 0.9;
 }
 
 
-
 /* css code for button*/
 #main .btn {
-    width: 423px;
+    width: 402px;
     height: 28px;
     outline: none;
     position: absolute;
     /* left: 47%; */
     font-weight: bold;
-    border: 0px solid #27a465;
-    text-shadow: 0px 0.5px 0.5px #fff;
+    border: 1px solid black;
+    text-shadow: 0px 1px 1px #fff;
     border-radius: 2px;
     font-weight: 600;
     color: #b76b25;
@@ -89,6 +94,8 @@ body {
     -webkit-transition: 1s;
     -moz-transition: 1s;
     transition: 1s;
+    background-color:black
+
 }
 
 #main .btn:hover {
@@ -98,4 +105,59 @@ body {
     color: #f1f1f1;
     border: 1px solid #f1f1f1;
 }
+
+
+ img {
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
+ }
+
+
+
+
+ .error {
+     background-color: red;
+ }
+
+
+.flipY {
+    animation-name: spin, depth;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 6s;
+}
+@keyframes spin {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(-360deg);
+    }
+}
+@keyframes depth {
+    0% {
+        text-shadow: 0 0 black;
+    }
+    25% {
+        text-shadow: 1px 0 black, 2px 0 black, 3px 0 black, 4px 0 black, 5px 0 black;
+    }
+    50% {
+        text-shadow: 0 0 black;
+    }
+    75% {
+        text-shadow: -1px 0 black, -2px 0 black, -3px 0 black, -4px 0 black,
+        -5px 0 black;
+    }
+    100% {
+        text-shadow: 0 0 black;
+    }
+}
+
+
+
+
+
+
+
 

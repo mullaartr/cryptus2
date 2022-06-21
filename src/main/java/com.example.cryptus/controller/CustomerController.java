@@ -54,7 +54,8 @@ public class CustomerController {
         var username =
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // username
         // dao actie find by username
-        return customerService.customerByEmail(username.toString()).get(0);
+        //return customerService.customerByEmail(username.toString()).get(0);
+        return customerService.findCustomerByUsernamePassword(username.toString()).get();
     }
 
     @GetMapping(value= "/list")

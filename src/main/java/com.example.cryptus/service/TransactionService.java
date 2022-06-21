@@ -4,14 +4,13 @@ import com.example.cryptus.model.Asset;
 import com.example.cryptus.model.Customer;
 import com.example.cryptus.model.Transaction;
 import com.example.cryptus.repository.*;
+import com.example.cryptus.service.Exceptions.NotEnoughAssetsAcception;
+import com.example.cryptus.service.Exceptions.NotEnoughSaldoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -28,7 +27,6 @@ public class TransactionService <T>{
     private final KoersRepository koersRepository;
     private static final int BANK = 1;
     private static final double PERCENTAGE = 100.00;
-
 
     public TransactionService(TransactionRepository transactionRepository,
                               CustomerRepository customerRepository,
@@ -54,31 +52,29 @@ public class TransactionService <T>{
     public List<Transaction> getSellTransactionsFromUser(int userId) {
         return transactionRepository.getSellTransactionsFromUser(userId);
     }
-    public <T> T buyFromBank(Customer buyer, String assetNaam, double assetAmount) {
-
-        Optional<Customer> seller =
-                customerRepository.findCustomerById(BANK);//mock
-        Optional<Asset> assetBought =
-                assetRepository.findAssetByAssetNaam(assetNaam);//mock
-        double valueTransaction = calcValueTransactionInEuro(assetNaam,
-                assetAmount);
+    public Boolean buyFromBank(Customer buyer, String assetNaam, double assetAmount)
+            throws NotEnoughSaldoException, NotEnoughAssetsAcception {
+        Optional<Customer> seller = customerRepository.findCustomerById(BANK);
+        Optional<Asset> assetBought = assetRepository.findAssetByAssetNaam(assetNaam);
+        double valueTransaction = calcValueTransactionInEuro(assetNaam, assetAmount);
         double valueFee = calcFee(valueTransaction);
         double totalValue = calTotal(valueTransaction, valueFee);
-        double percentage = bankConfigRepository.getPercentage();//mock
+        double percentage = bankConfigRepository.getPercentage();
         if (seller.get().getPortefeuille().hasEnoughAssets(assetNaam, assetAmount)) {
             addAndWithdrawAssets(buyer, assetNaam, assetAmount, seller);
-        } else{
-            return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("De bank heeft op dit moment niet genoeg van deze currency in zijn bezit");
+        } else {throw new NotEnoughAssetsAcception();
         }
         if (buyer.getBankAccount().hasSufficientFunds(totalValue)) {
             addAndWithdrawEuros(buyer, seller, totalValue);
-        } else {
-            return (T) ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("je hebt op dit moment niet genoeg saldo op je bankrekening");
+        } else {throw new NotEnoughSaldoException();
         }
-        Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought, totalValue, percentage);
-        return (T)ResponseEntity.status(HttpStatus.ACCEPTED).body("Bedankt voor uw aankoop. U crypto's zijn toegevoegd aan uw portefeuille");
+        Transaction transaction = createNewTransaction(buyer, assetAmount, seller, assetBought,
+                totalValue, percentage);
+        return true;
     }
-    private Transaction createNewTransaction(Customer buyer, double assetAmount, Optional<Customer> seller, Optional<Asset> assetBought, double totalValue, double percentage) {
+    private Transaction createNewTransaction(Customer buyer, double assetAmount,
+        Optional<Customer> seller, Optional<Asset> assetBought, double totalValue,
+        double percentage) {
         Transaction transaction = new Transaction(buyer, seller.get(),
                 assetBought.get(),
                 assetAmount, totalValue, percentage);
@@ -89,19 +85,28 @@ public class TransactionService <T>{
         bankAccountService.withdrawFunds(totalValue, buyer.getUserId());
         bankAccountService.addFunds(totalValue, seller.get().getUserId());
     }
-    private void addAndWithdrawAssets(Customer buyer, String assetNaam, double assetAmount, Optional<Customer> seller) {
+    private void addAndWithdrawAssets(Customer buyer, String assetNaam,
+        double assetAmount, Optional<Customer> seller) {
         Asset assetSeller =
-                seller.get().getPortefeuille().getAssetLijst().stream().filter(asset1 -> asset1.getAssetNaam().equals(assetNaam)).findAny().orElse(null);
+                seller.get().getPortefeuille().getAssetLijst().stream()
+                        .filter(asset1 -> asset1.getAssetNaam()
+                        .equals(assetNaam))
+                        .findAny()
+                        .orElse(null);
         assert assetSeller != null;
         assetSeller.setSaldo(assetSeller.getSaldo() - assetAmount);
-        if(assetSeller ==  null){
-            portefeuilleRepository.storePortefeuilleRegel(seller.get().getPortefeuille(), assetSeller);//mock
-        } else {
-            portefeuilleRepository.updatePortefeuille(seller.get().getPortefeuille(),
+        if (assetSeller == null) {
+            portefeuilleRepository.storeAssets(seller.get().getPortefeuille(),
+                    assetSeller);
+        } else {portefeuilleRepository.updatePortefeuille(seller.get().getPortefeuille(),
                     assetSeller);
         }
         Asset assetBuyer =
-                buyer.getPortefeuille().getAssetLijst().stream().filter(asset1 -> asset1.getAssetNaam().equals(assetNaam)).findAny().orElse(null);
+                buyer.getPortefeuille().getAssetLijst().stream()
+                        .filter(asset1 -> asset1
+                        .getAssetNaam()
+                        .equals(assetNaam))
+                        .findAny().orElse(null);
         if(assetBuyer == null){
             addNewPortefeuilleRow(buyer, assetNaam, assetAmount);
         }else{
@@ -114,7 +119,7 @@ public class TransactionService <T>{
         Asset nieuweAsset = assetRepository.findAssetByAssetNaam(assetNaam).get();
         nieuweAsset.setSaldo(assetAmount);
         buyer.getPortefeuille().getAssetLijst().add(nieuweAsset);
-        portefeuilleRepository.storePortefeuilleRegel(buyer.getPortefeuille(), nieuweAsset);
+        portefeuilleRepository.storeAssets(buyer.getPortefeuille(), nieuweAsset);
     }
     public double calcValueTransactionInEuro(String assetNaam,double assetAmount) {
         double koersAsset = koersRepository.findKoersByAssetNaam(assetNaam).get().getKoersInEuro();
