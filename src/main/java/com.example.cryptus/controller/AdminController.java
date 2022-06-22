@@ -37,20 +37,9 @@ public class AdminController {
         bankConfigService.updatePercentage(percentage);
         return ResponseEntity.ok().build();
     }
-
-    //Lijst met alle geblokkeerde gebruikers
-
-    @GetMapping("/get_status_user")
+       @GetMapping("/get_status_user")
     public boolean getStatusUser(@RequestParam String username){
       return applicationUserService.loadUserByUsername(username).isAccountNonLocked();
     }
-
-//    @PostMapping("/set_status_user")
-//    public ResponseEntity<?> setStatusUser(@RequestParam String username) throws NoSuchAlgorithmException {
-//
-//        applicationUserService.updateStatus(username);
-//
-//        return ResponseEntity.ok().build();
-//    }
 
 }

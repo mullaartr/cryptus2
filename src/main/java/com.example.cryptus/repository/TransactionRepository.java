@@ -119,9 +119,6 @@ public class TransactionRepository {
             result.add(transaction);
         }
     }
-
-
-
     public void createTransaction(Transaction transaction) {
         transactionDaoJdbc.createTransaction(transaction);
     }
@@ -132,7 +129,5 @@ public class TransactionRepository {
     }
     public Optional<Transaction> findTransactionById(int transactionId) {
         return transactionDaoJdbc.findTransactionById(transactionId);
-        // eerste transactieDao
-
     }
 }
