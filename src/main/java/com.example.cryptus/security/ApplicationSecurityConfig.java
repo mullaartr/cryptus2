@@ -1,6 +1,7 @@
 package com.example.cryptus.security;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
+import com.example.cryptus.repository.JwtFakeRepo;
 import com.example.cryptus.service.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,18 +27,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final ApplicationUserService applicationUserService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
+    private JwtFakeRepo jwtFakeRepo;
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
                                      CustomerDaoJdbc customerDaoJdbc,
                                      ApplicationUserService applicationUserService,
                                      SecretKey secretKey,
-                                     JwtConfig jwtConfig) {
+                                     JwtConfig jwtConfig, JwtFakeRepo jwtFakeRepo) {
         this.passwordEncoder = passwordEncoder;
         this.customerDaoJdbc = customerDaoJdbc;
         this.applicationUserService = applicationUserService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
+        this.jwtFakeRepo = jwtFakeRepo;
     }
 
     @Override
@@ -50,8 +53,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, jwtFakeRepo))
+                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig, jwtFakeRepo), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
 
                 .antMatchers("/","/*.html", "index.html", "/css/*", "/js/*","/images/*").permitAll()
@@ -72,6 +75,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.GET, "/manage/**").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name())
                 .anyRequest()
                 .authenticated();
+//                .and()
+//                .logout(logout -> logout.clearAuthentication(true)
+//                );
     }
 
     @Override

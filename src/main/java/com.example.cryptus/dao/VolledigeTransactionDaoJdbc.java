@@ -25,20 +25,20 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class TransactionDaoJdbc implements TransactionDao {
+public class VolledigeTransactionDaoJdbc implements TransactionDao {
     private final Logger logger =
-            LoggerFactory.getLogger(TransactionDaoJdbc.class);
+            LoggerFactory.getLogger(VolledigeTransactionDaoJdbc.class);
     private final JdbcTemplate jdbcTemplate;
     private final CustomerDao customerDao;
     @Autowired
-    public TransactionDaoJdbc(JdbcTemplate jdbcTemplate,
-                              CustomerDaoJdbc customerDao ) {
+    public VolledigeTransactionDaoJdbc(JdbcTemplate jdbcTemplate,
+                                       CustomerDaoJdbc customerDao ) {
         super();
         this.jdbcTemplate = jdbcTemplate;
         this.customerDao = customerDao;
         logger.info("Nieuwe transactionDaoJdbc");
     }
-    private PreparedStatement insertTransactionStatement(Transaction transaction, Connection connection) throws SQLException {
+    private PreparedStatement insertTransactionStatement(Transaction transaction, Connection connection) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
                             "transactie (datumtijd, kosten, creditiban, " +
@@ -114,6 +114,7 @@ public class TransactionDaoJdbc implements TransactionDao {
         } catch (DataAccessException exception) {
             logger.info("No customer was found found");
         }
+        assert customer != null;
         return Optional.of(customer);
     }
     private Optional<Customer> findBuyerByTransaction(int transactionId) {
@@ -148,9 +149,20 @@ public class TransactionDaoJdbc implements TransactionDao {
         } catch (DataAccessException exception) {
             logger.info("no assets where found found");
         }
+        assert asset != null;
         return Optional.of(asset);
     }
-
+    @Override
+    public List<Transaction> findTransactions() {
+        String sql = "SELECT * FROM transactie";
+        List<Transaction> transactions = new ArrayList<>();
+        try {
+            transactions = jdbcTemplate.query(sql, transactionResultExtractor);
+        } catch (DataAccessException exception) {
+            logger.info("no assets where found found");
+        }
+        return transactions;
+    }
     @Override
     public List<Transaction> findBuyTransactionsByUser(int userId) {
         return jdbcTemplate.query
@@ -159,7 +171,6 @@ public class TransactionDaoJdbc implements TransactionDao {
                                 "bankrekening.iban = transactie.debitiban WHERE userId = ?",
                         rowMapper, userId);
     }
-
     @Override
     public List<Transaction> findSellTransactionsByUser(int userId) {
         return jdbcTemplate.query
@@ -175,6 +186,7 @@ public class TransactionDaoJdbc implements TransactionDao {
         Transaction transaction = new Transaction();
         try {
             transaction = jdbcTemplate.queryForObject(Sql, rowMapper, transactionId);
+            assert transaction != null;
             transaction.setBuyer(findBuyerByTransaction(transactionId).orElse(null));
             transaction.setSeller(findSellerByTransaction(transactionId).orElse(null));
             transaction.setAsset(findAssetByTransaction(transactionId).orElse(null));
@@ -184,22 +196,14 @@ public class TransactionDaoJdbc implements TransactionDao {
         return Optional.of(transaction);
     }
     @Override
-    public void createTransaction(Transaction transaction) {
+    public int createTransaction(Transaction transaction) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> insertTransactionStatement(transaction, connection), keyHolder);
-        int newKey = Objects.requireNonNull(keyHolder.getKey()).intValue();
-        transaction.setTransactionId(newKey);
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
-
-    // we moeten nog nadenken over wat er precies moet gebeuren bij een update
-// van de transactie. Is dat alleen het aanpassen van de hoeveelheid crypto's?
     @Override
-    public void update(Transaction transaction, int transactionId) {
-//        jdbcTemplate.update("UPDATE transactie SET  = ? WHERE " +
-//                "transactieId = ?",  transaction, transactionId);
-
+    public void update(Transaction transaction) {
     }
-
     @Override
     public void deleteTransaction(int transactionId) {
         jdbcTemplate.update("DELETE FROM transactie WHERE transactieId = ?",transactionId);

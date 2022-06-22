@@ -2,6 +2,7 @@ package com.example.cryptus.model;
 
 
 import com.example.cryptus.dto.PortefeuilleDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.*;
@@ -13,6 +14,7 @@ public class Portefeuille implements Serializable {
     private List<Asset> assetLijst;
     private Customer owner;
 
+    @Autowired
     public Portefeuille(int portefeuilleId, Customer owner, List<Asset> assetLijst) {
         this.portefeuilleId = portefeuilleId;
         this.owner = owner;

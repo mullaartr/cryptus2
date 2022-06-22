@@ -119,6 +119,26 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
             ON DELETE RESTRICT
             ON UPDATE RESTRICT
 );
+
+-- -----------------------------------------------------
+-- Table `cryptus`.`koop`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cryptus`.`koop`
+(
+    `koopId` int not null auto_increment,
+    `portefeuille_regel_Id` INT NOT NULL,
+    `assetAmount` INT            NOT NULL,
+    `assetEuro`        INT            NOT NULL,
+    `koop/verkoop`          tinyint(2) NOT NULL,
+    PRIMARY KEY (`koopId`),
+    INDEX `verzinzelf15_idx` (`portefeuille_regel_Id`) ,
+    CONSTRAINT `portefeuilleregel_portefeuille_regel`
+        FOREIGN KEY (`portefeuille_regel_Id`)
+            REFERENCES `cryptus`.`portefeuille_regel` (`portefeuille_regel_Id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+
+);
 -- -----------------------------------------------------
 -- Table `cryptus`.`transactie`
 -- -----------------------------------------------------
@@ -127,14 +147,14 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`transactie`
     `transactieId`         INT            NOT NULL UNIQUE AUTO_INCREMENT,
     `datumtijd`            TIMESTAMP(2)   NOT NULL,
     `kosten`               DECIMAL(16, 2) NOT NULL,
-    `creditiban`           VARCHAR(45)    NOT NULL,
-    `debitiban`            VARCHAR(45)    NOT NULL,
+    `creditiban`           VARCHAR(45),
+    `debitiban`            VARCHAR(45),
     `euroammount`          DECIMAL(16, 2) NOT NULL,
-    `debitportefeuilleID`  INT            NOT NULL,
-    `debitassetId`         INT            NOT NULL,
+    `debitportefeuilleID`  INT,
+    `debitassetId`         INT,
     `assetammount`         DECIMAL(16, 6) NOT NULL,
-    `creditportefeuilleID` INT            NOT NULL,
-    `creditassetId`        INT            NOT NULL,
+    `creditportefeuilleID` INT,
+    `creditassetId`        INT,
     PRIMARY KEY (`transactieId`),
     INDEX `verzinzelf3_idx` (`debitportefeuilleID` , `debitassetId` ) ,
     INDEX `verzinzelf9_idx` (`creditiban` ),
