@@ -51,7 +51,7 @@
 //    }
 //    @Test
 
-<<<<<<< HEAD
+
 
 //    @Test
 //    void getSellTransactionsFromUser() {
@@ -122,7 +122,7 @@
 //}
 
 //}
-=======
+
 package com.example.cryptus.service;
 
 import com.example.cryptus.dao.CustomerDaoJdbc;
@@ -177,7 +177,7 @@ class TransactionServiceTest {
         asset = new Asset(1, "Bitcoin", "BTC", null, 25.0);
         transaction1 = new Transaction(3, null, null, 20.00, 300.00, 0.00, LocalDateTime.parse("2022-05-19T01:14:07.00"));
         customer1 = new Customer(3, "Jan", "van", "Zevenaar", "zeven", "12345", Date.valueOf("1950-09-10"),"156677882",
-                new Address(1,"Rokin","1001AA","Amsterdam"),"harry.kreeft@lumc.nl","0647186543");
+                new Address(1,"Rokin","1001AA","Amsterdam"),"0647186543");
         portefeuille = new Portefeuille(1, null, new ArrayList<>());
         portefeuille2 = new Portefeuille(2, null, new ArrayList<>());
         customer1.setPortefeuille(portefeuille);
@@ -190,7 +190,7 @@ class TransactionServiceTest {
         transactionList = new ArrayList<>();
         transactionList.add(transaction);
         transactionList.add(transaction1);
-        customer2 = new Customer(2, "Frits", null, "Botersprits", "boter", "12345", Date.valueOf("1973-06-16"), "163647895", new Address(1, "1011ZH", "dam", "Amsterdam"), "0647176156","joop.jansen@knp.nl");
+        customer2 = new Customer(2, "Frits", null, "Botersprits", "boter", "12345", Date.valueOf("1973-06-16"), "163647895", new Address(1, "1011ZH", "dam", "Amsterdam"), "0647176156");
         customer2.setPortefeuille(portefeuille2);
         customer2.setBankAccount(bankAccount2);
         transactionDTO = new TransactionDTO(0, new AssetDTO(asset), 20, 300);
@@ -205,5 +205,5 @@ class TransactionServiceTest {
     }
 }
 
->>>>>>> marktplaarsAchterkant
+
 
