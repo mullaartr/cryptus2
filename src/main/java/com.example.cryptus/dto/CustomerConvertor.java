@@ -14,11 +14,9 @@ import java.util.stream.Collectors;
 public class CustomerConvertor {
 
 
-
-
     public  CustomerDTO entityToDTO(Customer customer){
         CustomerDTO customerDTO = new CustomerDTO();
-        Address address = customer.getAddress();
+
 
         customerDTO.setUserId(customer.getUserId());
         customerDTO.setFirstName(customer.getFirstName());
@@ -32,7 +30,6 @@ public class CustomerConvertor {
         return customerDTO;
     }
 
-
     public List<CustomerDTO> entityToDTO( List <Customer> customer){
 
 
@@ -41,7 +38,7 @@ public class CustomerConvertor {
 
     public  Customer dtoToEntity(CustomerDTO customerDTO){
         Customer customer = new Customer();
-        Address address = customer.getAddress();
+
 
         customer.setUserId(customerDTO.getUserId());
         customer.setFirstName(customerDTO.getFirstName());

@@ -17,11 +17,10 @@
  }
 
 
-
      document.querySelector('#btnLogin').addEventListener('click', (e) => {
-     var uname = document.getElementById("email").value;
-     var pwd = document.getElementById("pwd1").value;
-     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+     let uname = document.getElementById("email").value;
+     let pwd = document.getElementById("pwd1").value;
+     let filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
      if (uname == '') {
      alert("please enter your email address.");
  }
@@ -50,15 +49,13 @@
 
      console.log( data );
 
-     //var bearer = 'Bearer ' + bearer_token;
 
      fetch('http://localhost:8080/login',
  {
      method: 'POST',
      headers: {
-     // 'Authorization': bearer,
+
      'content-Type': 'application/json'
-     //'Authorization': 'Bearer ${token}'
 
  },
      body: JSON.stringify(data)
@@ -70,9 +67,7 @@
      let token = response.headers.get("Authorization").split(" ")[1]
      console.log(token)
      return token
-
  }
-
 
  }
      ).then(json => {

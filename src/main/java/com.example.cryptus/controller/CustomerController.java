@@ -64,7 +64,6 @@ public class CustomerController {
 
     }
 
-
     @GetMapping(value = "/KlantLijst")
     public List <CustomerDTO> list(){
         List<Customer> findAll = customerService.list();
@@ -99,13 +98,6 @@ public class CustomerController {
     }
 
     @ResponseBody Optional<CustomerDTO> findCustomerByUsernamePassword(@RequestParam("username") String username) {
-//        Optional<Customer> expectedCustomer =
-//                customerService.findCustomerByUsernamePassword(username);
-//        Customer dbCustomer = expectedCustomer.get();
-//        customerConvertor.entityToDTO(dbCustomer);
-//
-//
-//        return Optional.of(dbCustomer);
         return Optional.of(new CustomerDTO(customerService.findCustomerByUsernamePassword(username).orElse(null)));
 
     }

@@ -3,9 +3,9 @@ h1{
   text-align: center;
 height:4vh;
 line-height: 4vh;
-  color: #fcedd8;
+  color: #ffffff;
   /*background: #e1732a;*/
-     font-family: 'Niconne', cursive;
+     font-family: 'TISA', TISA;
   font-weight: 50;
 text-shadow: 5px 5px 0px #eb452b, 
             10px 10px 0px #efa032, 
@@ -153,6 +153,13 @@ body {
         text-shadow: 0 0 black;
     }
 }
+
+
+
+
+
+
+
 
 
 

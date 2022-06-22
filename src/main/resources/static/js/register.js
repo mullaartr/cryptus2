@@ -66,7 +66,7 @@ function underAgeValidate(birthday) {
     let myAge = ~~((Date.now(currentDate) - myBirthday) / (31557600000));
 
     if (myAge < 18) {
-        // return false;
+        return false;
         // alert("You need to be at least 18 years old");
 
     } else {
@@ -145,12 +145,11 @@ document.querySelector('#btnRegister').addEventListener('click', (e) => {
         return
     }
 
+    if(underAgeValidate(dOB) === false){
+        alert("You need to be at least 18 years old");
+        return;
 
-    // if(underAgeValidate(dOB)){
-    //     alert("You need to be at least 18 years old");
-    //     return;
-    //
-    // }
+    }
 
 
     if (houseNumber == '') {
