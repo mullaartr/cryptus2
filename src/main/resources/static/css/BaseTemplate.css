@@ -125,3 +125,68 @@ h2{
         "sd sd main main main main main main main main"
         "ft ft ft ft ft ft ft ft ft ft";
 }
+
+.frame {
+    position: static;
+    right: 10px;
+    top: 10px;
+    width: 90%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    color: black;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+
+
+/* 14 */
+.btn-14 {
+    background: rgb(255, 217, 0);
+    border: none;
+    z-index: 1;
+}
+.btn-14:after {
+    position:absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: #04C6FA;
+    background-image: linear-gradient(315deg, #04C6FA 0%, #9FE9FC 74%);
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 5),
+    7px 7px 20px 0px rgba(0, 0, 0, 1),
+    4px 4px 5px 0px rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+}
+.btn-14:hover {
+    color: rgb(252, 149, 31);
+}
+.btn-14:hover:after {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+}
+.btn-14:active {
+    top: 2px;
+}

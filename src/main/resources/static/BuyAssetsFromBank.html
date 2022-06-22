@@ -26,8 +26,10 @@
 
 <body>
 <div class="wrapper">
-    <div class="header"><img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px">
+    <div class="header">
+        <img src="Assets/Cryptus finale logo.png" id="cryptusLogo" width="150px">
         <h2 class="item0">"Bless the Bytes"</h2>
+        <button class="custom-btn btn-14" id="logoutButton">Logout</button>
     </div>
     <div class="tickerwrapper"> <ul class='list'>
         <li class='listitem' id="Bitcoin"></li>
@@ -65,10 +67,27 @@
 </body>
 <script>
 
+    document.querySelector('#logoutButton').addEventListener("click", () => {
+        logout();
+        window.location.href = "index.html";
+    })
+
     document.querySelector('#item1').addEventListener("click", () => {
         window.location.href = "WelkomsPagina.html";//andere pagina?
     })
 
+    function logout(){
+        let token = localStorage.getItem('token')
+        fetch('/status/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response) => response.text())
+            .then((data) => console.log(data))
+            .catch(error => console.log("error::", error));
+    }
 
 
     koersOphaler2()

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +46,7 @@ public class StatusController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response){
+    public String logout(HttpServletRequest request, HttpServletResponse response){
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         String token = authorizationHeader.replace( jwtConfig.getTokenPrefix(), "");
         Jws<Claims> claimsJws;
@@ -56,10 +57,27 @@ public class StatusController {
         Claims body = claimsJws.getBody();
         String username = body.getSubject();
         jwtFakeRepo.addJwtToRepo(username, token);
-//        if(jwtFakeRepo.containsKey(username)){
-//            System.out.println("Yes FakeRepo contains this token");
-//        }else System.out.println("No FakeRepo does not contain this token");
-//        return token;
+        if(jwtFakeRepo.containsKey(username)){
+            System.out.println("Yes FakeRepo contains this token");
+        }else System.out.println("No FakeRepo does not contain this token");
+        return token;
+//        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<?> checkTokenStatus(HttpServletRequest request, HttpServletResponse response){
+        String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
+        String token = authorizationHeader.replace( jwtConfig.getTokenPrefix(), "");
+        Jws<Claims> claimsJws;
+        claimsJws = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
+        Claims body = claimsJws.getBody();
+        String username = body.getSubject();
+        if(jwtFakeRepo.containsKey(username)){
+            return ResponseEntity.status(403).build();
+        }
         return ResponseEntity.ok().build();
     }
 
