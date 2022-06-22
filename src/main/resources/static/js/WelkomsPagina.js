@@ -8,10 +8,42 @@ document.querySelector('#item1').addEventListener("click", () => {
 })
 
 document.querySelector('#item2').addEventListener("click", () => {
-    window.location.href = "BuyAssetsFromBank.html";
+    // window.location.href = "BuyAssetsFromBank.html";
+    checkStatus("BuyAssetsFromBank.html");
 })
 
+document.querySelector('#logoutButton').addEventListener("click", () => {
+    logout();
+    window.location.href = "index.html";
+})
 
+function logout(){
+    let token = localStorage.getItem('token')
+    fetch('/status/logout', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then((response) => response.text())
+        .then((data) => console.log(data))
+        .catch(error => console.log("error::", error));
+}
+
+function checkStatus(locationString){
+    let token = localStorage.getItem('token')
+    fetch('/status/check', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+            window.location.href = locationString;
+        }else window.location.href = "index.html";
+    })
+}
 
 
 function klantOphaler() {
