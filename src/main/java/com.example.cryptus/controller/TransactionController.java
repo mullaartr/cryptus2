@@ -1,4 +1,5 @@
 package com.example.cryptus.controller;
+
 import com.example.cryptus.dto.TransactionDTO;
 import com.example.cryptus.dto.buyAssetDTO;
 import com.example.cryptus.model.Customer;
@@ -10,17 +11,14 @@ import com.example.cryptus.service.TransactionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "transactions")
@@ -46,8 +44,6 @@ public class TransactionController <T> {
                 transactionService.getSellTransactionsFromUser(userId);
         return lijst;
     }
-
-
     @GetMapping(value = "marktplaatsAankoop")
     public List<TransactionDTO> vulMarktplaatsAanbod(){
         List<Transaction> openstaandeTransacties = transactionService.toonAanbod();
@@ -55,7 +51,6 @@ public class TransactionController <T> {
         openstaandeTransacties.forEach(transaction -> transactionDTOS.add(new TransactionDTO(transaction)));
         return transactionDTOS;
     }
-
     @GetMapping(value = "marktplaatsOpkoop")
     public List<TransactionDTO> vulMarktplaatsOpbod(){
         List<Transaction> openstaandeTransacties = transactionService.toonOpbod();
@@ -63,7 +58,6 @@ public class TransactionController <T> {
         openstaandeTransacties.forEach(transaction -> transactionDTOS.add(new TransactionDTO(transaction)));
         return transactionDTOS;
     }
-
     // respons
     @PostMapping("/buytransaction_bank")
     public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) throws NotEnoughSaldoException {
@@ -86,8 +80,6 @@ public class TransactionController <T> {
         }
         return null;
     }
-
-
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
                                                @PathVariable("transactionid") int transactionId) {
@@ -112,5 +104,4 @@ public class TransactionController <T> {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

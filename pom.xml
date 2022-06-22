@@ -18,11 +18,24 @@
     <packaging>jar</packaging>
     <description>Demo installatie Cryptus</description>
 
-
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured-all</artifactId>
+            <version>4.3.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>spring-mock-mvc</artifactId>
+            <version>4.3.3</version>
+            <scope>test</scope>
+        </dependency>
 
 
         <dependency>
