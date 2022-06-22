@@ -119,6 +119,26 @@ CREATE TABLE IF NOT EXISTS `cryptus`.`portefeuille_regel`
             ON DELETE RESTRICT
             ON UPDATE RESTRICT
 );
+
+-- -----------------------------------------------------
+-- Table `cryptus`.`koop`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cryptus`.`koop`
+(
+    `koopId` int not null auto_increment,
+    `portefeuille_regel_Id` INT NOT NULL,
+    `assetAmount` INT            NOT NULL,
+    `assetEuro`        INT            NOT NULL,
+    `koop/verkoop`          tinyint(2) NOT NULL,
+    PRIMARY KEY (`koopId`),
+    INDEX `verzinzelf15_idx` (`portefeuille_regel_Id`) ,
+    CONSTRAINT `portefeuilleregel_portefeuille_regel`
+        FOREIGN KEY (`portefeuille_regel_Id`)
+            REFERENCES `cryptus`.`portefeuille_regel` (`portefeuille_regel_Id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+
+);
 -- -----------------------------------------------------
 -- Table `cryptus`.`transactie`
 -- -----------------------------------------------------
