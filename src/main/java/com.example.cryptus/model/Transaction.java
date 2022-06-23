@@ -1,9 +1,9 @@
 package com.example.cryptus.model;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -124,13 +124,13 @@ public class Transaction{
         return (euroamount)*(feePercentage /100.00);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Transaction that = (Transaction) o;
-        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && Objects.equals(timestamp, that.timestamp);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Transaction that = (Transaction) o;
+//        return transactionId == that.transactionId && Double.compare(that.assetamount, assetamount) == 0 && Double.compare(that.euroamount, euroamount) == 0 && Double.compare(that.feePercentage, feePercentage) == 0 && Objects.equals(timestamp, that.timestamp);
+//    }
 
     @Override
     public int hashCode() {

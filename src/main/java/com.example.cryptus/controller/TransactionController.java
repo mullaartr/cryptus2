@@ -61,10 +61,7 @@ public class TransactionController <T> {
     // respons
     @PostMapping("/buytransaction_bank")
     public ResponseEntity<?> buyFromBank(@RequestBody buyAssetDTO buyAssetDTO) throws NotEnoughSaldoException {
-        var username =
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        int userIdBuyer =
-                customerService.customerByEmail(username).get(0).getUserId();
+        int userIdBuyer = getUserIdBuyer();
         Customer buyer =
                 customerService.findCustomerById(userIdBuyer).get();
         try {
@@ -80,6 +77,15 @@ public class TransactionController <T> {
         }
         return null;
     }
+
+    private int getUserIdBuyer() {
+        var username =
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        int userIdBuyer =
+                customerService.customerByEmail(username).get(0).getUserId();
+        return userIdBuyer;
+    }
+
     @PostMapping(value = "/update_transaction/{transactionid}")
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction,
                                                @PathVariable("transactionid") int transactionId) {

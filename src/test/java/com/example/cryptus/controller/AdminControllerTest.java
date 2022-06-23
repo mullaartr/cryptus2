@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,20 +26,18 @@ import static org.mockito.Mockito.when;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AdminControllerTest {
     private MockMvc mockMvc;
-
     @MockBean
     private BankConfigService bankConfigService;
     private final Logger logger = LoggerFactory.getLogger(AdminControllerTest.class);
 
+    @Autowired
     public AdminControllerTest(MockMvc mockMvc) {
         super();
         this.mockMvc = mockMvc;
         logger.info("Nieuwe instantie van admincontroller test aangemaakt.");
     }
-
     @Test
     void getCommisionPercentage() {
-
         when(bankConfigService.getPercentage()).thenReturn(new BankConfig().getPercentage());
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(
                 "/admin/get_percentage");
@@ -51,14 +50,4 @@ class AdminControllerTest {
             throw new RuntimeException(e);
         }
     }
-
-//    @Test
-//    void set_percentage() {
-//        Response response = given().post("/admin" +
-//                "/get_percentage/15");
-//        System.out.println(response.asString());
-//        assertThat(response.asString()).isNotNull().contains("15");
-//    }
-
-
 }

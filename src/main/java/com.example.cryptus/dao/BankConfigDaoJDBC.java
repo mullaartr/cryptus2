@@ -15,33 +15,25 @@ import java.sql.Statement;
 
 @Repository
 public class BankConfigDaoJDBC implements BankConfigDao {
-
     private final JdbcTemplate jdbcTemplate;
-
     private final Logger logger = LogManager.getLogger(PortefeuilleDAOJdbc.class);
-
     @Autowired
     public BankConfigDaoJDBC(JdbcTemplate jdbcTemplate) {
         super();
         this.jdbcTemplate = jdbcTemplate;
         logger.info("new PortefeuilleDAOJdbc");
     }
-
     RowMapper<BankConfig> rowMapper = (rs, rowNum) -> {
         BankConfig bankConfig = new BankConfig();
         bankConfig.setPercentage(rs.getDouble("value"));
         return bankConfig;
     };
-// hieronder klopt iets niet. Het invoegen van een waarde moet wel precies op
-// de plek gebeuren waar ik dat wil en dat is dus bijvoorbeeld op de
-// adminAttribute waarde "percentage". Dat gebeurt nu volgens mij nog niet.
     private PreparedStatement insertConfigurationStatement(BankConfig bankConfig,
                                                            Connection connection) throws SQLException {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO " +
                             "bankinstelling (`value`) VALUES (?) ",
                     Statement.RETURN_GENERATED_KEYS);
-
             ps.setDouble(1, bankConfig.getPercentage());
             return ps;
         } catch (SQLException e) {
@@ -51,20 +43,14 @@ public class BankConfigDaoJDBC implements BankConfigDao {
         }
         return null;
     }
-
     @Override
     public void updatePercentage(double percentage) {
         BankConfig bankConfig = new BankConfig(percentage);
         String sql =
                 "UPDATE bankinstelling SET value =" + percentage + " WHERE " +
                 "adminAttribute ='percentage'";
-
         jdbcTemplate.update(sql);
-//        if (update == 1) {
-//            logger.info("Percentage aangepast");
-//        }
     }
-
     @Override
     public double getPercentage() {
 
